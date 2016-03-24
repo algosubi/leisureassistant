@@ -7,5 +7,17 @@
   },
   "dependencies": {
     "react-native": "^0.21.0"
-  }
+  },
+  "description": "",
+  "main": "index.ios.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/algosubi/leisureassistant.git"
+  },
+  "author": "algosubi & danny & jay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/algosubi/leisureassistant/issues"
+  },
+  "homepage": "https://github.com/algosubi/leisureassistant#readme"
 }
