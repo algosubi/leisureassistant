@@ -5,13 +5,11 @@ var {
     StyleSheet
     } = React;
 
-var Main = React.createClass({
-
+module.exports = React.createClass({
     render: function() {
-        console.log("메인화면");
         return (
             <View style={styles.container}>
-                <Text style={{color: 'white'}}>Main</Text>
+                <Text style={{color: 'white'}}>Loading</Text>
             </View>
         );
     }
@@ -25,4 +23,3 @@ var styles = StyleSheet.create({
         backgroundColor: '#6E5BAA'
     }
 });
-module.exports = Main;

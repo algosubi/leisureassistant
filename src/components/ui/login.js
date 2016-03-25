@@ -2,18 +2,14 @@
  * Created by subi on 2016. 3. 17..
  */
 var React = require('react-native');
+
 var {
     View,
-    Navigator,
     Text,
     TextInput,
     TouchableHighlight,
     StyleSheet
     } = React;
-
-var Main = require('./main');
-
-
 
 var Login = React.createClass({
     getInitialState: function () {
@@ -23,6 +19,7 @@ var Login = React.createClass({
     },
 
     render: function () {
+        console.log("로그인 화면");
         return (
             <View style={styles.container}>
                 <View style={styles.loginContainer}>
@@ -46,8 +43,13 @@ var Login = React.createClass({
             </View>)
     },
     onPress: function () {
-        this.props.navigator.push({name:'main'});
-        console.log(this.state.username);
+        var ref = new Firebase("https://leisureassistant.firebaseio.com/users");
+        ref.on("value", function (snapshot) {
+            console.log(snapshot.val());
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+        this.props.navigator.push({name: 'main'});
     }
 
 });
