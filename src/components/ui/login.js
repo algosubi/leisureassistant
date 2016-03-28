@@ -13,13 +13,13 @@ var {
 
 var Login = React.createClass({
     getInitialState: function () {
+        console.log("로그인 화면");
         return {
             username: '전창환'
         };
     },
 
     render: function () {
-        console.log("로그인 화면");
         return (
             <View style={styles.container}>
                 <View style={styles.loginContainer}>
