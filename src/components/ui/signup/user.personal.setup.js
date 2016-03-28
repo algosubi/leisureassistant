@@ -1,4 +1,7 @@
 /**
+ * Created by subi on 2016. 3. 28..
+ */
+/**
  * Created by subi on 2016. 3. 17..
  */
 var React = require('react-native');
@@ -11,11 +14,11 @@ var {
     StyleSheet
     } = React;
 
-var Login = React.createClass({
+var UserPersonalSetup = React.createClass({
     getInitialState: function () {
-        console.log("로그인 화면");
+        console.log("유저 프로필 설정 화면");
         return {
-            username: '전창환'
+            username: ''
         };
     },
 
@@ -98,4 +101,4 @@ var styles = StyleSheet.create({
     }
 });
 
-module.exports = Login;
+module.exports = UserPersonalSetup;
