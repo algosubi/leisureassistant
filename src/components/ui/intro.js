@@ -107,7 +107,7 @@ var Intro = React.createClass({
     },
     renderLoadingView: function () {
         return (
-            <View style={styles.container}>
+            <View style={styles.loading}>
                 <Text>
                     Loading 여가비서
                 </Text>
@@ -120,6 +120,12 @@ var Intro = React.createClass({
 var styles = StyleSheet.create({
     container: {
         flex: 1,
+    }, loading: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
     }
 });
 module.exports = Intro;

@@ -50,9 +50,7 @@ var UserProfileSetup = React.createClass({
         var ref = new Firebase("https://leisureassistant.firebaseio.com/users");
         ref.child(this.props.userUid).set({"name":this.state.username}, (error)=> {
             if (error) {
-                alert("Data could not be saved." + error);
             } else {
-                alert("Data saved successfully.");
                 this.props.navigator.push({name: 'userPersonalSetup'});
             }
         });

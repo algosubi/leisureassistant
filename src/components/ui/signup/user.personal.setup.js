@@ -16,7 +16,7 @@ var {
 
 var UserPersonalSetup = React.createClass({
     getInitialState: function () {
-        console.log("유저 프로필 설정 화면");
+        console.log("유저 개인 설정 화면");
         return {
             username: ''
         };
@@ -46,13 +46,7 @@ var UserPersonalSetup = React.createClass({
             </View>)
     },
     onPress: function () {
-        var ref = new Firebase("https://leisureassistant.firebaseio.com/users");
-        ref.on("value", function (snapshot) {
-            console.log(snapshot.val());
-        }, function (errorObject) {
-            console.log("The read failed: " + errorObject.code);
-        });
-        this.props.navigator.push({name: 'main'});
+        this.props.navigator.push({name: 'yeogaSetup'});
     }
 
 });
