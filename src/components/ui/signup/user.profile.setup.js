@@ -8,7 +8,6 @@ var React = require('react-native');
 
 var {
     View,
-    Image,
     Text,
     TextInput,
     TouchableHighlight,
@@ -28,7 +27,6 @@ var UserProfileSetup = React.createClass({
         return (
             <View style={styles.container}>
                 <View style={styles.logoContainer}>
-                    <Image style={styles.logoImage} source={require('./test.png')} />
                 </View>
                 <View style={styles.loginContainer}>
                     <TextInput
