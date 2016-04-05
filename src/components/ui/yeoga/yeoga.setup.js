@@ -1,4 +1,9 @@
 var React = require('react-native');
+var generateUUID =
+    require('@g/src/model/UUID');
+import Yeoga from '@g/src/model/Yeoga';
+
+
 var {
     View,
     Text,
@@ -10,6 +15,7 @@ var {
     Platform,
     TouchableOpacity
     } = React;
+
 
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 
@@ -86,17 +92,20 @@ var YeogaSetup = React.createClass({
         }
     },
     yeogaSetupPress: function () {
-        firebaseRef.child('yeoga').child(generateUUID()).set({
-            date: this.state.date.getTime(),
-            userUid: this.props.userUid,
-        }, (error)=> {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log("신청 성공");
-                this.props.navigator.pop();
-            }
-        });
+        var yeogaId = generateUUID();
+        console.log(yeogaId);
+        var yeoga = new Yeoga(yeogaId, this.props.userUid,
+            this.state.date.getTime());
+        console.log(yeoga);
+        firebaseRef.child('yeoga').child(yeogaId).set(yeoga
+            , (error)=> {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log("신청 성공");
+                    this.props.navigator.replace({name: 'ongoingYeoga'});
+                }
+            });
 
     },
     render: function () {
@@ -144,15 +153,7 @@ var YeogaSetup = React.createClass({
     },
 
 });
-function generateUUID() {
-    var d = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return uuid;
-};
+
 
 function _formatTime(hour, minute) {
     return (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute);

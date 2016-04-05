@@ -13,10 +13,13 @@ var {
 var YeogaSetup = require('./yeoga/yeoga.setup');
 var UserPersonalSetup = require('./signup/user.personal.setup');
 var UserProfileSetup = require('./signup/user.profile.setup');
+var OngoingYeoga = require('./yeoga/ongoing.yeoga');
+
 var ROUTES = {
     userProfileSetup: UserProfileSetup,
     yeogaSetup: YeogaSetup,
     userPersonalSetup: UserPersonalSetup,
+    ongoingYeoga: OngoingYeoga,
 };
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var userUid;
@@ -55,6 +58,7 @@ var Intro = React.createClass({
                     } else {
                         console.log("이미 가입된 사용자");
                         console.log(snapshot.val());
+
                         this.setState({
                             needSignUp: false
                             , loaded: true
