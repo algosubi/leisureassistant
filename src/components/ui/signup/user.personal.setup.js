@@ -55,13 +55,13 @@ var styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'stretch',
+        alignItems: 'center',
         backgroundColor: '#6E5BAA'
     },
     loginContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     input: {
         width: 250,
