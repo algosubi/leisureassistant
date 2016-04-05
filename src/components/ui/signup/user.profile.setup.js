@@ -51,7 +51,9 @@ var UserProfileSetup = React.createClass({
         ref.child(this.props.userUid).set({"name":this.state.username}, (error)=> {
             if (error) {
             } else {
+                this.props.navigator.pop();
                 this.props.navigator.push({name: 'userPersonalSetup'});
+
             }
         });
     }

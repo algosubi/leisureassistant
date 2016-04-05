@@ -10,13 +10,13 @@ var {
     StyleSheet,
     } = React;
 
-var YeogaSetup = require('./yeoga.setup');
-var UserPersonalSetup = require('./signup/user.profile.setup');
+var YeogaSetup = require('./yeoga/yeoga.setup');
+var UserPersonalSetup = require('./signup/user.personal.setup');
 var UserProfileSetup = require('./signup/user.profile.setup');
 var ROUTES = {
     userProfileSetup: UserProfileSetup,
     yeogaSetup: YeogaSetup,
-    userPersonalSetup: UserPersonalSetup
+    userPersonalSetup: UserPersonalSetup,
 };
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var userUid;

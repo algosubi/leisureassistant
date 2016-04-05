@@ -10,6 +10,7 @@
     "firebase-token-generator": "^2.0.0",
     "react": "^0.14.7",
     "react-native": "^0.21.0",
+    "react-native-date": "^1.0.3",
     "react-native-device-info": "^0.9.1",
     "reactfire": "^0.6.0"
   },
