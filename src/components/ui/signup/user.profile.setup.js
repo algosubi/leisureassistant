@@ -8,6 +8,7 @@ var React = require('react-native');
 
 var {
     View,
+    Image,
     Text,
     TextInput,
     TouchableHighlight,
@@ -26,6 +27,9 @@ var UserProfileSetup = React.createClass({
     render: function () {
         return (
             <View style={styles.container}>
+                <View style={styles.logoContainer}>
+                    <Image style={styles.logoImage} source={require('./test.png')} />
+                </View>
                 <View style={styles.loginContainer}>
                     <TextInput
                         style={styles.input}
@@ -64,11 +68,19 @@ var styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'stretch',
-        backgroundColor: '#6E5BAA'
+        alignItems: 'center',
+        backgroundColor: '#6E5BAA',
+        flexDirection: 'column'
+    },
+    logoContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    logoImage : {
+        width: 250,
+        height: 50
     },
     loginContainer: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -95,7 +107,6 @@ var styles = StyleSheet.create({
     },
     label: {
         width: 230,
-        flex: 1,
         alignSelf: 'center',
         textAlign: 'center',
         fontSize: 20,

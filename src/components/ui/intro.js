@@ -123,13 +123,13 @@ var Intro = React.createClass({
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     }, loading: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#F5FCFF'
     }
 });
 module.exports = Intro;
