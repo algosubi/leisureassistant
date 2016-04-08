@@ -92,18 +92,20 @@ var YeogaSetup = React.createClass({
         }
     },
     yeogaSetupPress: function () {
-        var yeogaId = generateUUID();
-        console.log(yeogaId);
-        var yeoga = new Yeoga(yeogaId, this.props.userUid,
+        var yeogaID = generateUUID();
+        console.log(yeogaID);
+        var yeoga = new Yeoga(yeogaID, this.props.userUid,
             this.state.date.getTime());
         console.log(yeoga);
-        firebaseRef.child('yeoga').child(yeogaId).set(yeoga
+        firebaseRef.child('yeoga').child(yeogaID).set(yeoga
             , (error)=> {
                 if (error) {
                     console.log(error);
                 } else {
                     console.log("신청 성공");
-                    this.props.navigator.replace({name: 'ongoingYeoga'});
+                    this.props.navigator.replace({
+                        name: 'ongoingYeoga', passProps: {yeogaID: yeogaID}
+                    });
                 }
             });
 

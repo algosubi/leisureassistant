@@ -47,7 +47,7 @@ var Intro = React.createClass({
             } else {
                 userUid = authData.uid;
                 console.log("Login Succeeded!", authData);
-                firebaseRef.child("users").child(DeviceInfo.getUniqueID()).on("value", (snapshot)=> {
+                firebaseRef.child("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
                     if (snapshot.val() == null) {
                         console.log("회원가입 필요");
                         this.setState({
