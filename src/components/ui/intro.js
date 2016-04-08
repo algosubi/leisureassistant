@@ -10,6 +10,7 @@ var {
     StyleSheet,
     } = React;
 
+var YeogaStandBy = require('./yeoga/yeoga.standby');
 var YeogaSetup = require('./yeoga/yeoga.setup');
 var UserPersonalSetup = require('./signup/user.personal.setup');
 var UserProfileSetup = require('./signup/user.profile.setup');
@@ -17,8 +18,9 @@ var OngoingYeoga = require('./yeoga/ongoing.yeoga');
 
 var ROUTES = {
     userProfileSetup: UserProfileSetup,
-    yeogaSetup: YeogaSetup,
     userPersonalSetup: UserPersonalSetup,
+    yeogaSetup: YeogaSetup,
+    yeogaStandBy: YeogaStandBy,
     ongoingYeoga: OngoingYeoga,
 };
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
@@ -102,7 +104,7 @@ var Intro = React.createClass({
             return (
                 <Navigator
                     style={ styles.container }
-                    initialRoute={ {name : 'yeogaSetup'} }
+                    initialRoute={ {name : 'yeogaStandBy'} }
                     renderScene={this.renderScene}
                     configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
                 />

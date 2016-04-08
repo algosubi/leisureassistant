@@ -9,6 +9,7 @@ var React = require('react-native');
 var {
     View,
     Text,
+    Switch,
     TextInput,
     TouchableHighlight,
     StyleSheet
@@ -19,14 +20,29 @@ var UserProfileSetup = React.createClass({
         console.log("유저 프로필 설정 화면");
         console.log(this.props.userUid);
         return {
-            username: ''
+            username: '',
+            colorTrueSwitchIsOn: true,
+            colorFalseSwitchIsOn: false,
         };
     },
 
     render: function () {
         return (
             <View style={styles.container}>
-                <View style={styles.logoContainer}>
+                <View>
+                    <Switch
+                        onValueChange={(value) => this.setState({colorFalseSwitchIsOn: value})}
+                        onTintColor="#00ff00"
+                        style={{marginBottom: 10}}
+                        thumbTintColor="#0000ff"
+                        tintColor="#ff0000"
+                        value={this.state.colorFalseSwitchIsOn} />
+                    <Switch
+                        onValueChange={(value) => this.setState({colorTrueSwitchIsOn: value})}
+                        onTintColor="#00ff00"
+                        thumbTintColor="#0000ff"
+                        tintColor="#ff0000"
+                        value={this.state.colorTrueSwitchIsOn} />
                 </View>
                 <View style={styles.loginContainer}>
                     <TextInput
@@ -55,7 +71,6 @@ var UserProfileSetup = React.createClass({
             } else {
                 this.props.navigator.pop();
                 this.props.navigator.push({name: 'userPersonalSetup'});
-
             }
         });
     }
