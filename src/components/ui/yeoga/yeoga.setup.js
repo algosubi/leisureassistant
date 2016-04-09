@@ -6,6 +6,7 @@ import Yeoga from '@g/src/model/Yeoga';
 
 var {
     View,
+    Image,
     Text,
     TouchableHighlight,
     StyleSheet,
@@ -130,6 +131,9 @@ var YeogaSetup = React.createClass({
 
         return (
             <View style={styles.container}>
+                <View style={styles.imgContainer}>
+                    <Image source={require('@g/assets/img/button_yeogago.png')} style={styles.imgImage} />
+                </View>
                 <View style={styles.yeogaContainer}>
                     <Text
                         style={styles.input}
@@ -172,6 +176,15 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         backgroundColor: '#6E5BAA'
+    },
+    imgContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    imgImage: {
+        width: 200,
+        height: 200,
     },
     yeogaContainer: {
         flex: 1,
