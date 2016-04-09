@@ -104,9 +104,16 @@ var YeogaSetup = React.createClass({
                     console.log(error);
                 } else {
                     console.log("신청 성공");
-                    this.props.navigator.replace({
-                        name: 'ongoingYeoga', passProps: {yeogaID: yeogaID}
+                    firebaseRef.child('users').child(this.props.userUid).update({yeogaID: yeogaID}, (error)=> {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            this.props.navigator.replace({
+                                name: 'ongoingYeoga', passProps: {yeogaID: yeogaID}
+                            });
+                        }
                     });
+
                 }
             });
 
@@ -132,7 +139,7 @@ var YeogaSetup = React.createClass({
         return (
             <View style={styles.container}>
                 <View style={styles.imgContainer}>
-                    <Image source={require('@g/assets/img/button_yeogago.png')} style={styles.imgImage} />
+                    <Image source={require('@g/assets/img/button_yeogago.png')} style={styles.imgImage}/>
                 </View>
                 <View style={styles.yeogaContainer}>
                     <Text
