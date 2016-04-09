@@ -5,6 +5,7 @@ var React = require('react-native')
 var Firebase = require('firebase')
 var {
     Navigator,
+    PixelRatio,
     View,
     Text,
     StyleSheet,
@@ -27,6 +28,7 @@ var ROUTES = {
 };
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var userUid;
+var yeogaID;
 var Intro = React.createClass({
     propTypes: {
         userUid: React.PropTypes.string,
@@ -35,7 +37,8 @@ var Intro = React.createClass({
     getInitialState: function () {
         return {
             needSignUp: false
-            , loaded: false
+            , loaded: false,
+            existYeoga: false
 
         };
     },
@@ -51,22 +54,27 @@ var Intro = React.createClass({
             } else {
                 userUid = authData.uid;
                 console.log("Login Succeeded!", authData);
-                firebaseRef.child("users").child(DeviceInfo.getUniqueID()).on("value", (snapshot)=> {
+                firebaseRef.child("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
                     if (snapshot.val() == null) {
                         console.log("회원가입 필요");
                         this.setState({
                             needSignUp: true
                             , loaded: true
-
+                            , existYeoga: false
                         });
                     } else {
                         console.log("이미 가입된 사용자");
                         console.log(snapshot.val());
+                        var existYeoga = false;
 
+                        if (snapshot.val().yeogaID != null) {
+                            existYeoga = true;
+                            yeogaID = snapshot.val().yeogaID;
+                        }
                         this.setState({
                             needSignUp: false
                             , loaded: true
-
+                            , existYeoga: existYeoga
                         });
 
                     }
@@ -85,7 +93,9 @@ var Intro = React.createClass({
     },
     renderScene: function (route, navigator) {
         var Component = ROUTES[route.name];
-        return <Component route={route} navigator={navigator} userUid={userUid}/>;
+        return (<View style={{marginTop: PixelRatio.get() * 20}}>
+            <Component route={route} navigator={navigator} userUid={userUid}/>
+        </View>);
     },
     render: function () {
         console.log(this.state);
@@ -99,18 +109,44 @@ var Intro = React.createClass({
                     style={ styles.container }
                     initialRoute={ {name : 'userProfileSetup'} }
                     renderScene={this.renderScene}
+                    navigationBar={ <View style={styles.navBar}>
+                                             <Text style={styles.backButton}>Back</Text>
+                                        </View>
+                                       }
                     configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
                 />
             );
         } else {
-            return (
-                <Navigator
-                    style={ styles.container }
-                    initialRoute={ {name : 'yeogaStandBy'} }
-                    renderScene={this.renderScene}
-                    configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
-                />
-            );
+            if (this.state.existYeoga) {
+                console.log('여가아이디 : ' + yeogaID);
+                return (
+                    <Navigator
+                        style={ styles.container }
+                        initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
+                        renderScene={this.renderScene}
+                        sceneStyle={styles.navigator}
+                        navigationBar={ <View style={styles.navBar}>
+                                             <Text style={styles.backButton}>Back</Text>
+                                        </View>
+                                       }
+                        configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
+                    />
+                );
+            } else {
+                return (
+                    <Navigator
+                        style={ styles.container }
+                        initialRoute={ {name : 'yeogaStandBy'} }
+                        navigationBar={ <View style={styles.navBar}>
+                                             <Text style={styles.backButton}>Back</Text>
+                                        </View>
+                                       }
+                        renderScene={this.renderScene}
+                        configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
+                    />
+                );
+            }
+
         }
     },
     renderLoadingView: function () {
@@ -127,13 +163,29 @@ var Intro = React.createClass({
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        alignItems: 'stretch',
+        flexDirection:'column'
     }, loading: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF'
-    }
+    },
+    navBar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderBottomColor: '#eee',
+        borderColor: 'transparent',
+        borderWidth: 1,
+        justifyContent: 'center',
+        height: PixelRatio.get() * 20,
+        flexDirection: 'row'
+    },
 });
 module.exports = Intro;

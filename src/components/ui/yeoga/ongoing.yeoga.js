@@ -7,50 +7,58 @@
 var React = require('react-native');
 
 var {
-    View,
+    ListView,
     Text,
-    TextInput,
-    TouchableHighlight,
     StyleSheet
     } = React;
+
+
+var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 
 var OngoingYeoga = React.createClass({
     getInitialState: function () {
         console.log("OngoingYeoga 화면");
-        console.log(this.props.userUid);
+        console.log(this.props.route.passProps.yeogaID);
+        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
         return {
-            username: ''
+            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
         };
     },
+    componentWillMount: function () {
+        firebaseRef.child("activity")
+            .on("value", (snapshot)=> {
+                console.log(snapshot.val());
+                var items = [];
+                snapshot.forEach((child) => {
+                    items.push({
+                        title: child.val().title,
+                        _key: child.key()
+                    });
+                });
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(items)
+                });
 
+            }, function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
+
+            });
+    },
     render: function () {
         return (
-            <View style={styles.container}>
-                <View style={styles.loginContainer}>
-                    <TouchableHighlight
-                        style={styles.button}
-                        underlayColor={'#328FE6'}
-                        onPress={this.onPress}
-                    >
-                        <Text style={styles.label}>OngoingYeoga</Text>
-                    </TouchableHighlight>
-                </View>
-            </View>)
-    },
-    onPress: function () {
-
-        this.props.navigator.pop();
-
+            <ListView
+                style={styles.container}
+                dataSource={this.state.dataSource}
+                renderRow={(dataSource) => <Text>{dataSource.title}</Text>}
+            />)
     }
 
 });
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'stretch',
-        backgroundColor: '#6E5BAA'
+        flex: 1
     },
     loginContainer: {
         flex: 1,
