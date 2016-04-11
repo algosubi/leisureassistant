@@ -93,7 +93,7 @@ var Intro = React.createClass({
     },
     renderScene: function (route, navigator) {
         var Component = ROUTES[route.name];
-        return (<View style={{marginTop: PixelRatio.get() * 20}}>
+        return (<View style={styles.viewStyle}>
             <Component route={route} navigator={navigator} userUid={userUid}/>
         </View>);
     },
@@ -165,13 +165,19 @@ var styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch',
-        flexDirection:'column'
+        flexDirection: 'column'
     }, loading: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF'
+    },
+    viewStyle: {
+        flex: 1,
+        alignItems: 'stretch',
+        flexDirection:'column',
+        marginTop: PixelRatio.get() * 20,
     },
     navBar: {
         position: 'absolute',
