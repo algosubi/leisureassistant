@@ -1,8 +1,9 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native')
-var Firebase = require('firebase')
+var React = require('react-native');
+var Firebase = require('firebase');
+var StatusBarSizeIOS = require('react-native-status-bar-size');
 var {
     Navigator,
     PixelRatio,
@@ -29,6 +30,7 @@ var ROUTES = {
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var userUid;
 var yeogaID;
+const barHeight = StatusBarSizeIOS.currentHeight;
 var Intro = React.createClass({
     propTypes: {
         userUid: React.PropTypes.string,
@@ -36,9 +38,10 @@ var Intro = React.createClass({
 
     getInitialState: function () {
         return {
-            needSignUp: false
-            , loaded: false,
-            existYeoga: false
+            needSignUp: false,
+            loaded: false,
+            existYeoga: false,
+            currentStatusBarHeight: StatusBarSizeIOS.currentHeight,
 
         };
     },
@@ -93,11 +96,13 @@ var Intro = React.createClass({
     },
     renderScene: function (route, navigator) {
         var Component = ROUTES[route.name];
-        return (<View style={styles.viewStyle}>
+        return (
+        <View style={styles.viewStyle}>
             <Component route={route} navigator={navigator} userUid={userUid}/>
         </View>);
     },
     render: function () {
+        console.log(StatusBarSizeIOS.currentHeight);
         console.log(this.state);
         if (!this.state.loaded) {
             return this.renderLoadingView();
@@ -105,11 +110,13 @@ var Intro = React.createClass({
 
         if (this.state.needSignUp) {
             return (
+
                 <Navigator
                     style={ styles.container }
                     initialRoute={ {name : 'userProfileSetup'} }
                     renderScene={this.renderScene}
-                    navigationBar={ <View style={styles.navBar}>
+                    navigationBar={
+                                        <View style={[styles.navBar, {marginTop: StatusBarSizeIOS.currentHeight}]}>
                                              <Text style={styles.backButton}>Back</Text>
                                         </View>
                                        }
@@ -120,30 +127,36 @@ var Intro = React.createClass({
             if (this.state.existYeoga) {
                 console.log('여가아이디 : ' + yeogaID);
                 return (
-                    <Navigator
-                        style={ styles.container }
-                        initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
-                        renderScene={this.renderScene}
-                        sceneStyle={styles.navigator}
-                        navigationBar={ <View style={styles.navBar}>
-                                             <Text style={styles.backButton}>Back</Text>
-                                        </View>
-                                       }
-                        configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
-                    />
+
+                        <Navigator
+                            style={ styles.container }
+                            initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
+                            renderScene={this.renderScene}
+                            sceneStyle={styles.navigator}
+                            navigationBar={
+                                            <View style={[styles.navBar, {marginTop: StatusBarSizeIOS.currentHeight}]}>
+                                                 <Text style={styles.backButton}>Back</Text>
+                                            </View>
+                                           }
+                            configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
+                        />
+
                 );
             } else {
                 return (
-                    <Navigator
-                        style={ styles.container }
-                        initialRoute={ {name : 'yeogaStandBy'} }
-                        navigationBar={ <View style={styles.navBar}>
-                                             <Text style={styles.backButton}>Back</Text>
-                                        </View>
-                                       }
-                        renderScene={this.renderScene}
-                        configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
-                    />
+
+                        <Navigator
+                            style={ styles.container }
+                            initialRoute={ {name : 'yeogaStandBy'} }
+                            navigationBar={
+                                            <View style={[styles.navBar, {marginTop: StatusBarSizeIOS.currentHeight}]}>
+                                                 <Text style={styles.backButton}>Back</Text>
+                                            </View>
+                                           }
+                            renderScene={this.route, this.renderScene}
+                            configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
+                        />
+
                 );
             }
 
@@ -171,17 +184,17 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#F5FCFF',
     },
     viewStyle: {
         flex: 1,
         alignItems: 'stretch',
         flexDirection:'column',
-        marginTop: PixelRatio.get() * 20,
     },
     navBar: {
         position: 'absolute',
         top: 0,
+        bottom: 0,
         left: 0,
         right: 0,
         alignItems: 'center',

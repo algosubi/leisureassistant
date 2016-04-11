@@ -16,7 +16,7 @@ var OngoingYeogaDetail = React.createClass({
         description: 'Tab-based navigation.',
     },
 
-    displayName: 'TabBarExample',
+    displayName: 'OngoingYeogaDetail',
 
     getInitialState: function() {
         return {

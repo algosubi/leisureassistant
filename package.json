@@ -12,6 +12,7 @@
     "react-native": "^0.21.0",
     "react-native-date": "^1.0.3",
     "react-native-device-info": "^0.9.1",
+    "react-native-status-bar-size": "^0.2.1",
     "reactfire": "^0.6.0"
   },
   "description": "",
