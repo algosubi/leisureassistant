@@ -97,37 +97,43 @@ var Intro = React.createClass({
     renderScene: function (route, navigator) {
         var Component = ROUTES[route.name];
         return (
-        <View style={styles.viewStyle}>
-            <Component route={route} navigator={navigator} userUid={userUid}/>
-        </View>);
+            <View style={[styles.viewStyle, {paddingTop: PixelRatio.get() * 20}]}>
+                <Component route={route} navigator={navigator} userUid={userUid}/>
+            </View>
+            );
     },
     render: function () {
         console.log(StatusBarSizeIOS.currentHeight);
         console.log(this.state);
+
+
+
         if (!this.state.loaded) {
             return this.renderLoadingView();
         }
 
         if (this.state.needSignUp) {
             return (
-
-                <Navigator
-                    style={ styles.container }
-                    initialRoute={ {name : 'userProfileSetup'} }
-                    renderScene={this.renderScene}
-                    navigationBar={
-                                        <View style={[styles.navBar, {marginTop: StatusBarSizeIOS.currentHeight}]}>
-                                             <Text style={styles.backButton}>Back</Text>
-                                        </View>
-                                       }
-                    configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
-                />
+                <View className="rootScope" style={styles.rootScope}>
+                    <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
+                    <Navigator
+                        initialRoute={ {name : 'userProfileSetup'} }
+                        renderScene={this.renderScene}
+                        navigationBar={
+                                            <View style={styles.navBar}>
+                                                 <Text style={styles.backButton}>Back</Text>
+                                            </View>
+                                           }
+                        configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
+                    />
+                </View>
             );
         } else {
             if (this.state.existYeoga) {
                 console.log('여가아이디 : ' + yeogaID);
                 return (
-
+                    <View className="rootScope" style={styles.rootScope}>
+                        <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
@@ -140,11 +146,12 @@ var Intro = React.createClass({
                                            }
                             configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
                         />
-
+                    </View>
                 );
             } else {
                 return (
-
+                    <View className="rootScope" style={styles.rootScope}>
+                        <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'yeogaStandBy'} }
@@ -156,11 +163,12 @@ var Intro = React.createClass({
                             renderScene={this.route, this.renderScene}
                             configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
                         />
-
+                    </View>
                 );
             }
 
         }
+
     },
     renderLoadingView: function () {
         return (
@@ -175,21 +183,20 @@ var Intro = React.createClass({
 });
 
 var styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'stretch',
-        flexDirection: 'column'
-    }, loading: {
+    loading: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
-    viewStyle: {
+    rootScope: {
         flex: 1,
+        flexDirection: 'column',
         alignItems: 'stretch',
-        flexDirection:'column',
+    },
+    statusBar: {
+        alignItems: 'stretch',
     },
     navBar: {
         position: 'absolute',
@@ -205,6 +212,11 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         height: PixelRatio.get() * 20,
         flexDirection: 'row'
+    },
+    viewStyle: {
+        flex: 1,
+        alignItems: 'stretch',
+        flexDirection:'column',
     },
 });
 module.exports = Intro;
