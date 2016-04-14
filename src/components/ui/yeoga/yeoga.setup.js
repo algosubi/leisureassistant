@@ -7,6 +7,7 @@ import Yeoga from '@g/src/model/Yeoga';
 var {
     View,
     Image,
+    TextInput,
     Text,
     TouchableHighlight,
     StyleSheet,
@@ -20,28 +21,29 @@ var {
 
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var YeogaSetup = React.createClass({
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             date: new Date(),
             timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
         };
     },
-    toggleDatePicker(){
+    toggleDatePicker: function(){
         var mode = this.state.datePickerMode == 'hidden' ? 'visible' : 'hidden';
         this.setState({datePickerMode: mode});
     },
 
-    onDateChange(date){
+    onDateChange: function(date){
         this.setState({
             date: date, Text: _dateToString(date)
         });
     },
 
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             date: this.props.date,
             Text: "시간을 입력해 주세요",
+            thisLocation: "부산광역시 금정구 장전동",
             datePickerMode: 'hidden',
             timeZoneOffsetInHours: this.props.timeZoneOffsetInHours
         };
@@ -91,7 +93,7 @@ var YeogaSetup = React.createClass({
             console.warn(`Error in example Time: `, message);
         }
     },
-    yeogaSetupPress: function () {
+    yeogaSetupPress: function() {
         var yeogaID = generateUUID();
         console.log(yeogaID);
         var yeoga = new Yeoga(yeogaID, this.props.userUid,
@@ -117,7 +119,7 @@ var YeogaSetup = React.createClass({
             });
 
     },
-    render: function () {
+    render: function() {
         console.log("여가 설정 화면");
         console.log(this.state);
         var datePicker = (
@@ -137,30 +139,52 @@ var YeogaSetup = React.createClass({
 
         return (
             <View style={styles.container}>
-                <View style={styles.imgContainer}>
-                    <Image source={require('@g/assets/img/button_yeogago.png')} style={styles.imgImage}/>
-                </View>
+                <View style={styles.default}></View>
                 <View style={styles.yeogaContainer}>
-                    <Text
-                        style={styles.input}
-                        onPress={this.showDatePicker.bind(this, {
+                    <View className="myLocation" style={styles.myLocation}>
+                        <Text style={styles.viewTitle}>
+                           내위치
+                        </Text>
+                        <Text style={styles.thisLocation}>
+                            {this.state.thisLocation}
+                        </Text>
+                    </View>
+
+                    <View ClassName="myHopingActivity" style={styles.myHopingActivity}>
+                        <Text style={styles.viewTitle}>
+                            희망활동
+                        </Text>
+                    </View>
+
+                    <View className="mySpareTime" style={styles.mySpareTime}>
+                        <Text style={styles.viewTitle}>
+                            활동가능시간
+                        </Text>
+                        <Text
+                            style={styles.input}
+                            onPress={this.showDatePicker.bind(this, {
                                                                     Date: this.state.date,
                                                                     minDate: new Date(),
                                                                     maxDate: new Date(2020, 4, 10),
                                                                 })}
-                        multiline={false}>
-                        {this.state.Text}
-                    </Text>
+                            multiline={false}>
+                            {this.state.Text}
+                        </Text>
+                    </View>
 
-                    <TouchableHighlight
-                        style={styles.button}
-                        underlayColor={'#328FE6'}
-                        onPress={this.yeogaSetupPress}
-                    >
-                        <Text style={styles.label}>여가 설정</Text>
-                    </TouchableHighlight>
+                    <View className="myActivityType" style={styles.myActivityType}>
+                        <Text style={styles.viewTitle}>
+                            활동형태
+                        </Text>
+                    </View>
+
+
                 </View>
                 { this.state.datePickerMode == 'visible' ? datePicker : <View/> }
+                <View style={styles.default}></View>
+                <View className="toolbarBottom" style={styles.toolbarBottom}>
+                    <Text onPress={this.yeogaSetupPress}>완료</Text>
+                </View>
             </View>)
     },
 
@@ -179,23 +203,57 @@ function _dateToString(date) {
 var styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'stretch',
-        backgroundColor: '#6E5BAA'
+        backgroundColor: '#fff'
     },
-    imgContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    imgImage: {
-        width: 200,
-        height: 200,
+    default: {
+        flex: 0.1,
     },
     yeogaContainer: {
-        flex: 1,
+        flex: 0.8,
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    myLocation: {
+        flex: 1,
+        alignSelf: 'stretch',
+    },
+    myHopingActivity: {
+        flex: 1,
+        alignSelf: 'stretch',
+    },
+    mySpareTime: {
+        flex: 1,
+        alignSelf: 'stretch',
+    },
+    myActivityType: {
+        flex: 1,
+        alignSelf: 'stretch',
+    },
+    toolbarBottom: {
+        backgroundColor: '#fff',
+        height: 40,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        borderTopColor: '#e6e6e6',
+        borderTopWidth: 1,
+        textAlign: 'right',
+        color: '#999999',
+    },
+    viewTitle: {
+        color: '#999999',
+        fontSize: 14,
+        paddingTop: 20,
+        paddingBottom: 20,
+    },
+    thisLocation: {
+        color: "#666666",
+        fontSize: 18,
     },
     input: {
         width: 250,
@@ -218,15 +276,15 @@ var styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: '#32c5e6'
     },
-    label: {
-        width: 230,
+    setActivityCompleted: {
         flex: 1,
         alignSelf: 'center',
         textAlign: 'center',
         fontSize: 20,
         fontWeight: '600',
         color: '#ffffff'
-    }, datePicker: {
+    },
+    datePicker: {
         borderTopWidth: 1,
         position: 'absolute',
         bottom: 0,
@@ -235,7 +293,8 @@ var styles = StyleSheet.create({
         height: 220,
         borderColor: '#CCC',
         backgroundColor: '#FFF',
-    }
+    },
+
 });
 
 module.exports = YeogaSetup;

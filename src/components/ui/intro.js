@@ -10,6 +10,7 @@ var {
     View,
     Text,
     StyleSheet,
+    StatusBar,
     } = React;
 
 var YeogaStandBy = require('./yeoga/yeoga.standby'),
@@ -115,6 +116,9 @@ var Intro = React.createClass({
         if (this.state.needSignUp) {
             return (
                 <View className="rootScope" style={styles.rootScope}>
+                    <StatusBar
+                        barStyle="light-content"
+                    />
                     <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
                     <Navigator
                         initialRoute={ {name : 'userProfileSetup'} }
@@ -133,6 +137,9 @@ var Intro = React.createClass({
                 console.log('여가아이디 : ' + yeogaID);
                 return (
                     <View className="rootScope" style={styles.rootScope}>
+                        <StatusBar
+                            barStyle="light-content"
+                        />
                         <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
                         <Navigator
                             style={ styles.container }
@@ -140,7 +147,7 @@ var Intro = React.createClass({
                             renderScene={this.renderScene}
                             sceneStyle={styles.navigator}
                             navigationBar={
-                                            <View style={[styles.navBar, {marginTop: StatusBarSizeIOS.currentHeight}]}>
+                                            <View style={styles.navBar}>
                                                  <Text style={styles.backButton}>Back</Text>
                                             </View>
                                            }
@@ -151,12 +158,15 @@ var Intro = React.createClass({
             } else {
                 return (
                     <View className="rootScope" style={styles.rootScope}>
+                        <StatusBar
+                            barStyle="light-content"
+                        />
                         <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'yeogaStandBy'} }
                             navigationBar={
-                                            <View style={[styles.navBar, {marginTop: StatusBarSizeIOS.currentHeight}]}>
+                                            <View style={styles.navBar}>
                                                  <Text style={styles.backButton}>Back</Text>
                                             </View>
                                            }
@@ -194,6 +204,7 @@ var styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'stretch',
+        backgroundColor: '#78cfdb',
     },
     statusBar: {
         alignItems: 'stretch',
@@ -205,10 +216,7 @@ var styles = StyleSheet.create({
         left: 0,
         right: 0,
         alignItems: 'center',
-        backgroundColor: '#fff',
-        borderBottomColor: '#eee',
-        borderColor: 'transparent',
-        borderWidth: 1,
+        backgroundColor: '#78cfdb',
         justifyContent: 'center',
         height: PixelRatio.get() * 20,
         flexDirection: 'row'

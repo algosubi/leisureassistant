@@ -34,7 +34,7 @@ var YeogaStandBy = React.createClass({
             </View>)
     },
     onPress: function () {
-        this.props.navigator.push({name: 'ongoingYeogaDetail'});
+        this.props.navigator.push({name: 'yeogaSetup'});
     }
 
 });
@@ -57,7 +57,6 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'center',
-        textAlign: 'center',
     },
     imgImage: {
         width: 200,
@@ -65,8 +64,8 @@ var styles = StyleSheet.create({
     },
     titleText: {
         flex: 1,
-        marginTop: 20,
         textAlign: 'center',
+        marginTop: 20,
     },
     default: {
         flex: 0.1,
