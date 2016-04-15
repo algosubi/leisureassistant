@@ -142,9 +142,12 @@ var YeogaSetup = React.createClass({
                 <View style={styles.default}></View>
                 <View style={styles.yeogaContainer}>
                     <View className="myLocation" style={styles.myLocation}>
+                        <View style={styles.viewTop}>
                         <Text style={styles.viewTitle}>
                            내위치
                         </Text>
+                            <Text style={styles.modiLocation}>재설정</Text>
+                        </View>
                         <Text style={styles.thisLocation}>
                             {this.state.thisLocation}
                         </Text>
@@ -154,6 +157,11 @@ var YeogaSetup = React.createClass({
                         <Text style={styles.viewTitle}>
                             희망활동
                         </Text>
+                        <TextInput
+                            style={styles.inputText}
+                            onChangeText={(text) => this.setState({text})}
+                            value={this.state.text}
+                        />
                     </View>
 
                     <View className="mySpareTime" style={styles.mySpareTime}>
@@ -176,6 +184,9 @@ var YeogaSetup = React.createClass({
                         <Text style={styles.viewTitle}>
                             활동형태
                         </Text>
+                        <View style={styles.viewContent}>
+
+                        </View>
                     </View>
 
 
@@ -183,7 +194,7 @@ var YeogaSetup = React.createClass({
                 { this.state.datePickerMode == 'visible' ? datePicker : <View/> }
                 <View style={styles.default}></View>
                 <View className="toolbarBottom" style={styles.toolbarBottom}>
-                    <Text onPress={this.yeogaSetupPress}>완료</Text>
+                    <Text onPress={this.yeogaSetupPress} style={styles.toolbarBottomText}>완료</Text>
                 </View>
             </View>)
     },
@@ -242,18 +253,37 @@ var styles = StyleSheet.create({
         right: 0,
         borderTopColor: '#e6e6e6',
         borderTopWidth: 1,
-        textAlign: 'right',
-        color: '#999999',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    viewTop: {
+        flexDirection: 'row',
     },
     viewTitle: {
+        flex: 1,
         color: '#999999',
         fontSize: 14,
         paddingTop: 20,
         paddingBottom: 20,
     },
+    modiLocation: {
+        paddingTop: 20,
+        flex: 1,
+        textAlign: 'right',
+        fontSize: 12,
+    },
     thisLocation: {
         color: "#666666",
         fontSize: 18,
+    },
+    inputText: {
+        height: 50,
+        borderWidth: 1,
+    },
+    toolbarBottomText: {
+        flex: 1,
+        textAlign: 'right',
+        paddingRight: 20,
     },
     input: {
         width: 250,

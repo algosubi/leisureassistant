@@ -1,6 +1,4 @@
 var React = require('react-native');
-import OneSignal from 'react-native-onesignal'; // Import package from node modules
-
 var {
     AppRegistry
     } = React;
