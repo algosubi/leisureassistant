@@ -86,6 +86,10 @@ android {
     ndk {
       abiFilters "armeabi-v7a", "x86"
     }
+    manifestPlaceholders = [manifestApplicationId: "com.leisureassistant",
+                            onesignal_app_id: "49f72f0a-c2cc-4850-b226-4a142b062c5b",
+                            onesignal_google_project_number: "963392130202"]
+
   }
   splits {
     abi {
@@ -122,5 +126,6 @@ dependencies {
   compile "com.facebook.react:react-native:+" // From node_modules
   compile project(':reactdate')
   compile project(":react-native-device-info")
+  compile project(':react-native-onesignal')
   compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
 }

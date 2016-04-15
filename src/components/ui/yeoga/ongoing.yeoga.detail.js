@@ -26,7 +26,7 @@ var OngoingYeogaDetail = React.createClass({
         };
     },
 
-    _renderContent: function(color: string, pageText: string, num?: number) {
+    _renderContent: function(color: string, pageText: string, num?: noimber) {
     return (
         <View style={[styles.tabContent, {backgroundColor: color}]}>
             <Text style={styles.tabText}>{pageText}</Text>

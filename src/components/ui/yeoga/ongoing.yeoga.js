@@ -5,6 +5,7 @@
  * Created by subi on 2016. 3. 17..
  */
 var React = require('react-native');
+import Yeoga from '@g/src/model/Yeoga';
 
 var {
     ListView,
@@ -26,15 +27,13 @@ var OngoingYeoga = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebaseRef.child("activity")
+        firebaseRef.child("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];
                 snapshot.forEach((child) => {
-                    items.push({
-                        title: child.val().title,
-                        _key: child.key()
-                    });
+                    console.log(child.val());
+                    items.push(Yeoga.fromJSON(child.val()));
                 });
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(items)
