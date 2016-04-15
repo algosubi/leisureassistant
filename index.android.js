@@ -3,6 +3,6 @@ var {
     AppRegistry
     } = React;
 
-var Intro = require('./src/components/ui/intro')
+var Intro = require('./src/components/ui/intro.ios')
 
 AppRegistry.registerComponent('LeisureAssistant', () => Intro);

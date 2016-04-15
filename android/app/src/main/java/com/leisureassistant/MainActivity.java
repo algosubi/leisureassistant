@@ -7,6 +7,7 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import java.util.Arrays;
 import java.util.List;
 import me.nucleartux.date.ReactDatePackage;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
 public class MainActivity extends ReactActivity {
 
@@ -31,7 +32,7 @@ public class MainActivity extends ReactActivity {
    * or modules besides the default ones, add more packages here.
    */
   @Override protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(new RNDeviceInfo(), new MainReactPackage(),
+    return Arrays.<ReactPackage>asList(new RNDeviceInfo(), new MainReactPackage(),new ExtraDimensionsPackage(this)
         new ReactDatePackage(this));
   }
 }

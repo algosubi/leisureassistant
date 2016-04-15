@@ -9,6 +9,7 @@ var React = require('react-native');
 var {
     ListView,
     Text,
+    View,
     StyleSheet
     } = React;
 
@@ -22,6 +23,7 @@ var OngoingYeoga = React.createClass({
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         return {
+            title: '추천 여가 리스트',
             dataSource: ds.cloneWithRows(['row 1', 'row 2']),
         };
     },
@@ -47,54 +49,36 @@ var OngoingYeoga = React.createClass({
     },
     render: function () {
         return (
-            <ListView
-                style={styles.container}
-                dataSource={this.state.dataSource}
-                renderRow={(dataSource) => <Text>{dataSource.title}</Text>}
-            />)
+            <View style={styles.container}>
+                <View className="title" style={styles.title}>
+                    <Text>{this.state.title}</Text>
+                </View>
+                <View className="lists" style={styles.lists}>
+                    <ListView
+                        dataSource={this.state.dataSource}
+                        renderRow={(dataSource) => <Text>{dataSource.title}</Text>}
+                    />
+                </View>
+            </View>
+            )
     }
 
 });
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'white',
+        flexDirection: 'column',
+    },
+    title: {
+        height: 40,
     },
     loginContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    input: {
-        width: 250,
-        color: '#555555',
-        padding: 10,
-        height: 50,
-        borderColor: '#32C5E6',
-        borderWidth: 1,
-        borderRadius: 4,
-        alignSelf: 'center',
-        backgroundColor: '#ffffff'
-    },
-    button: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: '#328FE6',
-        padding: 10,
-        marginTop: 10,
-        backgroundColor: '#32c5e6'
-    },
-    label: {
-        width: 230,
-        flex: 1,
-        alignSelf: 'center',
-        textAlign: 'center',
-        fontSize: 20,
-        fontWeight: '600',
-        color: '#ffffff'
-    }
 });
 
 module.exports = OngoingYeoga;
