@@ -104,7 +104,6 @@ var Intro = React.createClass({
             );
     },
     render: function () {
-        console.log(StatusBarSizeIOS.currentHeight);
         console.log(this.state);
 
 
@@ -119,7 +118,7 @@ var Intro = React.createClass({
                     <StatusBar
                         barStyle="light-content"
                     />
-                    <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
+                    <View className="statusBar" style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
                     <Navigator
                         initialRoute={ {name : 'userProfileSetup'} }
                         renderScene={this.renderScene}
@@ -140,7 +139,7 @@ var Intro = React.createClass({
                         <StatusBar
                             barStyle="light-content"
                         />
-                        <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
+                        <View className="statusBar" style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
@@ -161,7 +160,7 @@ var Intro = React.createClass({
                         <StatusBar
                             barStyle="light-content"
                         />
-                        <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
+                        <View className="statusBar" style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'yeogaStandBy'} }
