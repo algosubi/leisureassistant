@@ -10,6 +10,7 @@ import Yeoga from '@g/src/model/Yeoga';
 var {
     ListView,
     Text,
+    TouchableHighlight,
     View,
     StyleSheet
     } = React;
@@ -52,14 +53,40 @@ var OngoingYeoga = React.createClass({
                 <View className="title" style={styles.title}>
                     <Text>{this.state.title}</Text>
                 </View>
-                <View className="lists" style={styles.lists}>
+                <View>
+
                     <ListView
                         dataSource={this.state.dataSource}
-                        renderRow={(dataSource) => <Text>{dataSource.title}</Text>}
+                        renderRow={(dataSource) =>
+                        <View className="lists" style={styles.lists}>
+                            <View className="left" style={styles.left}>
+                                <View style={styles.leftTop}><Text>토요일</Text></View>
+                                <View style={styles.leftCenter}><Text>9</Text></View>
+                                <View style={styles.leftBottom}><Text>오후 7:00</Text></View>
+                            </View>
+                            <TouchableHighlight className="right" style={styles.right} onPress={this.onPress}>
+                                <View>
+                                <View style={styles.rightLeft}>
+                                    <View style={styles.rightTop}>
+                                     <Text>보올링</Text>
+                                    </View>
+                                    <View style={styles.rightBottom}>
+                                    <Text>강남역 11번 출구</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.rightRight}>
+                                    <Text>8명</Text>
+                                </View>
+                                </View>
+                            </TouchableHighlight>
+                        </View>}
                     />
                 </View>
             </View>
             )
+    },
+    onPress: function () {
+        this.props.navigator.push({name: 'ongoingYeogaDetail'});
     }
 
 });
@@ -71,13 +98,57 @@ var styles = StyleSheet.create({
         flexDirection: 'column',
     },
     title: {
-        height: 40,
+        borderBottomColor: '#e6e6e6',
+        borderBottomWidth: 1,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
     },
     loginContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
+    lists: {
+        flexDirection: 'row',
+        alignItems: 'stretch',
+    },
+    left: {
+        flex: 0.5,
+        flexDirection: 'column',
+        borderColor: '#e6e6e6',
+        borderBottomWidth: 1,
+        borderRightWidth: 1,
+    },
+    leftTop: {
+        flex: 1,
+    },
+    leftCenter: {
+        flex: 1,
+    },
+    leftBottom: {
+        flex: 1,
+    },
+    right: {
+        flex: 1.5,
+        borderBottomColor: '#e6e6e6',
+        borderBottomWidth: 1,
+        flexDirection: 'row',
+    },
+    rightLeft: {
+        flex: 0.8,
+        flexDirection: 'column',
+    },
+    rightRight: {
+        flex: 0.2,
+    },
+    rightTop: {
+
+    },
+    rightBottom: {
+
+    },
+
 });
 
 module.exports = OngoingYeoga;
