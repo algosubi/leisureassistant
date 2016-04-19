@@ -127,5 +127,6 @@ dependencies {
   compile project(':reactdate')
   compile project(":react-native-device-info")
   compile project(':react-native-onesignal')
+  compile project(':ExtraDimensions')
   compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
 }
