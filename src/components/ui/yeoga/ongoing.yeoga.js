@@ -22,6 +22,7 @@ var OngoingYeoga = React.createClass({
     getInitialState: function () {
         console.log("OngoingYeoga 화면");
         console.log(this.props.route.passProps.yeogaID);
+        console.log(this.props.navigator);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         return {

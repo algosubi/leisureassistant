@@ -1,12 +1,14 @@
 'use strict';
 
 var React = require('react-native');
+var ScrollableTabView = require('react-native-scrollable-tab-view');
 var {
     StyleSheet,
     Text,
     ListView,
     TouchableHighlight,
     View,
+    ScrollView,
     } = React;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -29,38 +31,40 @@ var OngoingYeogaDetail = React.createClass({
 
 render: function() {
     return (
-        <View style={styles.container}>
-            <View className="detailTop" style={styles.detailTop}>
-                <View className="topInfo" style={styles.topInfo}>
-                    <View className="infoLeft" style={styles.infoLeft}>
-                        <Text style={styles.infoDay}>토요일</Text>
-                        <Text style={styles.infoDate}>9</Text>
-                        <Text style={styles.infoTime}>오후 7:00</Text>
+    <ScrollableTabView tabBarUnderlineColor={'#78cfdb'} tabBarActiveTextColor={'#78cfdb'} style={[styles.tabContainer, {borderBottomWidth: 0}]}>
+        <ScrollView tabLabel="정보">
+            <View style={styles.container}>
+                <View className="detailTop" style={styles.detailTop}>
+                    <View className="topInfo" style={styles.topInfo}>
+                        <View className="infoLeft" style={styles.infoLeft}>
+                            <Text style={styles.infoDay}>토요일</Text>
+                            <Text style={styles.infoDate}>9</Text>
+                            <Text style={styles.infoTime}>오후 7:00</Text>
+                        </View>
+                        <View className="infoRight" style={styles.infoRight}>
+                            <Text style={styles.infoWhen}>2016/4/9 토요일 오후 7:00</Text>
+                            <Text style={styles.infoPlace}>강남역 11번 출구</Text>
+                            <Text style={styles.infoPrice}>15.000원</Text>
+                        </View>
                     </View>
-                    <View className="infoRight" style={styles.infoRight}>
-                        <Text style={styles.infoWhen}>2016/4/9 토요일 오후 7:00</Text>
-                        <Text style={styles.infoPlace}>강남역 11번 출구</Text>
-                        <Text style={styles.infoPrice}>15.000원</Text>
+                    <View className="infoBottom" style={styles.infoBottom}>
+                        <TouchableHighlight
+                            style={styles.joinBtn}
+                            underlayColor={'#328FE6'}
+                            onPress={this.onPress}
+                        >
+                            <Text style={styles.joinLabel}>참석하기</Text>
+                        </TouchableHighlight>
                     </View>
                 </View>
-                <View className="infoBottom" style={styles.infoBottom}>
-                    <TouchableHighlight
-                        style={styles.joinBtn}
-                        underlayColor={'#328FE6'}
-                        onPress={this.onPress}
-                    >
-                        <Text style={styles.joinLabel}>참석하기</Text>
-                    </TouchableHighlight>
-                </View>
-            </View>
-            <View className="detailJoinLists" style={styles.detailJoinLists}>
-                <View className="listsTop" style={styles.listsTop}>
-                    <Text style={styles.listsTitle}>참석하는 사람들</Text>
-                </View>
-                <View className="liststContent" style={styles.liststContent}>
-                    <ListView
-                        dataSource={this.state.dataSource}
-                        renderRow={(rowData) =>
+                <View className="detailJoinLists" style={styles.detailJoinLists}>
+                    <View className="listsTop" style={styles.listsTop}>
+                        <Text style={styles.listsTitle}>참석하는 사람들</Text>
+                    </View>
+                    <View className="liststContent" style={styles.liststContent}>
+                        <ListView
+                            dataSource={this.state.dataSource}
+                            renderRow={(rowData) =>
                         <View className="listContainer" style={styles.listContainer}>
 
                             <TouchableHighlight className="listLeft" style={styles.listLeft}>
@@ -76,16 +80,28 @@ render: function() {
                                     </View>
                             </View>
                         </View>}
-                    />
+                        />
+                    </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
+        <ScrollView tabLabel="채팅">
+            </ScrollView>
+    </ScrollableTabView>
+
     );
 },
 
 });
 
 var styles = StyleSheet.create({
+    tabContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        backgroundColor: 'white',
+        borderTopWidth: 0,
+    },
     container: {
         flex: 1,
         backgroundColor: 'white',

@@ -6,6 +6,7 @@ var {
     View,
     Text,
     Image,
+    TouchableHighlight,
     StyleSheet,
     } = React;
 
@@ -23,10 +24,10 @@ var YeogaStandBy = React.createClass({
             <View style={styles.container}>
                 <View style={styles.default}></View>
                 <View style={styles.centerContainer}>
-                    <View style={styles.imageContainer}>
-                        <Image source={require('@g/assets/img/button_yeogago.png')} style={styles.imgImage}/>
-                    </View>
-                    <Text style={styles.titleText}  onPress={this.onPress}>
+                    <TouchableHighlight style={styles.imageContainer} onPress={this.onPress}>
+                        <Image source={require('@g/assets/img/button_yeogago.png')} style={styles.imgImage} />
+                    </TouchableHighlight>
+                    <Text style={styles.titleText}>
                         {this.state.titleText + '\n\n'}
                     </Text>
                 </View>
