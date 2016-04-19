@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var ScrollableTabView = require('react-native-scrollable-tab-view');
+var Icon = require('react-native-vector-icons/FontAwesome');
 var {
     StyleSheet,
     Text,
@@ -91,6 +92,7 @@ render: function() {
                     <Text>채팅 내용 들어갈 자리</Text>
                 </View>
                 <View className="chatInput" style={styles.chatInput}>
+                    <Icon.Button name="plus" style={styles.plusBtn} backgroundColor="white" borderColor="white"></Icon.Button>
                     <Text>테스트</Text>
                 </View>
             </View>
@@ -201,6 +203,12 @@ var styles = StyleSheet.create({
         borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    plusBtn: {
+        height: 30,
+        width: 30,
+        backgroundColor: 'gray',
+        borderRadius: 50,
     }
 });
 
