@@ -130,3 +130,4 @@ dependencies {
   compile project(':ExtraDimensions')
   compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
 }
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
