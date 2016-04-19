@@ -31,9 +31,9 @@ var OngoingYeogaDetail = React.createClass({
 
 render: function() {
     return (
-    <ScrollableTabView tabBarUnderlineColor={'#78cfdb'} tabBarActiveTextColor={'#78cfdb'} style={[styles.tabContainer, {borderBottomWidth: 0}]}>
-        <ScrollView tabLabel="정보">
-            <View style={styles.container}>
+    <ScrollableTabView tabBarUnderlineColor={'#78cfdb'} tabBarActiveTextColor={'#78cfdb'} style={styles.tabContainer}>
+        <ScrollView tabLabel="정보" contentContainerStyle={styles.container}>
+            <View>
                 <View className="detailTop" style={styles.detailTop}>
                     <View className="topInfo" style={styles.topInfo}>
                         <View className="infoLeft" style={styles.infoLeft}>
@@ -85,8 +85,16 @@ render: function() {
                 </View>
             </View>
         </ScrollView>
-        <ScrollView tabLabel="채팅">
-            </ScrollView>
+        <ScrollView tabLabel="채팅" contentContainerStyle={styles.container}>
+            <View style={styles.innerContainer}>
+                <View ClassName="chatContent" style={styles.chatContent}>
+                    <Text>채팅 내용 들어갈 자리</Text>
+                </View>
+                <View className="chatInput" style={styles.chatInput}>
+                    <Text>테스트</Text>
+                </View>
+            </View>
+        </ScrollView>
     </ScrollableTabView>
 
     );
@@ -96,16 +104,21 @@ render: function() {
 
 var styles = StyleSheet.create({
     tabContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'stretch',
         backgroundColor: 'white',
-        borderTopWidth: 0,
+        alignItems: 'stretch',
+        flexDirection: 'column',
     },
     container: {
         flex: 1,
         backgroundColor: 'white',
         flexDirection: 'column',
+        alignItems: 'stretch',
+    },
+    innerContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        alignSelf: 'stretch',
+        alignItems: 'stretch',
     },
     detailTop: {
         flex: 0.3,
@@ -171,6 +184,23 @@ var styles = StyleSheet.create({
     },
     rightBottom: {
 
+    },
+    chatContent: {
+        flex: 3,
+        alignSelf: 'stretch',
+        padding: 50,
+    },
+    chatInput: {
+        backgroundColor: '#fff',
+        height: 40,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        borderTopColor: '#e6e6e6',
+        borderTopWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 });
 
