@@ -32,7 +32,7 @@ var OngoingYeogaDetail = React.createClass({
 
 render: function() {
     return (
-    <ScrollableTabView tabBarUnderlineColor={'#78cfdb'} tabBarActiveTextColor={'#78cfdb'} style={styles.tabContainer}>
+    <ScrollableTabView tabBarUnderlineColor={'#eebe60'} tabBarActiveTextColor={'#fff'} tabBarBackgroundColor={'#78cfdb'} tabBarInactiveTextColor={'#f2f2f2'} style={styles.tabContainer}>
         <ScrollView tabLabel="정보" contentContainerStyle={styles.container}>
             <View>
                 <View className="detailTop" style={styles.detailTop}>
