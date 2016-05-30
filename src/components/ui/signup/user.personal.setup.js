@@ -11,12 +11,13 @@ var {
     View,
     Image,
     Text,
+    ListView,
     TouchableHighlight,
     StyleSheet
     } = React;
 
 var GridView = require('react-native-grid-view');
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
+var firebaseRef = new Firebase("https://categoryjson.firebaseio.com/data");
 var API_URL = 'https://categoryjson.firebaseio.com/.json';
 var MOVIES_PER_ROW = 3;
 
@@ -43,26 +44,31 @@ var UserPersonalSetup = React.createClass({
         console.log(API_URL);
         return {
             username: '',
-            dataSource: null,
             loaded: false,
+            dataSource: null,
         };
     },
     componentWillMount: function () {
         this.fetchData();
     },
     fetchData: function() {
-        fetch(API_URL)
-            .then((response) => response.json())
-            .then((responseData) => {
-                this.setState({
-                    dataSource: responseData.data,
-                    loaded: true,
+        firebaseRef.on("value", (snapshot)=> {
+                console.log(snapshot.val());
+                 var items = [];
+                snapshot.forEach((child) => {
+                    items.push(child.val());
                 });
-            })
-            .done();
+                this.setState({
+                    dataSource: items,
+                    loaded:true
+                });
+
+            }, function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
+
+            });
     },
     render: function() {
-        console.log(this.renderItem);
         console.log(this.state.dataSource);
         if (!this.state.loaded) {
             return this.renderLoadingView();
