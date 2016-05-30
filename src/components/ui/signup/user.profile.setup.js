@@ -4,6 +4,7 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
+import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 var DeviceInfo = require('react-native-device-info');
 var React = require('react-native');
 var RestKit = require('react-native-rest-kit');
@@ -26,7 +27,7 @@ var UserProfileSetup = React.createClass({
         console.log(this.props.userUid);
         return {
             username: '',
-            introduction:''
+            introduction: ''
         };
     },
     render: function () {
@@ -36,7 +37,8 @@ var UserProfileSetup = React.createClass({
                     <View style={styles.first}>
                         <TouchableHighlight style={styles.imgInput} onPress={this.getImage}>
                             <View style={styles.btnContainer}>
-                            <Icon.Button name="plus" color="#e5e5e5" backgroundColor="white" style={styles.plusBtn}></Icon.Button>
+                                <Icon.Button name="plus" color="#e5e5e5" backgroundColor="white"
+                                             style={styles.plusBtn}></Icon.Button>
                             </View>
                         </TouchableHighlight>
                     </View>
@@ -47,14 +49,14 @@ var UserProfileSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            value={this.state.username}
-                            onChangeText={(text) => this.setState({username: text})}
-                            placeholder={'Enter User Nickname'}
-                            maxLength={12}
-                            multiline={false}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                value={this.state.username}
+                                onChangeText={(text) => this.setState({username: text})}
+                                placeholder={'Enter User Nickname'}
+                                maxLength={12}
+                                multiline={false}
+                            />
                         </View>
                     </View>
                     <View style={styles.third}>
@@ -64,14 +66,14 @@ var UserProfileSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            value={this.state.introduction}
-                            onChangeText={(text) => this.setState({introduction: text})}
-                            placeholder={'Enter User Nickname'}
-                            maxLength={12}
-                            multiline={false}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                value={this.state.introduction}
+                                onChangeText={(text) => this.setState({introduction: text})}
+                                placeholder={'Enter User Nickname'}
+                                maxLength={12}
+                                multiline={false}
+                            />
                         </View>
                     </View>
                     <View style={styles.fourth}>
@@ -81,29 +83,39 @@ var UserProfileSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            value={this.state.username}
-                            onChangeText={(text) => this.setState({username: text})}
-                            placeholder={'Enter User Nickname'}
-                            maxLength={12}
-                            multiline={false}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                value={this.state.username}
+                                onChangeText={(text) => this.setState({username: text})}
+                                placeholder={'Enter User Nickname'}
+                                maxLength={12}
+                                multiline={false}
+                            />
                         </View>
                     </View>
                     <View style={styles.fifth}>
                         <View style={styles.row}>
-                            <Text style={styles.title}>
-                                성별을 알려주세요
-                            </Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.radioBtn}>
-                                남성
-                            </Text>
-                            <Text style={styles.radioBtn}>
-                                여성
-                            </Text>
+                            <ToggleContainer
+                                value={(this.state && this.state.option) || '남성'}
+                                options={['남성', '여성']}
+                                style={{padding: 10}}
+                                orientation={"horizontal"}
+                                spacing={10}
+                                renderItem={(option, active) => (
+                              <ToggleItem
+                                option={option}
+                                active={active}
+                                onPress={() => this.setState({option})}
+                                color={"rgb(74,144,226)"}
+                                backgroundColor={"rgb(255,255,255)"}
+                                borderColor={"rgba(231,231,231,1)"}
+                                activeColor={"rgba(255,255,255,1)"}
+                                activeBackgroundColor={"rgb(74,144,226)"}
+                                borderRadius={2}
+                              />
+                            )}
+                            />
+
                         </View>
                     </View>
                 </View>
@@ -118,8 +130,8 @@ var UserProfileSetup = React.createClass({
     },
     onPress: function () {
         firebaseRef.child("users").child(DeviceInfo.getUniqueID()).update({
-            "name" : this.state.username,
-            "introduction" : this.state.introduction
+            "name": this.state.username,
+            "introduction": this.state.introduction
         });
         this.props.navigator.push({name: 'userPersonalSetup'});
     },
@@ -186,9 +198,9 @@ var UserProfileSetup = React.createClass({
 
                 var url = 'https://upload.uploadcare.com/base/';
 
-                RestKit.send(url, request, function(error, json){
-                    if(error)
-                    console.log("encoutered error: ", error);
+                RestKit.send(url, request, function (error, json) {
+                    if (error)
+                        console.log("encoutered error: ", error);
                     console.log(json);
                 });
                 this.setState({
