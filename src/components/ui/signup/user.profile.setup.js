@@ -1,3 +1,4 @@
+import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 /**
  * Created by subi on 2016. 3. 28..
  */
@@ -95,12 +96,26 @@ var UserProfileSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                            <Text style={styles.radioBtn}>
-                                남성
-                            </Text>
-                            <Text style={styles.radioBtn}>
-                                여성
-                            </Text>
+                          <ToggleContainer
+                            value={(this.state && this.state.option) || '남성'}
+                            options={['남성', '여성']}
+                            style={{padding: 10}}
+                            orientation={"horizontal"}
+                            spacing={10}
+                            renderItem={(option, active) => (
+                              <ToggleItem
+                                option={option}
+                                active={active}
+                                onPress={() => this.setState({option})}
+                                color={"rgb(74,144,226)"}
+                                backgroundColor={"rgb(255,255,255)"}
+                                borderColor={"rgba(231,231,231,1)"}
+                                activeColor={"rgba(255,255,255,1)"}
+                                activeBackgroundColor={"rgb(74,144,226)"}
+                                borderRadius={2}
+                              />
+                            )}
+                          />
                         </View>
                     </View>
                 </View>

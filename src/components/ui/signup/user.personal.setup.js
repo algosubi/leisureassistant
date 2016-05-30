@@ -111,14 +111,7 @@ var UserPersonalSetup = React.createClass({
         return <Category category={item} />
     },
     onPress: function () {
-        var ref = new Firebase("https://leisureassistant.firebaseio.com/users");
-        ref.child(this.props.userUid).set({"name":this.state.username}, (error)=> {
-            if (error) {
-            } else {
-                this.props.navigator.pop();
-                this.props.navigator.push({name: 'yeogaStandBy'});
-            }
-        });
+        this.props.navigator.push({name: 'yeogaStandBy'});
     }
 });
 

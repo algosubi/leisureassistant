@@ -1,3 +1,4 @@
+import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo';
 var React = require('react-native');
 var generateUUID =
     require('@g/src/model/UUID');
@@ -9,6 +10,7 @@ var {
     Image,
     TextInput,
     Text,
+    ScrollView,
     TouchableHighlight,
     StyleSheet,
     DatePickerAndroid,
@@ -139,34 +141,72 @@ var YeogaSetup = React.createClass({
 
         return (
             <View style={styles.container}>
-                <View style={styles.yeogaContainer}>
+                <ScrollView contentContainerStyle={styles.yeogaContainer}>
                     <View className="myLocation" style={styles.myLocation}>
-                        <View style={styles.viewTop}>
-                        <Text style={styles.viewTitle}>
-                           내위치
-                        </Text>
-                            <Text style={styles.modiLocation}>재설정</Text>
+                        <View style={styles.row}>
+                            <Text style={styles.title}>
+                                원하시는 여가활동을 말씀해 주세요
+                            </Text>
                         </View>
-                        <Text style={styles.thisLocation}>
-                            {this.state.thisLocation}
-                        </Text>
+                        <View style={styles.row}>
+                        <TextInput
+                            style={styles.input}
+                            value={this.state.username}
+                            onChangeText={(text) => this.setState({username: text})}
+                            placeholder={'원하는 여가활동 작성'}
+                            maxLength={12}
+                            multiline={false}
+                        />
+                        </View>
+                    </View>
+                  
+                    <View className="myLocation" style={styles.myLocation}>
+                        <View style={styles.row}>
+                            <Text style={styles.title}>
+                                위치를 설정해 주세요
+                            </Text>
+                        </View>
+                        <View style={styles.row}>
+                          <TextInput
+                              style={styles.input}
+                              value={this.state.username}
+                              onChangeText={(text) => this.setState({username: text})}
+                              placeholder={'원하는 여가활동 작성'}
+                              maxLength={12}
+                              multiline={false}
+                          />
+                        </View>
+                        <View style={styles.row}>
+                            <Text style={styles.title}>
+                               재설정
+                            </Text>
+                        </View>
                     </View>
 
                     <View ClassName="myHopingActivity" style={styles.myHopingActivity}>
-                        <Text style={styles.viewTitle}>
-                            희망활동
-                        </Text>
-                        <TextInput
-                            style={styles.inputText}
-                            onChangeText={(text) => this.setState({text})}
-                            value={this.state.text}
-                        />
+                        <View style={styles.row}>
+                            <Text style={styles.title}>
+                                날짜를 선택해 주세요
+                            </Text>
+                        </View>
+                        <View style={styles.row}>
+                          <TextInput
+                              style={styles.input}
+                              value={this.state.username}
+                              onChangeText={(text) => this.setState({username: text})}
+                              placeholder={'원하는 여가활동 작성'}
+                              maxLength={12}
+                              multiline={false}
+                          />
+                        </View>
                     </View>
 
                     <View className="mySpareTime" style={styles.mySpareTime}>
-                        <Text style={styles.viewTitle}>
-                            활동가능시간
-                        </Text>
+                        <View style={styles.row}>
+                            <Text style={styles.title}>
+                                날짜를 선택해 주세요
+                            </Text>
+                        </View>
                         <Text
                             style={styles.input}
                             onPress={this.showDatePicker.bind(this, {
@@ -180,16 +220,37 @@ var YeogaSetup = React.createClass({
                     </View>
 
                     <View className="myActivityType" style={styles.myActivityType}>
-                        <Text style={styles.viewTitle}>
-                            활동형태
-                        </Text>
-                        <View style={styles.viewContent}>
-
+                        <View style={styles.row}>
+                            <Text style={styles.title}>
+                                유형을 선택해 주세요
+                            </Text>
+                        </View>
+                        <View style={styles.row}>
+                          <ToggleContainer
+                            value={(this.state && this.state.option) || '함꼐하기'}
+                            options={['함께하기', '혼자하기']}
+                            style={{padding: 10}}
+                            orientation={"horizontal"}
+                            spacing={10}
+                            renderItem={(option, active) => (
+                              <ToggleItem
+                                option={option}
+                                active={active}
+                                onPress={() => this.setState({option})}
+                                color={"rgb(74,144,226)"}
+                                backgroundColor={"rgb(255,255,255)"}
+                                borderColor={"rgba(231,231,231,1)"}
+                                activeColor={"rgba(255,255,255,1)"}
+                                activeBackgroundColor={"rgb(74,144,226)"}
+                                borderRadius={2}
+                              />
+                            )}
+                          />
                         </View>
                     </View>
 
 
-                </View>
+                </ScrollView>
                 { this.state.datePickerMode == 'visible' ? datePicker : <View/> }
                 <View className="toolbarBottom" style={styles.toolbarBottom}>
                     <Text onPress={this.yeogaSetupPress} style={styles.toolbarBottomText}>완료</Text>
@@ -301,16 +362,28 @@ var styles = StyleSheet.create({
         textAlign: 'right',
         paddingRight: 20,
     },
-    input: {
-        width: 250,
-        color: '#555555',
-        padding: 10,
-        height: 50,
-        borderColor: '#32C5E6',
-        borderWidth: 1,
-        borderRadius: 4,
+    row: {
+        flexDirection: 'row',
+        flex: 0.5,
+        paddingRight: 16,
+        paddingLeft: 16,
+        alignSelf: 'stretch',
+    },
+    title: {
+        flex: 1,
         alignSelf: 'center',
-        backgroundColor: '#ffffff'
+        justifyContent: 'center',
+        textAlign: 'left',
+        color: '#545454',
+        fontSize: 16,
+    },
+    input: {
+        color: '#555555',
+        flex: 1,
+        height: 50,
+        borderBottomColor: '#979797',
+        borderBottomWidth: 2,
+        alignSelf: 'stretch',
     },
     button: {
         justifyContent: 'center',
