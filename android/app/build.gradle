@@ -128,8 +128,12 @@ dependencies {
   compile project(':reactdate')
   compile project(":react-native-device-info")
   compile project(':react-native-onesignal')
+<<<<<<< HEAD
   compile project(':react-native-image-picker')
   compile project(':react-native-geocoder')
+=======
+  compile project(':ExtraDimensions')
+>>>>>>> origin/develop
   compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
 }
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

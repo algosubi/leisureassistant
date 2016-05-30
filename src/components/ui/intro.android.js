@@ -171,7 +171,7 @@ var Intro = React.createClass({
                                                  <Text style={styles.backButton}>Back</Text>
                                             </View>
                                            }
-                            renderScene={this.route, this.renderScene}
+                            renderScene={this.renderScene}
                             configureScene={ () => { return Navigator.SceneConfigs.FloatFromRight; } }
                         />
                     </View>

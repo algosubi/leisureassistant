@@ -1,8 +1,10 @@
 package com.leisureassistant;
 
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.geektime.reactnativeonesignal.ReactNativeOneSignalPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import java.util.Arrays;
 import java.util.List;
