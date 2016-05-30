@@ -1,10 +1,10 @@
-import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 /**
  * Created by subi on 2016. 3. 28..
  */
 /**
  * Created by subi on 2016. 3. 17..
  */
+var DeviceInfo = require('react-native-device-info');
 var React = require('react-native');
 var RestKit = require('react-native-rest-kit');
 var Icon = require('react-native-vector-icons/FontAwesome');
@@ -18,13 +18,15 @@ var {
     StyleSheet
     } = React;
 
+var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 
 var UserProfileSetup = React.createClass({
     getInitialState: function () {
         console.log("유저 프로필 설정 화면");
         console.log(this.props.userUid);
         return {
-            username: ''
+            username: '',
+            introduction:''
         };
     },
     render: function () {
@@ -64,8 +66,8 @@ var UserProfileSetup = React.createClass({
                         <View style={styles.row}>
                         <TextInput
                             style={styles.input}
-                            value={this.state.username}
-                            onChangeText={(text) => this.setState({username: text})}
+                            value={this.state.introduction}
+                            onChangeText={(text) => this.setState({introduction: text})}
                             placeholder={'Enter User Nickname'}
                             maxLength={12}
                             multiline={false}
@@ -96,26 +98,12 @@ var UserProfileSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                          <ToggleContainer
-                            value={(this.state && this.state.option) || '남성'}
-                            options={['남성', '여성']}
-                            style={{padding: 10}}
-                            orientation={"horizontal"}
-                            spacing={10}
-                            renderItem={(option, active) => (
-                              <ToggleItem
-                                option={option}
-                                active={active}
-                                onPress={() => this.setState({option})}
-                                color={"rgb(74,144,226)"}
-                                backgroundColor={"rgb(255,255,255)"}
-                                borderColor={"rgba(231,231,231,1)"}
-                                activeColor={"rgba(255,255,255,1)"}
-                                activeBackgroundColor={"rgb(74,144,226)"}
-                                borderRadius={2}
-                              />
-                            )}
-                          />
+                            <Text style={styles.radioBtn}>
+                                남성
+                            </Text>
+                            <Text style={styles.radioBtn}>
+                                여성
+                            </Text>
                         </View>
                     </View>
                 </View>
@@ -129,6 +117,10 @@ var UserProfileSetup = React.createClass({
             </View>)
     },
     onPress: function () {
+        firebaseRef.child("users").child(DeviceInfo.getUniqueID()).update({
+            "name" : this.state.username,
+            "introduction" : this.state.introduction
+        });
         this.props.navigator.push({name: 'userPersonalSetup'});
     },
     options: {
