@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "deco-ride-share-demo": "^1.1.0",
     "firebase": "^2.4.1",
     "firebase-token-generator": "^2.0.0",
     "react": "^0.14.7",
