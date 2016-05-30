@@ -121,12 +121,15 @@ android {
 }
 
 dependencies {
+  compile project(':react-native-maps')
   compile fileTree(dir: "libs", include: ["*.jar"])
   compile "com.android.support:appcompat-v7:23.0.1"
   compile "com.facebook.react:react-native:+" // From node_modules
   compile project(':reactdate')
   compile project(":react-native-device-info")
   compile project(':react-native-onesignal')
+  compile project(':react-native-image-picker')
+  compile project(':react-native-geocoder')
   compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
 }
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

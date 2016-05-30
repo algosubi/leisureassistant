@@ -7,6 +7,8 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import java.util.Arrays;
 import java.util.List;
 import me.nucleartux.date.ReactDatePackage;
+import com.devfd.RNGeocoder.RNGeocoderPackage;
+import com.imagepicker.ImagePickerPackage;
 
 public class MainActivity extends ReactActivity {
 
@@ -32,6 +34,12 @@ public class MainActivity extends ReactActivity {
    */
   @Override protected List<ReactPackage> getPackages() {
     return Arrays.<ReactPackage>asList(new RNDeviceInfo(), new MainReactPackage(),new ExtraDimensionsPackage(this),
-        new ReactDatePackage(this),new ReactNativeOneSignalPackage(this));
+        new ReactDatePackage(this),
+        new ReactNativeOneSignalPackage(this),
+        new AirPackage(),
+        new ImagePickerPackage(),
+        new RNGeocoderPackage());
+
+    );
   }
 }

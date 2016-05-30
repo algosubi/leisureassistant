@@ -139,7 +139,6 @@ var YeogaSetup = React.createClass({
 
         return (
             <View style={styles.container}>
-                <View style={styles.default}></View>
                 <View style={styles.yeogaContainer}>
                     <View className="myLocation" style={styles.myLocation}>
                         <View style={styles.viewTop}>
@@ -192,7 +191,6 @@ var YeogaSetup = React.createClass({
 
                 </View>
                 { this.state.datePickerMode == 'visible' ? datePicker : <View/> }
-                <View style={styles.default}></View>
                 <View className="toolbarBottom" style={styles.toolbarBottom}>
                     <Text onPress={this.yeogaSetupPress} style={styles.toolbarBottomText}>완료</Text>
                 </View>
@@ -224,25 +222,43 @@ var styles = StyleSheet.create({
     },
     yeogaContainer: {
         flex: 0.8,
-        flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'stretch',
+        alignSelf: 'stretch',
+        padding: 16,
     },
     myLocation: {
         flex: 1,
-        alignSelf: 'stretch',
+        flexDirection: 'column',
+        borderColor: '#e5e5e5',
+        borderWidth: 1,
+        borderRadius: 3,
+        marginBottom: 8,
     },
     myHopingActivity: {
         flex: 1,
-        alignSelf: 'stretch',
+        flexDirection: 'column',
+        borderColor: '#e5e5e5',
+        borderWidth: 1,
+        borderRadius: 3,
+        marginTop: 8,
+        marginBottom: 8,
     },
     mySpareTime: {
         flex: 1,
-        alignSelf: 'stretch',
+        flexDirection: 'column',
+        borderColor: '#e5e5e5',
+        borderWidth: 1,
+        borderRadius: 3,
+        marginTop: 8,
+        marginBottom: 8,
     },
     myActivityType: {
         flex: 1,
-        alignSelf: 'stretch',
+        flexDirection: 'column',
+        borderColor: '#e5e5e5',
+        borderWidth: 1,
+        borderRadius: 3,
     },
     toolbarBottom: {
         backgroundColor: '#fff',

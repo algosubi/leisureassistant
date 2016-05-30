@@ -6,6 +6,7 @@
  */
 var React = require('react-native');
 import Yeoga from '@g/src/model/Yeoga';
+import Geocoder from 'react-native-geocoder';
 var Icon = require('react-native-vector-icons/FontAwesome');
 
 var {
@@ -14,12 +15,15 @@ var {
     TouchableHighlight,
     Dimensions,
     View,
+    ScrollView,
     Image,
     StyleSheet
     } = React;
 
 
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
+// simply add your google key
+Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 
 var OngoingYeoga = React.createClass({
     getInitialState: function () {
@@ -39,7 +43,9 @@ var OngoingYeoga = React.createClass({
                 console.log(snapshot.val());
                 var items = [];
                 snapshot.forEach((child) => {
-                    console.log(child.val());
+                    console.log(child.val().location[0]);
+                    console.log(child.val().location[1]);
+
                     items.push(child.val());
                 });
                 this.setState({
@@ -53,10 +59,11 @@ var OngoingYeoga = React.createClass({
     },
     render: function () {
         var {height, width} = Dimensions.get('window');
-        var wideRatio = (9*width)/16;
+        var wideRatio = (9 * width) / 16;
+
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View>
                     <ListView
                         dataSource={this.state.dataSource}
@@ -98,23 +105,24 @@ var OngoingYeoga = React.createClass({
                         </View>}
                     />
                 </View>
-            </View>
-            )
+            </ScrollView>
+        )
     },
     onPress: function () {
         this.props.navigator.push({name: 'ongoingYeogaDetail'});
     }
 
+
 });
 
-function timeConverter(UNIX_timestamp){
+function timeConverter(UNIX_timestamp) {
     var a = new Date(UNIX_timestamp);
-    var months = ['1월','2월','3월', '4월', '5월','6월','7월','8월','9월','10월','11월','12월'];
+    var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
     var year = a.getFullYear();
     var month = months[a.getMonth()];
     var date = a.getDate();
     var hour = a.getHours();
-    var time = year + '년 ' + month + ' ' + date + '일 ' + hour + '시' ;
+    var time = year + '년 ' + month + ' ' + date + '일 ' + hour + '시';
     return time;
 }
 

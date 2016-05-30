@@ -15,12 +15,14 @@ var {
 
 var YeogaStandBy = require('./yeoga/yeoga.standby'),
     YeogaSetup = require('./yeoga/yeoga.setup'),
+    UserPhoneCerti = require('./signup/user.phone.certi'),
     UserPersonalSetup = require('./signup/user.personal.setup'),
     UserProfileSetup = require('./signup/user.profile.setup'),
     OngoingYeoga = require('./yeoga/ongoing.yeoga'),
     OngoingYeogaDetail = require('./yeoga/ongoing.yeoga.detail');
 
 var ROUTES = {
+    userPhoneCerti: UserPhoneCerti,
     userProfileSetup: UserProfileSetup,
     userPersonalSetup: UserPersonalSetup,
     yeogaSetup: YeogaSetup,
@@ -121,7 +123,7 @@ var Intro = React.createClass({
                     />
                     <View className="statusBar" style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
                     <Navigator
-                        initialRoute={ {name : 'userProfileSetup'} }
+                        initialRoute={ {name : 'userPhoneCerti'} }
                         renderScene={this.renderScene}
                         navigationBar={
                                             <View style={styles.navBar}>
