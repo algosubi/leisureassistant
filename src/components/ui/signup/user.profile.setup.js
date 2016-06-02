@@ -23,10 +23,11 @@ var {
 var UserProfileSetup = React.createClass({
     getInitialState: function () {
         console.log("유저 프로필 설정 화면");
-        console.log(this.props.userUid);
         return {
             username: '',
-            introduction: ''
+            introduction: '',
+            avatarSource: ''
+
         };
     },
     render: function () {
@@ -37,7 +38,7 @@ var UserProfileSetup = React.createClass({
                         <TouchableHighlight style={styles.imgInput} onPress={this.getImage}>
                             <View style={styles.btnContainer}>
                                 <Icon.Button name="plus" color="#e5e5e5" backgroundColor="white"
-                                             style={styles.plusBtn}></Icon.Button>
+                                             style={styles.plusBtn} onPress={this.getImage}></Icon.Button>
                             </View>
                         </TouchableHighlight>
                     </View>
@@ -131,7 +132,7 @@ var UserProfileSetup = React.createClass({
         firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
             "name": this.state.username,
             "introduction": this.state.introduction
-        },  (error)=> {
+        }, (error)=> {
             if (error) {
                 console.error(error);
             } else {
@@ -187,27 +188,49 @@ var UserProfileSetup = React.createClass({
                 //const source = {uri: response.uri.replace('file://', ''), isStatic: true};
                 // uri (on android)
                 //const source = {uri: response.uri, isStatic: true};
-                console.log(source);
+                // console.log(source);
 
                 //Set up request object
-                var request = {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "UPLOADCARE_PUB_KEY": 'aa9f6e9fef92ce9e042b',
-                        "file": source.uri,
-                    })
-                }
+
 
                 var url = 'https://upload.uploadcare.com/base/';
+                var photo = {
+                    uri: source.uri,
+                    type: 'image/jpeg',
+                    name: this.props.userUid + new Date() + ".jpg",
+                };
+                var body = new FormData();
+                body.append('file', photo);
+                body.append('UPLOADCARE_PUB_KEY', 'e3c0467dc0caf0061ba3');
+                body.append('UPLOADCARE_STORE', '1');
+                fetch(
+                    url,
+                    {
+                        body: body,
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/vnd.uploadcare-v0.5+json',
+                            'Date': new Date(),
+                            'Authorization': 'Uploadcare.Simple e3c0467dc0caf0061ba3:7e4311d458909d78c598',
+                        }
+                    }
+                ).then((response) => {
+                        console.log(response);
+                        var file = JSON.parse(response._bodyText);
+                        firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
+                            "avatarSource": file.file
+                        }, (error) => {
+                            if (error) {
+                                console.error(error);
+                            }
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+                    .then((responseData) => {
+                    }).done();
 
-                RestKit.send(url, request, function (error, json) {
-                    if (error)
-                        console.log("encoutered error: ", error);
-                    console.log(json);
-                });
                 this.setState({
                     avatarSource: source
                 });
