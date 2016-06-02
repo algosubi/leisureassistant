@@ -19,7 +19,6 @@ var {
     StyleSheet
     } = React;
 
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 
 var UserProfileSetup = React.createClass({
     getInitialState: function () {
@@ -129,11 +128,17 @@ var UserProfileSetup = React.createClass({
             </View>)
     },
     onPress: function () {
-        firebaseRef.child("users").child(DeviceInfo.getUniqueID()).update({
+        firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
             "name": this.state.username,
             "introduction": this.state.introduction
+        },  (error)=> {
+            if (error) {
+                console.error(error);
+            } else {
+                this.props.navigator.push({name: 'userPersonalSetup'});
+
+            }
         });
-        this.props.navigator.push({name: 'userPersonalSetup'});
     },
     options: {
         title: 'Select Avatar', // specify null or empty string to remove the title

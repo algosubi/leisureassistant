@@ -54,11 +54,11 @@ var Intro = React.createClass({
         var tokenGenerator = new FirebaseTokenGenerator("ZckdhJgaozqG512EpTjdAYLZ7i2LIBFevBtyggl6");
         var token = tokenGenerator.createToken({uid: DeviceInfo.getUniqueID(), isModerator: true});
 
-        firebaseRef.authWithCustomToken(token, (error, authData)=> {
+        firebaseRef.auth().signInWithCustomToken(token).catch((error)=> {
             if (error) {
                 console.log("Login Failed!", error);
             } else {
-                userUid = authData.uid;
+                userUid = token;
                 console.log("Login Succeeded!", authData);
                 firebaseRef.child("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
                     if (snapshot.val() == null) {

@@ -21,7 +21,6 @@ var {
     } = React;
 
 
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 // simply add your google key
 Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 
@@ -38,7 +37,7 @@ var OngoingYeoga = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebaseRef.child("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
+        firebase.database().ref("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];

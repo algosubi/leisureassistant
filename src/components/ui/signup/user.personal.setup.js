@@ -17,7 +17,6 @@ var {
     } = React;
 
 var GridView = require('react-native-grid-view');
-var firebaseRef = new Firebase("https://categoryjson.firebaseio.com/data");
 var API_URL = 'https://categoryjson.firebaseio.com/.json';
 var MOVIES_PER_ROW = 3;
 
@@ -52,7 +51,7 @@ var UserPersonalSetup = React.createClass({
         this.fetchData();
     },
     fetchData: function() {
-        firebaseRef.on("value", (snapshot)=> {
+        firebase.database().ref("interest").once("value", (snapshot)=> {
                 console.log(snapshot.val());
                  var items = [];
                 snapshot.forEach((child) => {

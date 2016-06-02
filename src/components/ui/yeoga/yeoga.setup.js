@@ -21,7 +21,6 @@ var {
     } = React;
 
 
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var YeogaSetup = React.createClass({
     getDefaultProps: function() {
         return {
