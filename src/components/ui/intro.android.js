@@ -1,8 +1,9 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native');
-var Firebase = require('firebase');
+
+import React from 'react';
+import ReactNative from 'react-native';
 var ExtraDimensions = require('react-native-extra-dimensions-android');
 var {
     Navigator,
@@ -11,7 +12,7 @@ var {
     Text,
     StyleSheet,
     StatusBar,
-    } = React;
+    } = ReactNative;
 
 var YeogaStandBy = require('./yeoga/yeoga.standby'),
     YeogaSetup = require('./yeoga/yeoga.setup'),
@@ -54,11 +55,11 @@ var Intro = React.createClass({
         var tokenGenerator = new FirebaseTokenGenerator("ZckdhJgaozqG512EpTjdAYLZ7i2LIBFevBtyggl6");
         var token = tokenGenerator.createToken({uid: DeviceInfo.getUniqueID(), isModerator: true});
 
-        firebaseRef.authWithCustomToken(token, (error, authData)=> {
+        firebaseRef.auth().signInWithCustomToken(token).catch((error)=> {
             if (error) {
                 console.log("Login Failed!", error);
             } else {
-                userUid = authData.uid;
+                userUid = token;
                 console.log("Login Succeeded!", authData);
                 firebaseRef.child("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
                     if (snapshot.val() == null) {

@@ -4,7 +4,9 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native');
+
+import React from 'react';
+import ReactNative from 'react-native';
 import Yeoga from '@g/src/model/Yeoga';
 import Geocoder from 'react-native-geocoder';
 var Icon = require('react-native-vector-icons/FontAwesome');
@@ -18,10 +20,9 @@ var {
     ScrollView,
     Image,
     StyleSheet
-    } = React;
+    } = ReactNative;
 
 
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 // simply add your google key
 Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 
@@ -38,7 +39,7 @@ var OngoingYeoga = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebaseRef.child("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
+        firebase.database().ref("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];

@@ -4,7 +4,8 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native');
+import React from 'react';
+import ReactNative from 'react-native';
 import CheckBox from 'react-native-checkbox';
 
 var {
@@ -15,7 +16,7 @@ var {
     StatusBar,
     TouchableHighlight,
     StyleSheet
-    } = React;
+    } = ReactNative;
 
 var UserPhoneCerti = React.createClass({
     getInitialState: function () {

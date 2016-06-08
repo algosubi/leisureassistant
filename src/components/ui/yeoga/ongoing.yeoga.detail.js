@@ -1,6 +1,8 @@
 'use strict';
 
-var React = require('react-native');
+
+import React from 'react';
+import ReactNative from 'react-native';
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var Icon = require('react-native-vector-icons/FontAwesome');
 var MapView = require('react-native-maps');
@@ -14,8 +16,8 @@ var {
     TouchableHighlight,
     View,
     ScrollView,
-    } = React;
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
+    } = ReactNative;
+
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var OngoingYeogaDetail = React.createClass({
     statics: {
@@ -58,7 +60,7 @@ var OngoingYeogaDetail = React.createClass({
                 console.log("The read failed: " + errorObject.code);
 
             });
-    },  
+    },
     onRegionChange: function(region) {
         this.setState({ region });
     },
@@ -144,7 +146,7 @@ var OngoingYeogaDetail = React.createClass({
                     <View ClassName="chatContent" style={styles.chatContent}>
                         <Text>채팅 내용 들어갈 자리</Text>
                     </View>
-                  
+
                     <View className="chatInput" style={styles.chatInput}>
                         <Icon.Button name="plus" style={styles.plusBtn} backgroundColor="white" borderColor="white"></Icon.Button>
                         <Text>테스트</Text>

@@ -4,14 +4,11 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-import Geocoder from 'react-native-geocoder';
-import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo';
-var ScrollableTabView = require('react-native-scrollable-tab-view');
-import Yeoga from '@g/src/model/Yeoga';
+import React from 'react';
+import ReactNative from 'react-native';
+
+import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 var DeviceInfo = require('react-native-device-info');
-var React = require('react-native');
-var RestKit = require('react-native-rest-kit');
-var Icon = require('react-native-vector-icons/FontAwesome');
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 var {
@@ -26,7 +23,7 @@ var {
     TextInput,
     TouchableHighlight,
     StyleSheet
-    } = React;
+    } = ReactNative;
 
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 // simply add your google key
@@ -34,9 +31,10 @@ Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 var UserProfileSetup = React.createClass({
     getInitialState: function () {
         console.log("유저 프로필 설정 화면");
-        console.log(this.props.userUid);
         return {
             username: '',
+            avatarSource: ''
+
             introduction: '',
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
@@ -81,7 +79,7 @@ var UserProfileSetup = React.createClass({
                         source={require('@g/assets/img/yoga.jpg')}
                     />
                     <Text style={styles.profileName}>요가걸</Text>
-                    <Text style={styles.profileIntroduce}>핫요가 좋아요!! 므흣!</Text>  
+                    <Text style={styles.profileIntroduce}>핫요가 좋아요!! 므흣!</Text>
                     </View>
                   </View>
         <ScrollableTabView tabBarUnderlineColor={'#fff'} tabBarActiveTextColor={'#78CEDA'} tabBarBackgroundColor={'#fff'} tabBarInactiveTextColor={'#D7D7D7'} style={styles.second}>
@@ -130,7 +128,7 @@ var UserProfileSetup = React.createClass({
             </ScrollView>
         </ScrollableTabView>
                 </View>
-            
+
             </View>)
     },
     onPress: function () {
@@ -295,7 +293,7 @@ var styles = StyleSheet.create({
         marginRight: 4,
         color: '#eebe60',
         alignSelf: 'center',
-    }  
+    }
 });
 
 module.exports = UserProfileSetup;

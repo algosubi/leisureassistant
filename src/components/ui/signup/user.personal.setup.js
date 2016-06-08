@@ -4,20 +4,19 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native');
+import React from 'react';
+import ReactNative from 'react-native';
 import Yeoga from '@g/src/model/Yeoga';
 
 var {
     View,
     Image,
     Text,
-    ListView,
     TouchableHighlight,
     StyleSheet
-    } = React;
+    } = ReactNative;
 
 var GridView = require('react-native-grid-view');
-var firebaseRef = new Firebase("https://categoryjson.firebaseio.com/data");
 var API_URL = 'https://categoryjson.firebaseio.com/.json';
 var ITEMS_PER_ROW = 3;
 
@@ -52,7 +51,7 @@ var UserPersonalSetup = React.createClass({
         this.fetchData();
     },
     fetchData: function() {
-        firebaseRef.on("value", (snapshot)=> {
+        firebase.database().ref("interest").once("value", (snapshot)=> {
                 console.log(snapshot.val());
                  var items = [];
                 snapshot.forEach((child) => {
