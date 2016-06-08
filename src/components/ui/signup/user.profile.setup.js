@@ -9,7 +9,9 @@ import ReactNative from 'react-native';
 
 import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 var DeviceInfo = require('react-native-device-info');
-var ImagePickerManager = require('NativeModules').ImagePickerManager;
+var Icon = require('react-native-vector-icons/FontAwesome');
+import Geocoder from 'react-native-geocoder';
+var ScrollableTabView = require('react-native-scrollable-tab-view');
 
 var {
     View,
@@ -25,7 +27,6 @@ var {
     StyleSheet
     } = ReactNative;
 
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 // simply add your google key
 Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 var UserProfileSetup = React.createClass({
@@ -33,8 +34,7 @@ var UserProfileSetup = React.createClass({
         console.log("유저 프로필 설정 화면");
         return {
             username: '',
-            avatarSource: ''
-
+            avatarSource: '',
             introduction: '',
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
@@ -42,7 +42,7 @@ var UserProfileSetup = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebaseRef.child("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
+        firebase.database().ref("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];
