@@ -15,7 +15,7 @@ var {
     View,
     ScrollView,
     } = React;
-
+var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var OngoingYeogaDetail = React.createClass({
     statics: {
@@ -39,6 +39,26 @@ var OngoingYeogaDetail = React.createClass({
             },
         };
     },
+    componentWillMount: function () {
+        firebaseRef.child("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
+            .on("value", (snapshot)=> {
+                console.log(snapshot.val());
+                var items = [];
+                snapshot.forEach((child) => {
+                    console.log(child.val().location[0]);
+                    console.log(child.val().location[1]);
+
+                    items.push(child.val());
+                });
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(items)
+                });
+
+            }, function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
+
+            });
+    },  
     onRegionChange: function(region) {
         this.setState({ region });
     },
@@ -124,6 +144,7 @@ var OngoingYeogaDetail = React.createClass({
                     <View ClassName="chatContent" style={styles.chatContent}>
                         <Text>채팅 내용 들어갈 자리</Text>
                     </View>
+                  
                     <View className="chatInput" style={styles.chatInput}>
                         <Icon.Button name="plus" style={styles.plusBtn} backgroundColor="white" borderColor="white"></Icon.Button>
                         <Text>테스트</Text>

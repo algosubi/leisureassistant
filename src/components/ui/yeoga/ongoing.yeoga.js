@@ -95,7 +95,7 @@ var OngoingYeoga = React.createClass({
                                 </View>
                                 <View style={styles.activityLocation}>
                                     <Icon style={styles.locationIcon} name="location-arrow"></Icon>
-                                    <Text style={styles.locationText}>{data.location}</Text>
+                                    <Text style={styles.locationText}>{data.address.address_components[2].long_name + ' ' + data.address.address_components[1].long_name + ' ' + data.address.address_components[0].long_name}</Text>
                                 </View>
                                 </View>
                             </View>

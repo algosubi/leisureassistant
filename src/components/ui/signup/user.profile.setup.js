@@ -4,7 +4,10 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
+import Geocoder from 'react-native-geocoder';
+import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo';
+var ScrollableTabView = require('react-native-scrollable-tab-view');
+import Yeoga from '@g/src/model/Yeoga';
 var DeviceInfo = require('react-native-device-info');
 var React = require('react-native');
 var RestKit = require('react-native-rest-kit');
@@ -13,119 +16,121 @@ var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 var {
     View,
+    Dimensions,
+    StatusBar,
+    ListView,
+    Navigator,
     Text,
+    ScrollView,
+    Image,
     TextInput,
     TouchableHighlight,
     StyleSheet
     } = React;
 
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
-
+// simply add your google key
+Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 var UserProfileSetup = React.createClass({
     getInitialState: function () {
         console.log("유저 프로필 설정 화면");
         console.log(this.props.userUid);
         return {
             username: '',
-            introduction: ''
+            introduction: '',
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            })
         };
     },
+    componentWillMount: function () {
+        firebaseRef.child("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
+            .on("value", (snapshot)=> {
+                console.log(snapshot.val());
+                var items = [];
+                snapshot.forEach((child) => {
+                    console.log(child.val().location[0]);
+                    console.log(child.val().location[1]);
+
+                    items.push(child.val());
+                });
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(items)
+                });
+
+            }, function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
+
+            });
+    },
     render: function () {
+        var {height, width} = Dimensions.get('window');
+        var wideRatio = (9 * width) / 16;
+      console.log(styles.first.height);
         return (
             <View style={styles.container}>
-                <View style={styles.loginContainer}>
-                    <View style={styles.first}>
-                        <TouchableHighlight style={styles.imgInput} onPress={this.getImage}>
-                            <View style={styles.btnContainer}>
-                                <Icon.Button name="plus" color="#e5e5e5" backgroundColor="white"
-                                             style={styles.plusBtn}></Icon.Button>
+                <View style={styles.profileContainer}>
+                  <View style={styles.first}>
+                    <Image
+                        style={[styles.profileBg, {width: width}]}
+                        source={require('@g/assets/img/yoga.jpg')}
+                    />
+                    <View style={styles.profileImgView}>
+                    <Image
+                        style={styles.profileImg}
+                        source={require('@g/assets/img/yoga.jpg')}
+                    />
+                    <Text style={styles.profileName}>요가걸</Text>
+                    <Text style={styles.profileIntroduce}>핫요가 좋아요!! 므흣!</Text>  
+                    </View>
+                  </View>
+        <ScrollableTabView tabBarUnderlineColor={'#fff'} tabBarActiveTextColor={'#78CEDA'} tabBarBackgroundColor={'#fff'} tabBarInactiveTextColor={'#D7D7D7'} style={styles.second}>
+            <ScrollView tabLabel="캘린더" contentContainerStyle={styles.third}>
+            </ScrollView>
+            <ScrollView tabLabel="리스트" contentContainerStyle={styles.third}>
+                    <ListView
+                        dataSource={this.state.dataSource}
+                        renderRow={(data) =>
+                        <View className="list" style={styles.list}>
+                        <TouchableHighlight style={styles.innerList} onPress={this.onPress}>
+                        <View style={styles.innerList}>
+                            <View className="top" style={styles.top}>
+                                <Image
+                                    style={[styles.topImage, {width: width, height: wideRatio}]}
+                                    source={require('@g/assets/img/yoga.jpg')}
+                                />
                             </View>
+                            <View style={[styles.bottom, {marginTop: -wideRatio, height: wideRatio}]}>
+                            <View className="left" style={styles.bottomTop}>
+                                <Text style={styles.activityHowMany}>{data.joiners}</Text>
+                                <Text style={styles.activityHowManyText}>명</Text>
+                            </View>
+                            <View className="right" style={styles.bottomCenter}>
+                            </View>
+                            <View className="right" style={styles.bottomBottom}>
+                                <View style={styles.bottomBottomTop}>
+                                    <Text style={styles.activityTitle}>{data.title}</Text>
+                                 </View>
+                                <View style={styles.bottomBottomBottom}>
+                                <View style={styles.activityTime}>
+                                    <Icon style={styles.timeIcon} name="clock-o"></Icon>
+                                    <Text style={styles.timeText}>{timeConverter(data.date)}</Text>
+                                </View>
+                                <View style={styles.activityLocation}>
+                                    <Icon style={styles.locationIcon} name="location-arrow"></Icon>
+                                    <Text style={styles.locationText}>{data.address.address_components[2].long_name + ' ' + data.address.address_components[1].long_name + ' ' + data.address.address_components[0].long_name}</Text>
+                                </View>
+                                </View>
+                            </View>
+                            </View>
+                        </View>
                         </TouchableHighlight>
-                    </View>
-                    <View style={styles.second}>
-                        <View style={styles.row}>
-                            <Text style={styles.title}>
-                                닉네임을 입력해 주세요
-                            </Text>
-                        </View>
-                        <View style={styles.row}>
-                            <TextInput
-                                style={styles.input}
-                                value={this.state.username}
-                                onChangeText={(text) => this.setState({username: text})}
-                                placeholder={'Enter User Nickname'}
-                                maxLength={12}
-                                multiline={false}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.third}>
-                        <View style={styles.row}>
-                            <Text style={styles.title}>
-                                자기소개를 입력해 주세요
-                            </Text>
-                        </View>
-                        <View style={styles.row}>
-                            <TextInput
-                                style={styles.input}
-                                value={this.state.introduction}
-                                onChangeText={(text) => this.setState({introduction: text})}
-                                placeholder={'Enter User Nickname'}
-                                maxLength={12}
-                                multiline={false}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.fourth}>
-                        <View style={styles.row}>
-                            <Text style={styles.title}>
-                                생년월일을 입력해 주세요
-                            </Text>
-                        </View>
-                        <View style={styles.row}>
-                            <TextInput
-                                style={styles.input}
-                                value={this.state.username}
-                                onChangeText={(text) => this.setState({username: text})}
-                                placeholder={'Enter User Nickname'}
-                                maxLength={12}
-                                multiline={false}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.fifth}>
-                        <View style={styles.row}>
-                            <ToggleContainer
-                                value={(this.state && this.state.option) || '남성'}
-                                options={['남성', '여성']}
-                                style={{padding: 10}}
-                                orientation={"horizontal"}
-                                spacing={10}
-                                renderItem={(option, active) => (
-                              <ToggleItem
-                                option={option}
-                                active={active}
-                                onPress={() => this.setState({option})}
-                                color={"rgb(74,144,226)"}
-                                backgroundColor={"rgb(255,255,255)"}
-                                borderColor={"rgba(231,231,231,1)"}
-                                activeColor={"rgba(255,255,255,1)"}
-                                activeBackgroundColor={"rgb(74,144,226)"}
-                                borderRadius={2}
-                              />
-                            )}
-                            />
-
-                        </View>
-                    </View>
+                        </View>}
+                    />
+            </ScrollView>
+        </ScrollableTabView>
                 </View>
-                <TouchableHighlight
-                    style={styles.button}
-                    underlayColor={'#328FE6'}
-                    onPress={this.onPress}
-                >
-                    <Text style={styles.label}>계속하기</Text>
-                </TouchableHighlight>
+            
             </View>)
     },
     onPress: function () {
@@ -134,83 +139,19 @@ var UserProfileSetup = React.createClass({
             "introduction": this.state.introduction
         });
         this.props.navigator.push({name: 'userPersonalSetup'});
-    },
-    options: {
-        title: 'Select Avatar', // specify null or empty string to remove the title
-        cancelButtonTitle: 'Cancel',
-        takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
-        chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
-        customButtons: {
-            'Choose Photo from Facebook': 'fb', // [Button Text] : [String returned upon selection]
-        },
-        cameraType: 'back', // 'front' or 'back'
-        mediaType: 'photo', // 'photo' or 'video'
-        videoQuality: 'high', // 'low', 'medium', or 'high'
-        durationLimit: 10, // video recording max time in seconds
-        maxWidth: 100, // photos only
-        maxHeight: 100, // photos only
-        aspectX: 2, // android only - aspectX:aspectY, the cropping image's ratio of width to height
-        aspectY: 1, // android only - aspectX:aspectY, the cropping image's ratio of width to height
-        quality: 0.2, // 0 to 1, photos only
-        angle: 0, // android only, photos only
-        allowsEditing: false, // Built in functionality to resize/reposition the image after selection
-        noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
-        storageOptions: { // if this key is provided, the image will get saved in the documents directory on ios, and the pictures directory on android (rather than a temporary directory)
-            skipBackup: true, // ios only - image will NOT be backed up to icloud
-            path: 'images' // ios only - will save image at /Documents/images rather than the root
-        }
-    },
-    getImage: function () {
-        ImagePickerManager.showImagePicker(this.options, (response) => {
-            console.log('Response = ', response);
-
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePickerManager Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
-            else {
-                // You can display the image using either data:
-                const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-
-
-                // uri (on iOS)
-                //const source = {uri: response.uri.replace('file://', ''), isStatic: true};
-                // uri (on android)
-                //const source = {uri: response.uri, isStatic: true};
-                console.log(source);
-
-                //Set up request object
-                var request = {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "UPLOADCARE_PUB_KEY": 'aa9f6e9fef92ce9e042b',
-                        "file": source.uri,
-                    })
-                }
-
-                var url = 'https://upload.uploadcare.com/base/';
-
-                RestKit.send(url, request, function (error, json) {
-                    if (error)
-                        console.log("encoutered error: ", error);
-                    console.log(json);
-                });
-                this.setState({
-                    avatarSource: source
-                });
-            }
-        })
     }
 });
 
+function timeConverter(UNIX_timestamp) {
+    var a = new Date(UNIX_timestamp);
+    var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var time = year + '년 ' + month + ' ' + date + '일 ' + hour + '시';
+    return time;
+}
 
 var styles = StyleSheet.create({
     container: {
@@ -220,116 +161,141 @@ var styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'column'
     },
-    loginContainer: {
+    profileContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'stretch',
         alignSelf: 'stretch',
-        padding: 16,
     },
     first: {
-        flex: 2,
+        flex: 0.4,
         flexDirection: 'row',
-        marginBottom: 8,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    imgInput: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        borderColor: '#ededed',
-        borderWidth: 1,
-    },
     second: {
-        flex: 1,
+        flex: 0.6,
         flexDirection: 'column',
-        borderColor: '#e5e5e5',
-        borderWidth: 1,
-        borderRadius: 3,
-        marginTop: 8,
-        marginBottom: 8,
     },
     third: {
         flex: 1,
         flexDirection: 'column',
-        borderColor: '#e5e5e5',
-        borderWidth: 1,
-        borderRadius: 3,
-        marginTop: 8,
-        marginBottom: 8,
     },
-    fourth: {
+    profileBg: {
+        height: 250,
         flex: 1,
-        flexDirection: 'column',
-        borderColor: '#e5e5e5',
-        borderWidth: 1,
-        borderRadius: 3,
-        marginTop: 8,
-        marginBottom: 8,
+        resizeMode: 'stretch',
     },
-    fifth: {
-        flex: 1,
-        flexDirection: 'column',
-        borderColor: '#e5e5e5',
-        borderWidth: 1,
-        borderRadius: 3,
-        marginTop: 8,
-        marginBottom: 8,
-    },
-    row: {
-        flexDirection: 'row',
-        flex: 0.5,
-        paddingRight: 16,
-        paddingLeft: 16,
+    profileImgView: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         alignSelf: 'stretch',
-    },
-    title: {
-        flex: 1,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        textAlign: 'left',
-        color: '#545454',
-        fontSize: 20,
-    },
-    input: {
-        color: '#555555',
-        flex: 1,
-        height: 50,
-        borderBottomColor: '#979797',
-        borderBottomWidth: 2,
-        alignSelf: 'stretch',
-    },
-    button: {
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#328FE6',
-        padding: 10,
-        marginTop: 10,
-        backgroundColor: '#FFBE40'
     },
-    label: {
-        width: 230,
-        alignSelf: 'center',
-        textAlign: 'center',
-        fontSize: 20,
-        fontWeight: '600',
-        color: '#ffffff'
+    profileImg: {
+        height: 96,
+        width: 96,
+        borderRadius: 48,
     },
-    btnContainer: {
+    profileName: {
+        fontSize: 16,
+        backgroundColor: 'rgba(255,255,255,0)',
+        color: 'white',
+        fontWeight: 'bold',
+        marginTop: 8,
+    },
+    profileIntroduce: {
+        fontSize: 16,
+        backgroundColor: 'rgba(255,255,255,0)',
+        color: 'white',
+        fontWeight: 'bold',
+        marginTop: 8,
+    },
+    list: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    innerList: {
         flex: 1,
-        alignSelf: 'center',
+        flexDirection: 'column',
+    },
+    top: {
+        flex: 1,
+    },
+    topImage: {
+        flex: 1,
+    },
+    bottom: {
+        flexDirection: 'column',
+        padding: 20,
+        backgroundColor: 'rgba(0,0,0,0.28)',
+    },
+    bottomTop: {
+        flex: 0.2,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    bottomCenter: {
+        flex: 0.5
+    },
+    bottomBottom: {
+        flex: 0.4,
+    },
+    bottomBottomTop: {
+        flex: 1.5,
         justifyContent: 'center',
     },
-    plusBtn: {
-        height: 30,
-        width: 30,
+    bottomBottomBottom: {
+        flex: 1,
+        flexDirection: 'row',
     },
-    radioBtn: {
-        height: 20,
+    activityHowMany: {
+        color: '#eebe60',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    activityHowManyText: {
+        color: 'white',
         fontSize: 16,
-        marginRight: 16,
-    }
+    },
+    activityTitle: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    activityTime: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    timeText: {
+        color: 'white',
+        alignSelf: 'center',
+    },
+    timeIcon: {
+        marginRight: 4,
+        color: '#eebe60',
+        alignSelf: 'center',
+    },
+    activityLocation: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    locationText: {
+        color: 'white',
+        alignSelf: 'center',
+    },
+    locationIcon: {
+        marginRight: 4,
+        color: '#eebe60',
+        alignSelf: 'center',
+    }  
 });
 
 module.exports = UserProfileSetup;

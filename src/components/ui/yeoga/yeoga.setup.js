@@ -3,6 +3,7 @@ var React = require('react-native');
 var generateUUID =
     require('@g/src/model/UUID');
 import Yeoga from '@g/src/model/Yeoga';
+var Icon = require('react-native-vector-icons/FontAwesome');
 
 
 var {
@@ -177,7 +178,8 @@ var YeogaSetup = React.createClass({
                           />
                         </View>
                         <View style={styles.row}>
-                            <Text style={styles.title}>
+                            <Icon.Button name="plus" style={styles.modiBtn} backgroundColor="black" borderColor="white"></Icon.Button>
+                            <Text style={styles.locationModi}>
                                재설정
                             </Text>
                         </View>
@@ -190,13 +192,26 @@ var YeogaSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                          <TextInput
-                              style={styles.input}
-                              value={this.state.username}
-                              onChangeText={(text) => this.setState({username: text})}
-                              placeholder={'원하는 여가활동 작성'}
-                              maxLength={12}
-                              multiline={false}
+                          <ToggleContainer
+                            value={(this.state && this.state.option) || '1'}
+                            options={['1', '2', '3', '4', '5', '6', '7']}
+                            style={{padding: 10}}
+                            orientation={"horizontal"}
+                            spacing={10}
+                            renderItem={(option, active) => (
+                              <ToggleItem
+                                option={option}
+                                active={active}
+                                onPress={() => this.setState({option})}
+                                color={"rgba(229,229,229,1)"}
+                                backgroundColor={"rgb(255,255,255)"}
+                                borderColor={"rgba(201,201,201,1)"}
+                                activeColor={"rgba(255,190,64,1)"}
+                                activeBorderColor={'#000'}
+                                activeBackgroundColor={"rgba(255,255,255,1)"}
+                                borderRadius={ 2 }
+                              />
+                            )}
                           />
                         </View>
                     </View>
@@ -237,11 +252,11 @@ var YeogaSetup = React.createClass({
                                 option={option}
                                 active={active}
                                 onPress={() => this.setState({option})}
-                                color={"rgb(74,144,226)"}
+                                color={"rgba(229,229,229,1)"}
                                 backgroundColor={"rgb(255,255,255)"}
                                 borderColor={"rgba(231,231,231,1)"}
-                                activeColor={"rgba(255,255,255,1)"}
-                                activeBackgroundColor={"rgb(74,144,226)"}
+                                activeColor={"rgba(255,190,64,1)"}
+                                activeBackgroundColor={"rgba(255,255,255,1)"}
                                 borderRadius={2}
                               />
                             )}
@@ -376,6 +391,10 @@ var styles = StyleSheet.create({
         textAlign: 'left',
         color: '#545454',
         fontSize: 16,
+    },
+    locationModi: {
+        flex: 1,
+        textAlign: 'right',
     },
     input: {
         color: '#555555',

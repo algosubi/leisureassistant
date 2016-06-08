@@ -11,6 +11,8 @@ var {
     View,
     Text,
     TextInput,
+    Navigator,
+    StatusBar,
     TouchableHighlight,
     StyleSheet
     } = React;
@@ -19,6 +21,7 @@ var UserPhoneCerti = React.createClass({
     getInitialState: function () {
         console.log("유저 프로필 설정 화면");
         console.log(this.props.userUid);
+        console.log(this.props.barStyle);
         return {
             username: '',
             colorTrueSwitchIsOn: true,
@@ -27,7 +30,7 @@ var UserPhoneCerti = React.createClass({
     },
 
     render: function () {
-        return (
+        return ( 
             <View style={styles.container}>
                 <View style={styles.loginContainer}>
                     <View style={styles.top}>

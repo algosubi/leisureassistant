@@ -19,12 +19,12 @@ var {
 var GridView = require('react-native-grid-view');
 var firebaseRef = new Firebase("https://categoryjson.firebaseio.com/data");
 var API_URL = 'https://categoryjson.firebaseio.com/.json';
-var MOVIES_PER_ROW = 3;
+var ITEMS_PER_ROW = 3;
 
 var Category = React.createClass({
     render: function() {
       console.log(this.props.category);
-        return <View style={styles.movie} >
+        return <View style={styles.category} >
             <Image
                 source={{uri: this.props.category.thumb}}
                 style={styles.thumbnail}
@@ -83,7 +83,7 @@ var UserPersonalSetup = React.createClass({
             </View>
             <GridView
                 items={this.state.dataSource}
-                itemsPerRow={MOVIES_PER_ROW}
+                itemsPerRow={ITEMS_PER_ROW}
                 renderItem={this.renderItem}
                 style={styles.listView}
             />
@@ -92,7 +92,7 @@ var UserPersonalSetup = React.createClass({
                 underlayColor={'#328FE6'}
                 onPress={this.onPress}
             >
-                <Text style={styles.label}>인증코드 전송</Text>
+                <Text style={styles.label}>회원가입 완료</Text>
             </TouchableHighlight>
           </View>
         );
@@ -146,7 +146,7 @@ var styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 16,
     },
-    movie: {
+    category: {
         height: 150,
         flex: 1,
         alignItems: 'center',
@@ -158,16 +158,29 @@ var styles = StyleSheet.create({
         width: 90,
         textAlign: 'center',
     },
-    year: {
-        textAlign: 'center',
-    },
     thumbnail: {
         flex: 1,
         alignSelf: 'stretch',
     },
     listView: {
         flex: 5,
+        padding: 16,
     },
+    button: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        marginTop: 10,
+        backgroundColor: '#FFBE40'
+    },
+    label: {
+        width: 230,
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#ffffff'
+    }  
 });
 
 module.exports = UserPersonalSetup;
