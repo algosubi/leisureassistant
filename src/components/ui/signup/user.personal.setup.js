@@ -4,17 +4,17 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native');
+import React from 'react';
+import ReactNative from 'react-native';
 import Yeoga from '@g/src/model/Yeoga';
 
 var {
     View,
     Image,
     Text,
-    ListView,
     TouchableHighlight,
     StyleSheet
-    } = React;
+    } = ReactNative;
 
 var GridView = require('react-native-grid-view');
 var API_URL = 'https://categoryjson.firebaseio.com/.json';

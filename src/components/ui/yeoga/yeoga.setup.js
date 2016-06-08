@@ -1,5 +1,7 @@
 import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo';
-var React = require('react-native');
+import React from 'react';
+import ReactNative from 'react-native';
+
 var generateUUID =
     require('@g/src/model/UUID');
 import Yeoga from '@g/src/model/Yeoga';
@@ -18,7 +20,7 @@ var {
     DatePickerIOS,
     Platform,
     TouchableOpacity
-    } = React;
+    } = ReactNative;
 
 
 var YeogaSetup = React.createClass({

@@ -4,11 +4,12 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
+
+import React from 'react';
+import ReactNative from 'react-native';
+
 import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 var DeviceInfo = require('react-native-device-info');
-var React = require('react-native');
-var RestKit = require('react-native-rest-kit');
-var Icon = require('react-native-vector-icons/FontAwesome');
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 var {
@@ -17,7 +18,7 @@ var {
     TextInput,
     TouchableHighlight,
     StyleSheet
-    } = React;
+    } = ReactNative;
 
 
 var UserProfileSetup = React.createClass({

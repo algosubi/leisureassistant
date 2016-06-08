@@ -1,8 +1,9 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native');
-var Firebase = require('firebase');
+
+import React from 'react';
+import ReactNative from 'react-native';
 var ExtraDimensions = require('react-native-extra-dimensions-android');
 var {
     Navigator,
@@ -11,7 +12,7 @@ var {
     Text,
     StyleSheet,
     StatusBar,
-    } = React;
+    } = ReactNative;
 
 var YeogaStandBy = require('./yeoga/yeoga.standby'),
     YeogaSetup = require('./yeoga/yeoga.setup'),

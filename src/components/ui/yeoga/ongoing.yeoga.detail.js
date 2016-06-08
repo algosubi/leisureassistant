@@ -1,6 +1,8 @@
 'use strict';
 
-var React = require('react-native');
+
+import React from 'react';
+import ReactNative from 'react-native';
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var Icon = require('react-native-vector-icons/FontAwesome');
 var MapView = require('react-native-maps');
@@ -14,7 +16,7 @@ var {
     TouchableHighlight,
     View,
     ScrollView,
-    } = React;
+    } = ReactNative;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var OngoingYeogaDetail = React.createClass({

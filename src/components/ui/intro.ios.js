@@ -1,9 +1,8 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-var React = require('react-native');
-
-var StatusBarSizeIOS = require('react-native-status-bar-size');
+import React from 'react';
+import ReactNative from 'react-native';
 var {
     Navigator,
     PixelRatio,
@@ -11,7 +10,7 @@ var {
     Text,
     StyleSheet,
     StatusBar,
-    } = React;
+    } = ReactNative;
 
 var YeogaStandBy = require('./yeoga/yeoga.standby'),
     YeogaSetup = require('./yeoga/yeoga.setup'),
@@ -34,7 +33,7 @@ var ROUTES = {
 
 var userUid;
 var yeogaID;
-const barHeight = StatusBarSizeIOS.currentHeight;
+const barHeight = StatusBar.currentHeight;
 var Intro = React.createClass({
     propTypes: {
         userUid: React.PropTypes.string,
@@ -46,7 +45,7 @@ var Intro = React.createClass({
             needSignUp: false,
             loaded: false,
             existYeoga: false,
-            currentStatusBarHeight: StatusBarSizeIOS.currentHeight,
+            currentStatusBarHeight: StatusBar.currentHeight,
 
         };
     },
@@ -102,7 +101,7 @@ var Intro = React.createClass({
         );
     },
     render: function () {
-        console.log(StatusBarSizeIOS.currentHeight);
+        console.log(StatusBar.currentHeight);
         console.log(this.state);
 
         if (!this.state.loaded) {
@@ -116,7 +115,7 @@ var Intro = React.createClass({
                         barStyle="light-content"
                     />
                     <View className="statusBar"
-                          style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
+                          style={[styles.statusBar, {height: StatusBar.currentHeight}]}></View>
                     <Navigator
                         initialRoute={ {name : 'userPhoneCerti'} }
                         renderScene={this.renderScene}
@@ -138,7 +137,7 @@ var Intro = React.createClass({
                             barStyle="light-content"
                         />
                         <View className="statusBar"
-                              style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
+                              style={[styles.statusBar, {height: StatusBar.currentHeight}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
@@ -160,7 +159,7 @@ var Intro = React.createClass({
                             barStyle="light-content"
                         />
                         <View className="statusBar"
-                              style={[styles.statusBar, {height: StatusBarSizeIOS.currentHeight}]}></View>
+                              style={[styles.statusBar, {height: StatusBar.currentHeight}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'yeogaStandBy'} }

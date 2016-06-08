@@ -1,4 +1,5 @@
-var React = require('react-native');
+import React from 'react';
+import ReactNative from 'react-native';
 import Yeoga from '@g/src/model/Yeoga';
 
 
@@ -8,7 +9,7 @@ var {
     Image,
     TouchableHighlight,
     StyleSheet,
-    } = React;
+    } = ReactNative;
 
 
 var YeogaStandBy = React.createClass({
