@@ -23,7 +23,7 @@
 				},
 				"to": {
 					"line": 198,
-					"ch": 53
+					"ch": 49
 				}
 			},
 			"editWith": "dropdown",
@@ -74,7 +74,7 @@
 				},
 				"to": {
 					"line": 206,
-					"ch": 67
+					"ch": 61
 				}
 			},
 			"editWith": "colorPicker",
@@ -122,7 +122,7 @@
 				},
 				"to": {
 					"line": 210,
-					"ch": 76
+					"ch": 58
 				}
 			},
 			"editWith": "colorPicker",
@@ -153,7 +153,7 @@
 				},
 				"to": {
 					"line": 247,
-					"ch": 53
+					"ch": 49
 				}
 			},
 			"editWith": "dropdown",
@@ -204,7 +204,7 @@
 				},
 				"to": {
 					"line": 255,
-					"ch": 67
+					"ch": 61
 				}
 			},
 			"editWith": "colorPicker",
@@ -252,7 +252,7 @@
 				},
 				"to": {
 					"line": 258,
-					"ch": 76
+					"ch": 66
 				}
 			},
 			"editWith": "colorPicker",

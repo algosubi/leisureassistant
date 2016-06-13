@@ -1,9 +1,10 @@
-var React = require('react-native');
+var React = require('react');
+var ReactNative = require('react-native');
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
 var {
     AppRegistry
-    } = React;
+    } = ReactNative;
 
 var firebaseApp = require('firebase/app');
 var database = require('firebase/database');
