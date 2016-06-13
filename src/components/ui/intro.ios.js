@@ -17,6 +17,7 @@ var YeogaStandBy = require('./yeoga/yeoga.standby'),
     UserPhoneCerti = require('./signup/user.phone.certi'),
     UserPersonalSetup = require('./signup/user.personal.setup'),
     UserProfileSetup = require('./signup/user.profile.setup'),
+    UserProfileView = require('./signup/user.profile.view'),
     OngoingYeoga = require('./yeoga/ongoing.yeoga'),
     OngoingYeogaDetail = require('./yeoga/ongoing.yeoga.detail');
 
@@ -24,10 +25,11 @@ var ROUTES = {
     userPhoneCerti: UserPhoneCerti,
     userProfileSetup: UserProfileSetup,
     userPersonalSetup: UserPersonalSetup,
+    userProfileView: UserProfileView,
     yeogaSetup: YeogaSetup,
     yeogaStandBy: YeogaStandBy,
     ongoingYeoga: OngoingYeoga,
-    ongoingYeogaDetail: OngoingYeogaDetail,
+    ongoingYeogaDetail: OngoingYeogaDetail
 };
 
 
@@ -60,6 +62,7 @@ var Intro = React.createClass({
         firebase.database().ref("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
             if (snapshot.val() == null) {
                 console.log("회원가입 필요");
+                console.log(StatusBar, '스테이터스바');
                 this.setState({
                     needSignUp: true
                     , loaded: true
@@ -112,10 +115,10 @@ var Intro = React.createClass({
             return (
                 <View className="rootScope" style={styles.rootScope}>
                     <StatusBar
-                        barStyle="light-content"
+                        barStyle="default"
                     />
                     <View className="statusBar"
-                          style={[styles.statusBar, {height: StatusBar.currentHeight}]}></View>
+                          style={[styles.statusBar, {height: this.state.currentStatusBarHeight}]}></View>
                     <Navigator
                         initialRoute={ {name : 'userPhoneCerti'} }
                         renderScene={this.renderScene}
@@ -223,6 +226,6 @@ var styles = StyleSheet.create({
         flex: 1,
         alignItems: 'stretch',
         flexDirection: 'column',
-    },
+    }
 });
 module.exports = Intro;

@@ -25,6 +25,7 @@
     "react-native-popup": "^0.5.2",
     "react-native-rest-kit": "0.0.6",
     "react-native-scrollable-tab-view": "^0.4.0",
+    "react-native-status-bar-size": "^0.2.1",
     "react-native-vector-icons": "^2.0.3",
     "reactfire": "^1.0.0",
     "sendbird": "^2.4.17"

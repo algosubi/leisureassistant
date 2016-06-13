@@ -18,6 +18,7 @@ var YeogaStandBy = require('./yeoga/yeoga.standby'),
     YeogaSetup = require('./yeoga/yeoga.setup'),
     UserPhoneCerti = require('./signup/user.phone.certi'),
     UserPersonalSetup = require('./signup/user.personal.setup'),
+    UserProfileView = require('./signup/user.profile.view'),
     UserProfileSetup = require('./signup/user.profile.setup'),
     OngoingYeoga = require('./yeoga/ongoing.yeoga'),
     OngoingYeogaDetail = require('./yeoga/ongoing.yeoga.detail');
@@ -26,10 +27,11 @@ var ROUTES = {
     userPhoneCerti: UserPhoneCerti,
     userProfileSetup: UserProfileSetup,
     userPersonalSetup: UserPersonalSetup,
+    userProfileView: UserProfileView,
     yeogaSetup: YeogaSetup,
     yeogaStandBy: YeogaStandBy,
     ongoingYeoga: OngoingYeoga,
-    ongoingYeogaDetail: OngoingYeogaDetail,
+    ongoingYeogaDetail: OngoingYeogaDetail
 };
 var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var userUid;
@@ -227,6 +229,6 @@ var styles = StyleSheet.create({
         flex: 1,
         alignItems: 'stretch',
         flexDirection:'column',
-    },
+    }
 });
 module.exports = Intro;
