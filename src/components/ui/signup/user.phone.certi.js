@@ -8,13 +8,13 @@ import React from 'react';
 import ReactNative from 'react-native';
 import CheckBox from 'react-native-checkbox';
 
+var Digits = require('react-native-fabric-digits');
+var { DigitsLoginButton } = Digits;
+
 var {
     View,
     Text,
     TextInput,
-    Navigator,
-    StatusBar,
-    TouchableHighlight,
     StyleSheet
     } = ReactNative;
 
@@ -27,11 +27,22 @@ var UserPhoneCerti = React.createClass({
             username: '',
             colorTrueSwitchIsOn: true,
             colorFalseSwitchIsOn: false,
+            logged: false,
+            error: false,
+            response: {}
         };
+    },
+    completion: function (error, response) {
+        if (error && error.code !== 1) {
+            this.setState({logged: false, error: true, response: {}});
+        } else if (response) {
+            var logged = JSON.stringify(response) === '{}' ? false : true;
+            this.setState({logged: logged, error: false, response: response});
+        }
     },
 
     render: function () {
-        return ( 
+        return (
             <View style={styles.container}>
                 <View style={styles.loginContainer}>
                     <View style={styles.top}>
@@ -41,14 +52,14 @@ var UserPhoneCerti = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            value={this.state.username}
-                            onChangeText={(text) => this.setState({username: text})}
-                            placeholder={'Enter User Nickname'}
-                            maxLength={12}
-                            multiline={false}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                value={this.state.username}
+                                onChangeText={(text) => this.setState({username: text})}
+                                placeholder={'Enter User Nickname'}
+                                maxLength={12}
+                                multiline={false}
+                            />
                         </View>
                     </View>
                     <View style={styles.center}>
@@ -121,13 +132,38 @@ var UserPhoneCerti = React.createClass({
                         </View>
                     </View>
                 </View>
-                <TouchableHighlight
-                    style={styles.button}
-                    underlayColor={'#328FE6'}
-                    onPress={this.onPress}
-                >
-                    <Text style={styles.label}>인증코드 전송</Text>
-                </TouchableHighlight>
+
+                <DigitsLoginButton
+                    options={{
+                              title: "Logging in is great",
+                              phoneNumber: "+82",
+                              appearance: {
+                                backgroundColor: {
+                                  hex: "#ffffff",
+                                  alpha: 1.0
+                                },
+                                accentColor: {
+                                  hex: "#43a16f",
+                                  alpha: 0.7
+                                },
+                                headerFont: {
+                                  name: "Arial",
+                                  size: 16
+                                },
+                                labelFont: {
+                                  name: "Helvetica",
+                                  size: 18
+                                },
+                                bodyFont: {
+                                  name: "Helvetica",
+                                  size: 16
+                                }
+                              }
+                            }}
+                    completion={this.completion}
+                    text="인증번호 전송"
+                    buttonStyle={styles.button}
+                    textStyle={styles.DigitsAuthenticateButtonText}/>
             </View>)
     },
     onPress: function () {
@@ -226,6 +262,12 @@ var styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '600',
         color: '#ffffff'
+    },
+    DigitsAuthenticateButtonText: {
+        fontSize: 16,
+        color: '#fff',
+        alignSelf: 'center',
+        fontWeight: 'bold'
     }
 });
 

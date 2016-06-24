@@ -33,7 +33,6 @@ var ROUTES = {
     ongoingYeoga: OngoingYeoga,
     ongoingYeogaDetail: OngoingYeogaDetail
 };
-var firebaseRef = new Firebase("https://leisureassistant.firebaseio.com");
 var userUid;
 var yeogaID;
 
@@ -57,41 +56,36 @@ var Intro = React.createClass({
         var tokenGenerator = new FirebaseTokenGenerator("ZckdhJgaozqG512EpTjdAYLZ7i2LIBFevBtyggl6");
         var token = tokenGenerator.createToken({uid: DeviceInfo.getUniqueID(), isModerator: true});
 
-        firebaseRef.auth().signInWithCustomToken(token).catch((error)=> {
-            if (error) {
-                console.log("Login Failed!", error);
-            } else {
-                userUid = token;
-                console.log("Login Succeeded!", authData);
-                firebaseRef.child("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
-                    if (snapshot.val() == null) {
-                        console.log("회원가입 필요");
-                        this.setState({
-                            needSignUp: true
-                            , loaded: true
-                            , existYeoga: false
-                        });
-                    } else {
-                        console.log("이미 가입된 사용자");
-                        console.log(snapshot.val());
-                        var existYeoga = false;
 
-                        if (snapshot.val().yeogaID != null) {
-                            existYeoga = true;
-                            yeogaID = snapshot.val().yeogaID;
-                        }
-                        this.setState({
-                            needSignUp: false
-                            , loaded: true
-                            , existYeoga: existYeoga
-                        });
-
-                    }
-                }, function (errorObject) {
-                    console.log("The read failed: " + errorObject.code);
-
+        userUid = token;
+        firebase.database().ref("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
+            if (snapshot.val() == null) {
+                console.log("회원가입 필요");
+                console.log(StatusBar, '스테이터스바');
+                this.setState({
+                    needSignUp: true
+                    , loaded: true
+                    , existYeoga: false
                 });
+            } else {
+                console.log("이미 가입된 사용자");
+                console.log(snapshot.val());
+                var existYeoga = false;
+
+                if (snapshot.val().yeogaID != null) {
+                    existYeoga = true;
+                    yeogaID = snapshot.val().yeogaID;
+                }
+                this.setState({
+                    needSignUp: false
+                    , loaded: true
+                    , existYeoga: existYeoga
+                });
+
             }
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+
         });
 
 

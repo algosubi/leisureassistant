@@ -78,9 +78,13 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.leisureassistant"
         minSdkVersion 16
         targetSdkVersion 22
@@ -89,6 +93,9 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        manifestPlaceholders = [manifestApplicationId          : "com.leisureassistant",
+                                onesignal_app_id               : "49f72f0a-c2cc-4850-b226-4a142b062c5b",
+                                onesignal_google_project_number: "963392130202"]
     }
     splits {
         abi {
@@ -117,23 +124,24 @@ android {
             }
         }
     }
+
 }
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.facebook.react:react-native:+'
+
+    compile project(':react-native-fabric-digits')
     compile project(':react-native-vector-icons')
     compile project(':react-native-maps')
     compile project(':react-native-image-picker')
-    compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-device-info')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
-    compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':reactdate')
-    compile project(":react-native-device-info")
     compile project(':react-native-onesignal')
-    compile project(':ExtraDimensions')
     compile project(':react-native-geocoder')
-    compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
+    compile project(':ExtraDimensions')
+
 }
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 

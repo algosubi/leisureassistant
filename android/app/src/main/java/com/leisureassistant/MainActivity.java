@@ -1,6 +1,8 @@
 package com.leisureassistant;
 
 import com.facebook.react.ReactActivity;
+import com.geektime.reactnativeonesignal.ReactNativeOneSignalPackage;
+import com.proxima.RCTDigits.DigitsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.AirMaps.AirPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -8,6 +10,8 @@ import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.devfd.RNGeocoder.RNGeocoderPackage;
+import me.nucleartux.date.ReactDatePackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,19 +43,15 @@ public class MainActivity extends ReactActivity {
     @Override
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(new MainReactPackage(),
-            new VectorIconsPackage(),
-            new AirPackage(),
-            new ImagePickerPackage(),
-            new ExtraDimensionsPackage(),
-            new RNDeviceInfo(),
-                new RNDeviceInfo(),
+                new VectorIconsPackage(),
                 new ExtraDimensionsPackage(this),
+                new RNDeviceInfo(),
                 new ReactDatePackage(this),
                 new ReactNativeOneSignalPackage(this),
                 new AirPackage(),
                 new ImagePickerPackage(),
-                new RNGeocoderPackage());
-
+                new RNGeocoderPackage(),
+                new DigitsPackage()
         );
     }
 }

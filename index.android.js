@@ -1,13 +1,12 @@
 var React = require('react');
 var ReactNative = require('react-native');
+var firebaseApp = require('firebase/app');
+var database = require('firebase/database');
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
 var {
     AppRegistry
     } = ReactNative;
-
-var firebaseApp = require('firebase/app');
-var database = require('firebase/database');
 
 var config = {
     apiKey: "AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs",

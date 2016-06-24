@@ -8,13 +8,18 @@
  */
 
 #import "AppDelegate.h"
+#import <Fabric/Fabric.h>
+#import <DigitsKit/DigitsKit.h>
 
 #import "RCTRootView.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+
 {
+  [Fabric with:@[[Digits class]]];
+
   NSURL *jsCodeLocation;
 
   /**
