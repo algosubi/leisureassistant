@@ -1,4 +1,4 @@
-import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo';
+
 import React from 'react';
 import ReactNative from 'react-native';
 
@@ -103,13 +103,13 @@ var YeogaSetup = React.createClass({
         var yeoga = new Yeoga(yeogaID, this.props.userUid,
             this.state.date.getTime());
         console.log(yeoga);
-        firebaseRef.child('yeoga').child(yeogaID).set(yeoga
+        firebase.database().ref("yeoga").child(yeogaID).set(yeoga
             , (error)=> {
                 if (error) {
                     console.log(error);
                 } else {
                     console.log("신청 성공");
-                    firebaseRef.child('users').child(this.props.userUid).update({yeogaID: yeogaID}, (error)=> {
+                    firebase.database().ref("users").child(this.props.userUid).update({yeogaID: yeogaID}, (error)=> {
                         if (error) {
                             console.log(error);
                         } else {
@@ -193,27 +193,7 @@ var YeogaSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                          <ToggleContainer
-                            value={(this.state && this.state.option) || '1'}
-                            options={['1', '2', '3', '4', '5', '6', '7']}
-                            style={{padding: 10}}
-                            orientation={"horizontal"}
-                            spacing={10}
-                            renderItem={(option, active) => (
-                              <ToggleItem
-                                option={option}
-                                active={active}
-                                onPress={() => this.setState({option})}
-                                color={"rgba(229,229,229,1)"}
-                                backgroundColor={"rgb(255,255,255)"}
-                                borderColor={"rgba(201,201,201,1)"}
-                                activeColor={"rgba(255,190,64,1)"}
-                                activeBorderColor={'#000'}
-                                activeBackgroundColor={"rgba(255,255,255,1)"}
-                                borderRadius={ 2 }
-                              />
-                            )}
-                          />
+
                         </View>
                     </View>
 
@@ -242,26 +222,7 @@ var YeogaSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                          <ToggleContainer
-                            value={(this.state && this.state.option) || '함꼐하기'}
-                            options={['함께하기', '혼자하기']}
-                            style={{padding: 10}}
-                            orientation={"horizontal"}
-                            spacing={10}
-                            renderItem={(option, active) => (
-                              <ToggleItem
-                                option={option}
-                                active={active}
-                                onPress={() => this.setState({option})}
-                                color={"rgba(229,229,229,1)"}
-                                backgroundColor={"rgb(255,255,255)"}
-                                borderColor={"rgba(231,231,231,1)"}
-                                activeColor={"rgba(255,190,64,1)"}
-                                activeBackgroundColor={"rgba(255,255,255,1)"}
-                                borderRadius={2}
-                              />
-                            )}
-                          />
+
                         </View>
                     </View>
 

@@ -1,6 +1,7 @@
 package com.leisureassistant;
 
 import com.facebook.react.ReactActivity;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.geektime.reactnativeonesignal.ReactNativeOneSignalPackage;
 import com.proxima.RCTDigits.DigitsPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -44,6 +45,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(new MainReactPackage(),
+            new ExtraDimensionsPackage(),
                 new VectorIconsPackage(),
                 new ExtraDimensionsPackage(this),
                 new RNDeviceInfo(),
