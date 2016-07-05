@@ -22,16 +22,18 @@
             android:icon="@mipmap/ic_launcher"
             android:theme="@style/AppTheme"
     >
+        <uses-library android:name="com.google.android.maps"/>
         <meta-data
                 android:name="io.fabric.ApiKey"
-                android:value="YOUR_API_KEY"/>
+                android:value="f39cf4db6e9f16cb28e6dc57f9b1c01650974b5d" />
+
         <meta-data
                 android:name="io.fabric.ApiSecret"
-                android:value="YOUR_API_SECRET"/>
+                android:value="fgxXaqqzk7de1xTcU2xrWl7qER3VjOCiPLFkvTPpAcQD8mFpU5"/>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="{{Your Google maps API Key Here}}"/>
+                android:value="AIzaSyAravvOVuyPNyt1EEQPhsOTB5GbUZqUf_4"/>
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name"

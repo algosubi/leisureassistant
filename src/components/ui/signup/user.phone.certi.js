@@ -7,9 +7,11 @@
 import React from 'react';
 import ReactNative from 'react-native';
 import CheckBox from 'react-native-checkbox';
+var DeviceInfo = require('react-native-device-info');
 
 var Digits = require('react-native-fabric-digits');
 var { DigitsLoginButton } = Digits;
+var DigitsManager = require("react-native").NativeModules.DigitsManager;
 
 var {
     View,
@@ -20,9 +22,7 @@ var {
 
 var UserPhoneCerti = React.createClass({
     getInitialState: function () {
-        console.log("유저 프로필 설정 화면");
-        console.log(this.props.userUid);
-        console.log(this.props.barStyle);
+        console.log("전화번호 인증 화면");
         return {
             username: '',
             colorTrueSwitchIsOn: true,
@@ -33,11 +33,27 @@ var UserPhoneCerti = React.createClass({
         };
     },
     completion: function (error, response) {
+        console.log(response);
         if (error && error.code !== 1) {
             this.setState({logged: false, error: true, response: {}});
         } else if (response) {
-            var logged = JSON.stringify(response) === '{}' ? false : true;
-            this.setState({logged: logged, error: false, response: response});
+            DigitsManager.sessionDetails((error, sessionDetails) => {
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log(sessionDetails);
+                    firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
+                        "phone": sessionDetails.phoneNumber
+                    }, (error) => {
+                        if (error) {
+                            console.error(error);
+                        } else {
+                            this.props.navigator.push({name: 'userProfileSetup'});
+                        }
+                    })
+                }
+            });
+
         }
     },
 
@@ -166,10 +182,6 @@ var UserPhoneCerti = React.createClass({
                     textStyle={styles.DigitsAuthenticateButtonText}/>
             </View>)
     },
-    onPress: function () {
-        this.props.navigator.push({name: 'userProfileSetup'});
-    }
-
 });
 
 var styles = StyleSheet.create({

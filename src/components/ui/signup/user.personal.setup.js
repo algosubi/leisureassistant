@@ -39,8 +39,7 @@ var Category = React.createClass({
 
 var UserPersonalSetup = React.createClass({
     getInitialState: function () {
-
-        console.log(API_URL);
+        console.log("유저 관심사 설정 화면");
         return {
             username: '',
             loaded: false,

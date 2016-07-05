@@ -131,6 +131,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.facebook.react:react-native:+'
+    compile 'com.airbnb.android:react-native-maps:0.6.0'
 
     compile project(':react-native-fabric-digits')
     compile project(':react-native-vector-icons')
@@ -141,7 +142,6 @@ dependencies {
     compile project(':react-native-onesignal')
     compile project(':react-native-geocoder')
     compile project(':ExtraDimensions')
-
 }
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 

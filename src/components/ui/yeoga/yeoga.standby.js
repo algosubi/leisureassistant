@@ -15,6 +15,7 @@ var {
 var YeogaStandBy = React.createClass({
 
     getInitialState: function () {
+        console.log("여가 준비 화면");
         return {
             titleText: '여가활동을 하려면 바서 여가고를 호출해' + '\n\n' + '원하는 여가를 설정해 주세요!',
         };

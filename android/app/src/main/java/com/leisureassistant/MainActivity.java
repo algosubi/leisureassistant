@@ -3,6 +3,7 @@ package com.leisureassistant;
 import com.facebook.react.ReactActivity;
 import com.geektime.reactnativeonesignal.ReactNativeOneSignalPackage;
 import com.proxima.RCTDigits.DigitsPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.AirMaps.AirPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -46,6 +47,7 @@ public class MainActivity extends ReactActivity {
                 new VectorIconsPackage(),
                 new ExtraDimensionsPackage(this),
                 new RNDeviceInfo(),
+                new MapsPackage(this),
                 new ReactDatePackage(this),
                 new ReactNativeOneSignalPackage(this),
                 new AirPackage(),

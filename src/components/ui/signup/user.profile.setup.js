@@ -12,6 +12,7 @@ var Icon = require('react-native-vector-icons/FontAwesome');
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 var {
+    Alert,
     View,
     Text,
     TextInput,
@@ -26,8 +27,8 @@ var UserProfileSetup = React.createClass({
         return {
             username: '',
             introduction: '',
-            avatarSource: ''
-
+            avatarSource: '',
+            birth: ''
         };
     },
     render: function () {
@@ -53,7 +54,7 @@ var UserProfileSetup = React.createClass({
                                 style={styles.input}
                                 value={this.state.username}
                                 onChangeText={(text) => this.setState({username: text})}
-                                placeholder={'Enter User Nickname'}
+                                placeholder={'닉네임 입력'}
                                 maxLength={12}
                                 multiline={false}
                             />
@@ -70,7 +71,7 @@ var UserProfileSetup = React.createClass({
                                 style={styles.input}
                                 value={this.state.introduction}
                                 onChangeText={(text) => this.setState({introduction: text})}
-                                placeholder={'Enter User Nickname'}
+                                placeholder={'자기소개 입력'}
                                 maxLength={12}
                                 multiline={false}
                             />
@@ -85,9 +86,9 @@ var UserProfileSetup = React.createClass({
                         <View style={styles.row}>
                             <TextInput
                                 style={styles.input}
-                                value={this.state.username}
-                                onChangeText={(text) => this.setState({username: text})}
-                                placeholder={'Enter User Nickname'}
+                                value={this.state.birth}
+                                onChangeText={(text) => this.setState({birth: text})}
+                                placeholder={'생년월일'}
                                 maxLength={12}
                                 multiline={false}
                             />
@@ -110,15 +111,48 @@ var UserProfileSetup = React.createClass({
             </View>)
     },
     onPress: function () {
+        if (!this.state.username) {
+            Alert.alert(
+                't',
+                '이름을 입력해야 합니다',
+                [
+                    {text: '확인', onPress: () => console.log('OK Pressed!')},
+                ]
+            );
+            return;
+        }
+
+        if (!this.state.birth) {
+            Alert.alert(
+                't',
+                '생년월일을 입력해야 합니다',
+                [
+                    {text: '확인', onPress: () => console.log('OK Pressed!')},
+                ]
+            );
+            return;
+        }
+        if (!this.state.introduction) {
+            Alert.alert(
+                't',
+                '생년월일을 입력해야 합니다',
+                [
+                    {text: '확인', onPress: () => console.log('OK Pressed!')},
+                ]
+            );
+            return;
+        }
+
         firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
             "name": this.state.username,
-            "introduction": this.state.introduction
+            "introduction": this.state.introduction,
+            "birth": this.state.birth,
+            "avatarSource": this.state.avatarSource
         }, (error)=> {
             if (error) {
                 console.error(error);
             } else {
                 this.props.navigator.push({name: 'userPersonalSetup'});
-
             }
         });
     },
