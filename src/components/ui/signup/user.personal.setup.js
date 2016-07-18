@@ -6,7 +6,6 @@
  */
 import React from 'react';
 import ReactNative from 'react-native';
-import Yeoga from '@g/src/model/Yeoga';
 
 var {
     View,

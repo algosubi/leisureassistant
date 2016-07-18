@@ -1,10 +1,9 @@
-
 import React from 'react';
 import ReactNative from 'react-native';
 
 var generateUUID =
     require('@g/src/model/UUID');
-import Yeoga from '@g/src/model/Yeoga';
+import Request from '@g/src/model/Request';
 var Icon = require('react-native-vector-icons/FontAwesome');
 
 
@@ -25,33 +24,86 @@ var {
 
 
 var YeogaSetup = React.createClass({
-    getDefaultProps: function() {
+    getInitialState: function () {
+        console.log("여가 설정 화면");
+
+        return {
+            date: this.props.date,
+            dateText: "날짜를 입력해 주세요",
+            timeText: "시간을 입력해 주세요",
+            thisLocation: "",
+            datePickerMode: 'hidden',
+            timeZoneOffsetInHours: this.props.timeZoneOffsetInHours,
+            address: "",
+            wantYeoga: "",
+            type: "",
+        };
+    },
+    getDefaultProps: function () {
         return {
             date: new Date(),
             timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
         };
     },
-    toggleDatePicker: function(){
+    toggleDatePicker: function () {
         var mode = this.state.datePickerMode == 'hidden' ? 'visible' : 'hidden';
         this.setState({datePickerMode: mode});
     },
 
-    onDateChange: function(date){
+    onDateChange: function (date) {
         this.setState({
-            date: date, Text: _dateToString(date)
+            date: date, dateText: _dateToString(date), timeText: _formatTime(date.getHours(), date.getMinutes())
         });
     },
 
-
-    getInitialState: function() {
-        return {
-            date: this.props.date,
-            Text: "시간을 입력해 주세요",
-            thisLocation: "부산광역시 금정구 장전동",
-            datePickerMode: 'hidden',
-            timeZoneOffsetInHours: this.props.timeZoneOffsetInHours
-        };
+    componentDidMount: function () {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                var initialPosition = JSON.stringify(position);
+                this.setState({initialPosition});
+                this.reverseGeocode(position.coords);
+            },
+            (error) => Alert.alert("에러", "위치정보를 불러올 수 없습니다", [
+                {text: 'OK', onPress: () => console.log('OK Pressed!')},
+            ]),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
+        this.watchID = navigator.geolocation.watchPosition((position) => {
+            var lastPosition = JSON.stringify(position);
+            this.setState({lastPosition});
+        });
     },
+    reverseGeocode: function (coords) {
+        var url = 'https://openapi.naver.com/v1/map/reversegeocode?query=' + coords.longitude + ',' + coords.latitude;
+        fetch(
+            url,
+            {
+                method: "GET",
+                dataType: 'json',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Naver-Client-Id': 'FOJFXLbPo4L1IwZUvfnQ',
+                    'X-Naver-Client-Secret': 'md9ZyycJ5Q'
+                }
+            }
+        ).then((response) => {
+            console.log(response);
+            response.json().then((data)=> {
+                this.setState({
+                    address: data.result.items[0].addrdetail.sido + " " + data.result.items[0].addrdetail.sigugun + " " + data.result.items[0].addrdetail.dongmyun
+                });
+            });
+        }).catch((error)=> {
+            console.error(error);
+        }).done();
+
+    },
+    componentWillUnmount: function () {
+        navigator.geolocation.clearWatch(this.watchID);
+    },
+
+
     async showDatePicker(options) {
         if (Platform.OS === 'ios') {
             this.setState({
@@ -62,16 +114,11 @@ var YeogaSetup = React.createClass({
                 var newState = {};
                 const {action, year, month, day} = await DatePickerAndroid.open(options);
                 if (action === DatePickerAndroid.dismissedAction) {
-                    newState['Text'] = "시간을 입력해 주세요";
+                    newState['dateText'] = "날짜를 입력해 주세요";
                 } else {
                     var date = new Date(year, month, day);
-                    newState['Text'] = _dateToString(date);
+                    newState['dateText'] = _dateToString(date);
                     newState['date'] = date;
-                    this.showTimePicker({
-                        hour: this.state.Hour,
-                        minute: this.state.Minute,
-                        is24Hour: true
-                    })
                 }
                 this.setState(newState);
             } catch (exception) {
@@ -85,36 +132,32 @@ var YeogaSetup = React.createClass({
             const {action, minute, hour} = await TimePickerAndroid.open(options);
             var newState = {};
             if (action === TimePickerAndroid.timeSetAction) {
-                newState['Hour'] = hour;
-                newState['Minute'] = minute;
-                this.state.date.setHours(hour, minute);
-                newState['Text'] = _dateToString(this.state.date);
+                newState['date'] = this.state.date.setHours(hour, minute);
+                newState['timeText'] = _formatTime(hour, minute);
             } else if (action === TimePickerAndroid.dismissedAction) {
-                newState['Text'] = "시간을 입력해 주세요";
+                newState['timeText'] = "시간을 입력해 주세요";
             }
             this.setState(newState);
         } catch (message) {
             console.warn(`Error in example Time: `, message);
         }
     },
-    yeogaSetupPress: function() {
-        var yeogaID = generateUUID();
-        console.log(yeogaID);
-        var yeoga = new Yeoga(yeogaID, this.props.userUid,
-            this.state.date.getTime());
-        console.log(yeoga);
-        firebase.database().ref("yeoga").child(yeogaID).set(yeoga
+    yeogaSetupPress: function () {
+        var requestID = generateUUID();
+        var request = new Request(requestID, this.props.userUid,
+            this.state.date, this.state.address, this.state.wantYeoga, this.state.type);
+        firebase.database().ref("request").child(requestID).set(request
             , (error)=> {
                 if (error) {
                     console.log(error);
                 } else {
                     console.log("신청 성공");
-                    firebase.database().ref("users").child(this.props.userUid).update({yeogaID: yeogaID}, (error)=> {
+                    firebase.database().ref("users").child(this.props.userUid).update({requestID: requestID}, (error)=> {
                         if (error) {
                             console.log(error);
                         } else {
                             this.props.navigator.replace({
-                                name: 'ongoingYeoga', passProps: {yeogaID: yeogaID}
+                                name: 'ongoingYeoga', passProps: {requestID: requestID}
                             });
                         }
                     });
@@ -123,9 +166,7 @@ var YeogaSetup = React.createClass({
             });
 
     },
-    render: function() {
-        console.log("여가 설정 화면");
-        console.log(this.state);
+    render: function () {
         var datePicker = (
             <View style={ styles.datePicker }>
                 <TouchableOpacity onPress={ this.toggleDatePicker } style={{ padding: 5, alignItems: 'flex-end' }}>
@@ -140,7 +181,9 @@ var YeogaSetup = React.createClass({
                 />
             </View>
         );
-
+        var location = (  <View><Text style={styles.title}>
+            {this.state.address}
+        </Text></View>);
         return (
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={styles.yeogaContainer}>
@@ -151,17 +194,17 @@ var YeogaSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            value={this.state.username}
-                            onChangeText={(text) => this.setState({username: text})}
-                            placeholder={'원하는 여가활동 작성'}
-                            maxLength={12}
-                            multiline={false}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                value={this.state.username}
+                                onChangeText={(text) => this.setState({username: text})}
+                                placeholder={'원하는 여가활동 작성'}
+                                maxLength={12}
+                                multiline={false}
+                            />
                         </View>
                     </View>
-                  
+
                     <View className="myLocation" style={styles.myLocation}>
                         <View style={styles.row}>
                             <Text style={styles.title}>
@@ -169,19 +212,13 @@ var YeogaSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-                          <TextInput
-                              style={styles.input}
-                              value={this.state.username}
-                              onChangeText={(text) => this.setState({username: text})}
-                              placeholder={'원하는 여가활동 작성'}
-                              maxLength={12}
-                              multiline={false}
-                          />
+                            { this.state.address == "" ? <View/> : location}
                         </View>
                         <View style={styles.row}>
-                            <Icon.Button name="plus" style={styles.modiBtn} backgroundColor="black" borderColor="white"></Icon.Button>
+                            <Icon.Button name="plus" style={styles.modiBtn} backgroundColor="black"
+                                         borderColor="white"></Icon.Button>
                             <Text style={styles.locationModi}>
-                               재설정
+                                재설정
                             </Text>
                         </View>
                     </View>
@@ -192,26 +229,33 @@ var YeogaSetup = React.createClass({
                                 날짜를 선택해 주세요
                             </Text>
                         </View>
-                        <View style={styles.row}>
-
-                        </View>
-                    </View>
-
-                    <View className="mySpareTime" style={styles.mySpareTime}>
-                        <View style={styles.row}>
-                            <Text style={styles.title}>
-                                날짜를 선택해 주세요
-                            </Text>
-                        </View>
                         <Text
-                            style={styles.input}
                             onPress={this.showDatePicker.bind(this, {
                                                                     Date: this.state.date,
                                                                     minDate: new Date(),
                                                                     maxDate: new Date(2020, 4, 10),
                                                                 })}
+                            style={styles.input}
                             multiline={false}>
-                            {this.state.Text}
+                            {this.state.dateText}
+                        </Text>
+                    </View>
+
+                    <View className="mySpareTime" style={styles.mySpareTime}>
+                        <View style={styles.row}>
+                            <Text style={styles.title}>
+                                시간을 설정해 주세요
+                            </Text>
+                        </View>
+                        <Text
+                            onPress={this.showTimePicker.bind(this, {
+                                                     hour: this.state.Hour,
+                                                     minute: this.state.Minute,
+                                                     is24Hour: true
+                                               })}
+                            style={styles.input}
+                            multiline={false}>
+                            {this.state.timeText}
                         </Text>
                     </View>
 
@@ -243,9 +287,9 @@ function _formatTime(hour, minute) {
 }
 
 function _dateToString(date) {
-    console.log(date);
-    return date.getUTCFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일 ' + _formatTime(date.getHours(), date.getMinutes());
+    return date.getUTCFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일 ';
 }
+
 
 var styles = StyleSheet.create({
     container: {

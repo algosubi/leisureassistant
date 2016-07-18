@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactNative from 'react-native';
-import Yeoga from '@g/src/model/Yeoga';
+import Request from '@g/src/model/Request';
 
 
 var {

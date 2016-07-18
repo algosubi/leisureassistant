@@ -6,7 +6,6 @@ import ReactNative from 'react-native';
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var Icon = require('react-native-vector-icons/FontAwesome');
 var MapView = require('react-native-maps');
-import Yeoga from '@g/src/model/Yeoga';
 var {
     StyleSheet,
     Text,

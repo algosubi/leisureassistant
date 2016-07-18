@@ -34,7 +34,7 @@ var ROUTES = {
     ongoingYeogaDetail: OngoingYeogaDetail
 };
 var userUid;
-var yeogaID;
+var requestID;
 
 var Intro = React.createClass({
     propTypes: {
@@ -57,7 +57,7 @@ var Intro = React.createClass({
         var token = tokenGenerator.createToken({uid: DeviceInfo.getUniqueID(), isModerator: true});
 
 
-        userUid = token;
+        userUid = DeviceInfo.getUniqueID();
         firebase.database().ref("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
             if (snapshot.val() == null) {
                 console.log("회원가입 필요");
@@ -72,9 +72,9 @@ var Intro = React.createClass({
                 console.log(snapshot.val());
                 var existYeoga = false;
 
-                if (snapshot.val().yeogaID != null) {
+                if (snapshot.val().requestID != null) {
                     existYeoga = true;
-                    yeogaID = snapshot.val().yeogaID;
+                    requestID = snapshot.val().requestID;
                 }
                 this.setState({
                     needSignUp: false
@@ -90,21 +90,16 @@ var Intro = React.createClass({
 
 
     },
-
-    componentWillUnmount: function () {
-        firebaseRef.off();
-    },
     renderScene: function (route, navigator) {
         var Component = ROUTES[route.name];
         return (
             <View style={[styles.viewStyle, {paddingTop: PixelRatio.get() * 20}]}>
                 <Component route={route} navigator={navigator} userUid={userUid}/>
             </View>
-            );
+        );
     },
     render: function () {
         console.log(this.state);
-
 
 
         if (!this.state.loaded) {
@@ -117,7 +112,8 @@ var Intro = React.createClass({
                     <StatusBar
                         barStyle="light-content"
                     />
-                    <View className="statusBar" style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
+                    <View className="statusBar"
+                          style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
                     <Navigator
                         initialRoute={ {name : 'userPhoneCerti'} }
                         renderScene={this.renderScene}
@@ -132,16 +128,17 @@ var Intro = React.createClass({
             );
         } else {
             if (this.state.existYeoga) {
-                console.log('여가아이디 : ' + yeogaID);
+                console.log('여가아이디 : ' + requestID);
                 return (
                     <View className="rootScope" style={styles.rootScope}>
                         <StatusBar
                             barStyle="light-content"
                         />
-                        <View className="statusBar" style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
+                        <View className="statusBar"
+                              style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
                         <Navigator
                             style={ styles.container }
-                            initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
+                            initialRoute={ {name : 'ongoingYeoga',passProps: {requestID: requestID}} }
                             renderScene={this.renderScene}
                             sceneStyle={styles.navigator}
                             navigationBar={
@@ -159,7 +156,8 @@ var Intro = React.createClass({
                         <StatusBar
                             barStyle="light-content"
                         />
-                        <View className="statusBar" style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
+                        <View className="statusBar"
+                              style={[styles.statusBar, {height: ExtraDimensions.STATUS_BAR_HEIGHT}]}></View>
                         <Navigator
                             style={ styles.container }
                             initialRoute={ {name : 'yeogaStandBy'} }
@@ -222,7 +220,7 @@ var styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
         alignItems: 'stretch',
-        flexDirection:'column',
+        flexDirection: 'column',
     }
 });
 module.exports = Intro;

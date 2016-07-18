@@ -7,7 +7,6 @@
 
 import React from 'react';
 import ReactNative from 'react-native';
-import Yeoga from '@g/src/model/Yeoga';
 import Geocoder from 'react-native-geocoder';
 var Icon = require('react-native-vector-icons/FontAwesome');
 
@@ -29,7 +28,7 @@ Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 var OngoingYeoga = React.createClass({
     getInitialState: function () {
         console.log("OngoingYeoga 화면");
-        console.log(this.props.route.passProps.yeogaID);
+        console.log(this.props.route.passProps.requestID);
         console.log(this.props.navigator);
 
         return {
@@ -39,7 +38,7 @@ var OngoingYeoga = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebase.database().ref("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
+        firebase.database().ref("activity").orderByChild("requestID").equalTo('aldknfakldnf')
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];
@@ -61,8 +60,6 @@ var OngoingYeoga = React.createClass({
     render: function () {
         var {height, width} = Dimensions.get('window');
         var wideRatio = (9 * width) / 16;
-
-
         return (
             <ScrollView style={styles.container}>
                 <View>
