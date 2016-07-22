@@ -21,7 +21,6 @@ var {
     StyleSheet
     } = ReactNative;
 
-
 // simply add your google key
 Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 
@@ -29,7 +28,6 @@ var OngoingYeoga = React.createClass({
     getInitialState: function () {
         console.log("OngoingYeoga 화면");
         console.log(this.props.route.passProps.requestID);
-        console.log(this.props.navigator);
 
         return {
             dataSource: new ListView.DataSource({
@@ -38,7 +36,7 @@ var OngoingYeoga = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebase.database().ref("activity").orderByChild("requestID").equalTo('aldknfakldnf')
+        firebase.database().ref("activity").orderByChild("requestID").equalTo(this.props.route.passProps.requestID)
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];
@@ -65,6 +63,7 @@ var OngoingYeoga = React.createClass({
                 <View>
                     <ListView
                         dataSource={this.state.dataSource}
+                        enableEmptySections={true}
                         renderRow={(data) =>
                         <View className="list" style={styles.list}>
                         <TouchableHighlight style={styles.innerList} onPress={this.onPress}>
