@@ -28,7 +28,7 @@ var UserProfileSetup = React.createClass({
         return {
             username: '',
             introduction: '',
-            avatarSource: 'https://ucarecdn.com/0061d305-dca0-4230-8329-7c2a95b6a502/',
+            avatarSource: '',
             birth: ''
         };
     },
@@ -159,9 +159,6 @@ var UserProfileSetup = React.createClass({
         cancelButtonTitle: 'Cancel',
         takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
         chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
-        customButtons: {
-            'Choose Photo from Facebook': 'fb', // [Button Text] : [String returned upon selection]
-        },
         cameraType: 'back', // 'front' or 'back'
         mediaType: 'photo', // 'photo' or 'video'
         videoQuality: 'high', // 'low', 'medium', or 'high'
