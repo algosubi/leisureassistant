@@ -26,7 +26,7 @@ var OngoingYeogaDetail = React.createClass({
 
     displayName: 'OngoingYeogaDetail',
 
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             selectedTab: 'redTab',
             notifCount: 0,
@@ -60,59 +60,61 @@ var OngoingYeogaDetail = React.createClass({
 
             });
     },
-    onRegionChange: function(region) {
-        this.setState({ region });
+    onRegionChange: function (region) {
+        this.setState({region});
     },
-    render: function() {
+    render: function () {
         var {height, width} = Dimensions.get('window');
-        var wideRatio = (9*width)/16;
+        var wideRatio = (9 * width) / 16;
         return (
-        <ScrollableTabView tabBarUnderlineColor={'#eebe60'} tabBarActiveTextColor={'#fff'} tabBarBackgroundColor={'#78cfdb'} tabBarInactiveTextColor={'#f2f2f2'} style={styles.tabContainer}>
-            <ScrollView tabLabel="정보" contentContainerStyle={styles.container}>
-                <ScrollView style={styles.mainContainer}>
-                    <View className="detailTop" style={styles.detailTop}>
-                        <View className="infoTop" style={styles.infoTop}>
-                            <Image
-                                style={[styles.topImage, {width: width, height: wideRatio}]}
-                                source={require('@g/assets/img/yoga.jpg')}
-                            />
-                        </View>
-                        <View className="infoCenter" style={styles.infoCenter}>
-                            <View style={styles.infoCenterTop}>
-                                <Text style={styles.activityDate}>2016년 5월 25일 일요일 7시</Text>
+            <ScrollableTabView tabBarUnderlineColor={'#eebe60'} tabBarActiveTextColor={'#fff'}
+                               tabBarBackgroundColor={'#78cfdb'} tabBarInactiveTextColor={'#f2f2f2'}
+                               style={styles.tabContainer}>
+                <ScrollView tabLabel="정보" contentContainerStyle={styles.container}>
+                    <ScrollView style={styles.mainContainer}>
+                        <View className="detailTop" style={styles.detailTop}>
+                            <View className="infoTop" style={styles.infoTop}>
+                                <Image
+                                    style={[styles.topImage, {width: width, height: wideRatio}]}
+                                    source={require('@g/assets/img/yoga.jpg')}
+                                />
                             </View>
-                            <View style={styles.infoCenterBottom}>
-                                <Text style={styles.activityRemain}>마감</Text>
+                            <View className="infoCenter" style={styles.infoCenter}>
+                                <View style={styles.infoCenterTop}>
+                                    <Text style={styles.activityDate}>2016년 5월 25일 일요일 7시</Text>
+                                </View>
+                                <View style={styles.infoCenterBottom}>
+                                    <Text style={styles.activityRemain}>마감</Text>
+                                </View>
+                            </View>
+                            <View className="infoBottom" style={styles.infoBottom}>
+                                <MapView
+                                    region={this.state.region}
+                                    onRegionChange={this.onRegionChange}
+                                    style={{height: 200, width: width}}
+                                />
+                                <View style={styles.infoBottomBottom}>
+                                    <Text style={styles.activityLocation}>
+                                        서울시 성동구 서울숲 스케이트파크
+                                    </Text>
+                                    <Text style={styles.locationTrans}>
+                                        주변 지하철역 분당선
+                                    </Text>
+                                </View>
                             </View>
                         </View>
-                        <View className="infoBottom" style={styles.infoBottom}>
-                            <MapView
-                                region={this.state.region}
-                                onRegionChange={this.onRegionChange}
-                                style={{height: 200, width: width}}
-                            />
-                            <View style={styles.infoBottomBottom}>
-                                <Text style={styles.activityLocation}>
-                                    서울시 성동구 서울숲 스케이트파크
-                                </Text>
-                                <Text style={styles.locationTrans}>
-                                    주변 지하철역 분당선
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
 
-                    <View className="detailJoinLists" style={styles.detailJoinLists}>
-                        <View className="listsTop" style={styles.listsTop}>
-                            <Text style={styles.listsTitle}>참가비 15,000원</Text>
-                        </View>
-                        <View className="listsTop" style={styles.listsTop}>
-                            <Text style={styles.listsTitle}>참석인원 4명/8명</Text>
-                        </View>
-                        <View className="liststContent" style={styles.listsContent}>
-                            <ListView
-                                dataSource={this.state.dataSource}
-                                renderRow={(rowData) =>
+                        <View className="detailJoinLists" style={styles.detailJoinLists}>
+                            <View className="listsTop" style={styles.listsTop}>
+                                <Text style={styles.listsTitle}>참가비 15,000원</Text>
+                            </View>
+                            <View className="listsTop" style={styles.listsTop}>
+                                <Text style={styles.listsTitle}>참석인원 4명/8명</Text>
+                            </View>
+                            <View className="liststContent" style={styles.listsContent}>
+                                <ListView
+                                    dataSource={this.state.dataSource}
+                                    renderRow={(rowData) =>
                             <View className="listContainer" style={styles.listContainer}>
 
                                 <TouchableHighlight className="listLeft" style={styles.listLeft}>
@@ -128,31 +130,26 @@ var OngoingYeogaDetail = React.createClass({
                                         </View>
                                 </View>
                             </View>}
-                            />
+                                />
+                            </View>
+                        </View>
+                    </ScrollView>
+                    <TouchableHighlight
+                        style={styles.joinBtn}
+                        underlayColor={'#328FE6'}
+                        onPress={this.onPress}
+                    >
+                        <Text style={styles.joinLabel}>참석하기</Text>
+                    </TouchableHighlight>
+                </ScrollView>
+                <ScrollView tabLabel="채팅" contentContainerStyle={styles.container}>
+                    <View style={styles.innerContainer}>
+                        <View ClassName="chatContent" style={styles.chatContent}>
+                            <ChatBox />
                         </View>
                     </View>
                 </ScrollView>
-                <TouchableHighlight
-                    style={styles.joinBtn}
-                    underlayColor={'#328FE6'}
-                    onPress={this.onPress}
-                >
-                    <Text style={styles.joinLabel}>참석하기</Text>
-                </TouchableHighlight>
-            </ScrollView>
-            <ScrollView tabLabel="채팅" contentContainerStyle={styles.container}>
-                <View style={styles.innerContainer}>
-                    <View ClassName="chatContent" style={styles.chatContent}>
-                        <Text>채팅 내용 들어갈 자리</Text>
-                    </View>
-
-                    <View className="chatInput" style={styles.chatInput}>
-                        <Icon.Button name="plus" style={styles.plusBtn} backgroundColor="white" borderColor="white"></Icon.Button>
-                        <Text>테스트</Text>
-                    </View>
-                </View>
-            </ScrollView>
-        </ScrollableTabView>
+            </ScrollableTabView>
 
         );
     },
@@ -285,12 +282,8 @@ var styles = StyleSheet.create({
     listRight: {
         flex: 0.7,
     },
-    rightTop: {
-
-    },
-    rightBottom: {
-
-    },
+    rightTop: {},
+    rightBottom: {},
     chatContent: {
         flex: 3,
         alignSelf: 'stretch',

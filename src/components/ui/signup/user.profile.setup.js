@@ -13,6 +13,7 @@ var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 var {
     Alert,
+    Image,
     View,
     Text,
     TextInput,
@@ -27,7 +28,7 @@ var UserProfileSetup = React.createClass({
         return {
             username: '',
             introduction: '',
-            avatarSource: '',
+            avatarSource: 'https://ucarecdn.com/0061d305-dca0-4230-8329-7c2a95b6a502/',
             birth: ''
         };
     },
@@ -35,14 +36,11 @@ var UserProfileSetup = React.createClass({
         return (
             <View style={styles.container}>
                 <View style={styles.loginContainer}>
-                    <View style={styles.first}>
-                        <TouchableHighlight style={styles.imgInput} onPress={this.getImage}>
-                            <View style={styles.btnContainer}>
-                                <Icon.Button name="plus" color="#e5e5e5" backgroundColor="white"
-                                             style={styles.plusBtn} onPress={this.getImage}></Icon.Button>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
+                    <TouchableHighlight style={styles.first} onPress={this.getImage}>
+                        <Image style={styles.row}
+                               source={{uri: this.state.avatarSource}}
+                        />
+                    </TouchableHighlight>
                     <View style={styles.second}>
                         <View style={styles.row}>
                             <Text style={styles.title}>
@@ -230,25 +228,21 @@ var UserProfileSetup = React.createClass({
                         }
                     }
                 ).then((response) => {
-                        console.log(response);
-                        var file = JSON.parse(response._bodyText);
-                        firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
-                            "avatarSource": file.file
-                        }, (error) => {
-                            if (error) {
-                                console.error(error);
-                            }
-                        })
+                        console.log('uploadcare response', response);
+                        response.json().then((data)=> {
+                            console.log('uploadcare data', data);
+                            this.setState({
+                                avatarSource: "http://ucarecdn.com/" + data.file + "/"
+                            });
+
+                        });
+
                     })
                     .catch((error) => {
                         console.log(error);
                     })
                     .then((responseData) => {
                     }).done();
-
-                this.setState({
-                    avatarSource: source
-                });
             }
         })
     }
