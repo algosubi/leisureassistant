@@ -41,7 +41,7 @@ var OngoingYeogaDetail = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebaseRef.child("activity").orderByChild("yeogaID").equalTo('aldknfakldnf')
+        firebase.database().ref("activity").orderByChild("requestID").equalTo(this.props.route.passProps.requestID)
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];

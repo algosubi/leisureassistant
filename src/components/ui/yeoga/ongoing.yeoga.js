@@ -106,7 +106,7 @@ var OngoingYeoga = React.createClass({
         )
     },
     onPress: function () {
-        this.props.navigator.push({name: 'ongoingYeogaDetail'});
+        this.props.navigator.push({name: 'ongoingYeogaDetail', passProps: {requestID: this.props.route.passProps.requestID}});
     }
 
 
