@@ -13,6 +13,7 @@ var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 var {
     Alert,
+    Platform,
     Image,
     View,
     Text,
@@ -190,18 +191,13 @@ var UserProfileSetup = React.createClass({
                 console.log('User tapped custom button: ', response.customButton);
             }
             else {
-                // You can display the image using either data:
-                const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-
-
-                // uri (on iOS)
-                //const source = {uri: response.uri.replace('file://', ''), isStatic: true};
-                // uri (on android)
-                //const source = {uri: response.uri, isStatic: true};
-                // console.log(source);
-
-                //Set up request object
-
+                var source;
+                if (Platform.OS == 'ios') {
+                    source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+                } else {
+                    source = {uri: response.uri, isStatic: true};
+                }
+                console.log(source);
 
                 var url = 'https://upload.uploadcare.com/base/';
                 var photo = {

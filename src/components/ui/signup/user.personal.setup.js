@@ -21,7 +21,6 @@ var ITEMS_PER_ROW = 3;
 
 var Category = React.createClass({
     render: function() {
-      console.log(this.props.category);
         return <View style={styles.category} >
             <Image
                 source={{uri: this.props.category.thumb}}

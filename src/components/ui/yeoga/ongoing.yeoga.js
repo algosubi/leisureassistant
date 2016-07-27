@@ -120,7 +120,7 @@ function timeConverter(UNIX_timestamp) {
     var date = a.getDate();
     var hour = a.getHours();
     var time = year + '년 ' + month + ' ' + date + '일 ' + hour + '시';
-    return time;
+    return time;w
 }
 
 var styles = StyleSheet.create({

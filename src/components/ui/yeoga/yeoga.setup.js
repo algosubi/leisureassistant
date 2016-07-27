@@ -9,6 +9,7 @@ var Icon = require('react-native-vector-icons/FontAwesome');
 
 var {
     View,
+    Alert,
     Image,
     TextInput,
     Text,
