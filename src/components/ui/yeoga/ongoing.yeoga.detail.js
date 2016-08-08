@@ -41,6 +41,7 @@ var OngoingYeogaDetail = React.createClass({
         };
     },
     componentWillMount: function () {
+        console.log('activityID', this.props.route.passProps.activityID);
         firebase.database().ref("activity").orderByChild("requestID").equalTo(this.props.route.passProps.requestID)
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
@@ -145,7 +146,7 @@ var OngoingYeogaDetail = React.createClass({
                 <ScrollView tabLabel="채팅" contentContainerStyle={styles.container}>
                     <View style={styles.innerContainer}>
                         <View ClassName="chatContent" style={styles.chatContent}>
-                            <ChatBox />
+                            <ChatContainer activityID={this.props.route.passProps.activityID}/>
                         </View>
                     </View>
                 </ScrollView>

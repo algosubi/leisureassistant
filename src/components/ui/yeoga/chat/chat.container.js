@@ -29,11 +29,18 @@ if (Platform.OS == 'ios') {
 }
 
 class ChatContainer extends Component {
+    propTypes:{
+        activityID:React.PropTypes.string
+        }
+
+    getDefaultProps() {
+
+    }
 
     constructor(props) {
         super(props);
 
-        this._messagesRef = new Firebase("https://react-native-chat-sample.firebaseio.com/messages");
+        this._messagesRef = firebase.database().ref("chat");
         this._messages = [];
 
         this.state = {
@@ -43,7 +50,7 @@ class ChatContainer extends Component {
     }
 
     componentDidMount() {
-        this._messagesRef.on('child_added', (child) => {
+        this._messagesRef.child(this.props.activityID).on('child_added', (child) => {
             this.handleReceive({
                 text: child.val().text,
                 name: child.val().name,

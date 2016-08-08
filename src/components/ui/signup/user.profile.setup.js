@@ -12,6 +12,9 @@ var ImagePickerManager = require('NativeModules').ImagePickerManager;
 var generateUUID =
     require('@g/src/model/UUID');
 
+var Digits = require('react-native-fabric-digits');
+var { DigitsLoginButton } = Digits;
+var DigitsManager = require("react-native").NativeModules.DigitsManager;
 
 var {
     Alert,
@@ -36,6 +39,100 @@ var UserProfileSetup = React.createClass({
             birth: ''
         };
     },
+
+    completion: function (error, response) {
+        console.log(response);
+        if (error && error.code !== 1) {
+            this.setState({logged: false, error: true, response: {}});
+        } else if (response) {
+            DigitsManager.sessionDetails((error, sessionDetails) => {
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log(sessionDetails);
+
+                    firebase.database().ref("users").orderByChild("phone").equalTo(sessionDetails.phoneNumber)
+                        .once("value", (snapshot)=> {
+                            if (snapshot.val() == null) {
+                                console.log("회원가입 필요");
+                                if (!this.state.username) {
+                                    Alert.alert(
+                                        '입력오류',
+                                        '이름을 입력해야 합니다',
+                                        [
+                                            {text: '확인', onPress: () => console.log('OK Pressed!')},
+                                        ]
+                                    );
+                                    return;
+                                }
+
+                                if (!this.state.birth) {
+                                    Alert.alert(
+                                        '입력오류',
+                                        '생년월일을 입력해야 합니다',
+                                        [
+                                            {text: '확인', onPress: () => console.log('OK Pressed!')},
+                                        ]
+                                    );
+                                    return;
+                                }
+                                if (!this.state.introduction) {
+                                    Alert.alert(
+                                        '입력오류',
+                                        '생년월일을 입력해야 합니다',
+                                        [
+                                            {text: '확인', onPress: () => console.log('OK Pressed!')},
+                                        ]
+                                    );
+                                    return;
+                                }
+                                var userID = generateUUID();
+
+                                firebase.database().ref("users").child(userID).update({
+                                        "name": this.state.username,
+                                        "introduction": this.state.introduction,
+                                        "birth": this.state.birth,
+                                        "avatarSource": this.state.avatarSource,
+                                        "phone": sessionDetails.phoneNumber
+                                    },
+                                    (error)=> {
+                                        if (error) {
+                                            console.error(error);
+                                        } else {
+                                            AsyncStorage.setItem('@LeisureStore:userID', userID, ()=> {
+                                                this.props.navigator.push({name: 'userPersonalSetup'});
+
+                                            });
+                                        }
+                                    }
+                                );
+                            } else {
+                                console.log("이미 가입된 사용자");
+                                console.log(snapshot.val());
+                                AsyncStorage.setItem('@LeisureStore:userID', snapshot.key, ()=> {
+                                    if (snapshot.val().yeogaID != null) {
+                                        this.props.navigator.push({
+                                            name: 'ongoingYeoga',
+                                            passProps: {yeogaID: snapshot.val().yeogaID}
+                                        });
+                                    } else {
+                                        this.props.navigator.push({name: 'yeogaStandBy'});
+                                    }
+
+                                });
+
+
+                            }
+                        }, function (errorObject) {
+                            console.log("The read failed: " + errorObject.code);
+
+                        });
+                }
+            });
+
+        }
+    },
+
     render: function () {
         return (
             <View style={styles.container}>
@@ -103,13 +200,37 @@ var UserProfileSetup = React.createClass({
                         </View>
                     </View>
                 </View>
-                <TouchableHighlight
-                    style={styles.button}
-                    underlayColor={'#328FE6'}
-                    onPress={this.onPress}
-                >
-                    <Text style={styles.label}>계속하기</Text>
-                </TouchableHighlight>
+                <DigitsLoginButton
+                    options={{
+                              title: "Logging in is great",
+                              phoneNumber: "+82",
+                              appearance: {
+                                backgroundColor: {
+                                  hex: "#ffffff",
+                                  alpha: 1.0
+                                },
+                                accentColor: {
+                                  hex: "#43a16f",
+                                  alpha: 0.7
+                                },
+                                headerFont: {
+                                  name: "Arial",
+                                  size: 16
+                                },
+                                labelFont: {
+                                  name: "Helvetica",
+                                  size: 18
+                                },
+                                bodyFont: {
+                                  name: "Helvetica",
+                                  size: 16
+                                }
+                              }
+                            }}
+                    completion={this.completion}
+                    text="인증번호 전송"
+                    buttonStyle={styles.button}
+                    textStyle={styles.DigitsAuthenticateButtonText}/>
             </View>)
     },
     onPress: function () {

@@ -127,7 +127,7 @@ var Intro = React.createClass({
                     <View className="statusBar"
                           style={[styles.statusBar, {height: this.state.currentStatusBarHeight}]}></View>
                     <Navigator
-                        initialRoute={ {name : 'userPhoneCerti'} }
+                        initialRoute={ {name : 'userProfileSetup'} }
                         renderScene={this.renderScene}
                         navigationBar={
                                             <View style={styles.navBar}>
