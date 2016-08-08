@@ -55,7 +55,7 @@ class ChatContainer extends Component {
                 image: {uri: child.val().avatarUrl || 'https://facebook.github.io/react/img/logo_og.png'},
                 position: child.val().name == UserName && 'right' || 'left',
                 date: new Date(child.val().date),
-                uniqueId: child.key()
+                uniqueId: child.key
             });
         });
     }
@@ -69,7 +69,7 @@ class ChatContainer extends Component {
     }
 
     handleSend(message = {}) {
-        this._messagesRef.push({
+        this._messagesRef.child(this.props.activityID).push({
             text: message.text,
             name: UserName,
             avatarUrl: AvatarUrl,
@@ -83,7 +83,7 @@ class ChatContainer extends Component {
 
     render() {
         return (
-            <View style={{marginTop: CONTAINER_MARGIN}}>
+            <View >
                 <GiftedMessenger
                     styles={{
                         bubbleRight: {
@@ -93,7 +93,7 @@ class ChatContainer extends Component {
                     }}
                     messages={this.state.messages}
                     handleSend={this.handleSend.bind(this)}
-                    maxHeight={Dimensions.get('window').height - 80}
+                    maxHeight={Dimensions.get('window').height - STATUS_BAR_HEIGHT - CONTAINER_MARGIN-100}
                 />
             </View>
         );

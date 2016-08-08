@@ -147,9 +147,7 @@ var OngoingYeogaDetail = React.createClass({
                 </ScrollView>
                 <ScrollView tabLabel="채팅" contentContainerStyle={styles.container}>
                     <View style={styles.innerContainer}>
-                        <View ClassName="chatContent" style={styles.chatContent}>
-                            <ChatContainer activityID={this.props.route.passProps.activityID}/>
-                        </View>
+                        <ChatContainer activityID={this.props.route.passProps.activityID}/>
                     </View>
                 </ScrollView>
             </ScrollableTabView>
