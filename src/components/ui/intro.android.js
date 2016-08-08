@@ -9,6 +9,7 @@ var {
     Navigator,
     PixelRatio,
     View,
+    AsyncStorage,
     Text,
     StyleSheet,
     StatusBar,
@@ -51,42 +52,44 @@ var Intro = React.createClass({
         };
     },
     componentWillMount: function () {
-        var DeviceInfo = require('react-native-device-info');
-        var FirebaseTokenGenerator = require("firebase-token-generator");
-        var tokenGenerator = new FirebaseTokenGenerator("ZckdhJgaozqG512EpTjdAYLZ7i2LIBFevBtyggl6");
-        var token = tokenGenerator.createToken({uid: DeviceInfo.getUniqueID(), isModerator: true});
+        var userID = AsyncStorage.getItem('@LeisureStore:userID');
+        if (userID == null) {
+            this.setState({
+                needSignUp: true
+                , loaded: true
+                , existYeoga: false
+            });
+        } else {
+            firebase.database().ref("users").child("userID").once("value", (snapshot)=> {
+                if (snapshot.val() == null) {
+                    console.log("회원가입 필요");
+                    console.log(StatusBar, '스테이터스바');
+                    this.setState({
+                        needSignUp: true
+                        , loaded: true
+                        , existYeoga: false
+                    });
+                } else {
+                    console.log("이미 가입된 사용자");
+                    console.log(snapshot.val());
+                    var existYeoga = false;
 
+                    if (snapshot.val().yeogaID != null) {
+                        existYeoga = true;
+                        yeogaID = snapshot.val().yeogaID;
+                    }
+                    this.setState({
+                        needSignUp: false
+                        , loaded: true
+                        , existYeoga: existYeoga
+                    });
 
-        userUid = DeviceInfo.getUniqueID();
-        firebase.database().ref("users").child(DeviceInfo.getUniqueID()).once("value", (snapshot)=> {
-            if (snapshot.val() == null) {
-                console.log("회원가입 필요");
-                console.log(StatusBar, '스테이터스바');
-                this.setState({
-                    needSignUp: true
-                    , loaded: true
-                    , existYeoga: false
-                });
-            } else {
-                console.log("이미 가입된 사용자");
-                console.log(snapshot.val());
-                var existYeoga = false;
-
-                if (snapshot.val().requestID != null) {
-                    existYeoga = true;
-                    requestID = snapshot.val().requestID;
                 }
-                this.setState({
-                    needSignUp: false
-                    , loaded: true
-                    , existYeoga: existYeoga
-                });
+            }, function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
 
-            }
-        }, function (errorObject) {
-            console.log("The read failed: " + errorObject.code);
-
-        });
+            });
+        }
 
 
     },

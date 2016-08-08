@@ -7,7 +7,9 @@
 import React from 'react';
 import ReactNative from 'react-native';
 import CheckBox from 'react-native-checkbox';
-var DeviceInfo = require('react-native-device-info');
+
+var generateUUID =
+    require('@g/src/model/UUID');
 
 var Digits = require('react-native-fabric-digits');
 var { DigitsLoginButton } = Digits;
@@ -15,6 +17,7 @@ var DigitsManager = require("react-native").NativeModules.DigitsManager;
 
 var {
     View,
+    AsyncStorage,
     Text,
     TextInput,
     StyleSheet
@@ -42,15 +45,36 @@ var UserPhoneCerti = React.createClass({
                     console.error(error);
                 } else {
                     console.log(sessionDetails);
-                    firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
-                        "phone": sessionDetails.phoneNumber
-                    }, (error) => {
-                        if (error) {
-                            console.error(error);
-                        } else {
-                            this.props.navigator.push({name: 'userProfileSetup'});
-                        }
-                    })
+
+                    firebase.database().ref("users").orderByChild("phone").equalTo(sessionDetails.phoneNumber)
+                        .once("value", (snapshot)=> {
+                            if (snapshot.val() == null) {
+                                console.log("회원가입 필요");
+                                this.props.navigator.push({
+                                    name: 'userProfileSetup',
+                                    passProps: {phone: sessionDetails.phoneNumber}
+                                });
+                            } else {
+                                console.log("이미 가입된 사용자");
+                                console.log(snapshot.val());
+                                AsyncStorage.setItem('@LeisureStore:userID', snapshot.key, ()=> {
+                                    if (snapshot.val().yeogaID != null) {
+                                        this.props.navigator.push({
+                                            name: 'ongoingYeoga',
+                                            passProps: {yeogaID: snapshot.val().yeogaID}
+                                        });
+                                    } else {
+                                        this.props.navigator.push({name: 'yeogaStandBy'});
+                                    }
+
+                                });
+
+
+                            }
+                        }, function (errorObject) {
+                            console.log("The read failed: " + errorObject.code);
+
+                        });
                 }
             });
 

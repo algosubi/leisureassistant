@@ -5,15 +5,18 @@
  * Created by subi on 2016. 3. 17..
  */
 import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
-var DeviceInfo = require('react-native-device-info');
 import React from 'react';
 import ReactNative from 'react-native';
 var Icon = require('react-native-vector-icons/FontAwesome');
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
+var generateUUID =
+    require('@g/src/model/UUID');
+
 
 var {
     Alert,
     Platform,
+    AsyncStorage,
     Image,
     View,
     Text,
@@ -141,22 +144,30 @@ var UserProfileSetup = React.createClass({
             );
             return;
         }
+        var userID = generateUUID();
 
-        firebase.database().ref("users").child(DeviceInfo.getUniqueID()).update({
-            "name": this.state.username,
-            "introduction": this.state.introduction,
-            "birth": this.state.birth,
-            "avatarSource": this.state.avatarSource
-        }, (error)=> {
-            if (error) {
-                console.error(error);
-            } else {
-                this.props.navigator.push({name: 'userPersonalSetup'});
+        firebase.database().ref("users").child(userID).update({
+                "name": this.state.username,
+                "introduction": this.state.introduction,
+                "birth": this.state.birth,
+                "avatarSource": this.state.avatarSource,
+                "phone": this.props.route.passProps.phone
+            },
+            (error)=> {
+                if (error) {
+                    console.error(error);
+                } else {
+                    AsyncStorage.setItem('@LeisureStore:userID', userID, ()=> {
+                        this.props.navigator.push({name: 'userPersonalSetup'});
+
+                    });
+                }
             }
-        });
+        )
+        ;
     },
     options: {
-        title: 'Select Avatar', // specify null or empty string to remove the title
+        title: 'Select Image', // specify null or empty string to remove the title
         cancelButtonTitle: 'Cancel',
         takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
         chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
