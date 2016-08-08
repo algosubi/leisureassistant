@@ -33,9 +33,6 @@ class ChatContainer extends Component {
         activityID:React.PropTypes.string
         }
 
-    getDefaultProps() {
-
-    }
 
     constructor(props) {
         super(props);
@@ -50,6 +47,7 @@ class ChatContainer extends Component {
     }
 
     componentDidMount() {
+        console.log('chat activityID', this.props.activityID);
         this._messagesRef.child(this.props.activityID).on('child_added', (child) => {
             this.handleReceive({
                 text: child.val().text,
@@ -88,14 +86,14 @@ class ChatContainer extends Component {
             <View style={{marginTop: CONTAINER_MARGIN}}>
                 <GiftedMessenger
                     styles={{
-            bubbleRight: {
-              marginLeft: 70,
-              backgroundColor: '#007aff',
-            },
-          }}
+                        bubbleRight: {
+                                        marginLeft: 70,
+                                        backgroundColor: '#007aff',
+                                     },
+                    }}
                     messages={this.state.messages}
                     handleSend={this.handleSend.bind(this)}
-                    maxHeight={Dimensions.get('window').height - STATUS_BAR_HEIGHT - CONTAINER_MARGIN}
+                    maxHeight={Dimensions.get('window').height - 80}
                 />
             </View>
         );

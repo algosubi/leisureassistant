@@ -37,7 +37,6 @@ var generateUUID =
     require('@g/src/model/UUID');
 
 var userUid;
-var yeogaID;
 const barHeight = StatusBar.currentHeight;
 var Intro = React.createClass({
     propTypes: {
@@ -57,6 +56,7 @@ var Intro = React.createClass({
     componentWillMount: function () {
         AsyncStorage.getItem('@LeisureStore:userID', (err, result) => {
             console.log('userID', result);
+            userUid = result;
             if (result == null) {
                 this.setState({
                     needSignUp: true
@@ -78,9 +78,9 @@ var Intro = React.createClass({
                         console.log(snapshot.val());
                         var existYeoga = false;
 
-                        if (snapshot.val().yeogaID != null) {
+                        if (snapshot.val().requestID != null) {
                             existYeoga = true;
-                            yeogaID = snapshot.val().yeogaID;
+                            requestID = snapshot.val().requestID;
                         }
                         this.setState({
                             needSignUp: false
@@ -140,7 +140,7 @@ var Intro = React.createClass({
             );
         } else {
             if (this.state.existYeoga) {
-                console.log('여가아이디 : ' + yeogaID);
+                console.log('여가아이디 : ' + requestID);
                 return (
                     <View className="rootScope" style={styles.rootScope}>
                         <StatusBar
@@ -150,7 +150,7 @@ var Intro = React.createClass({
                               style={[styles.statusBar, {height: StatusBar.currentHeight}]}></View>
                         <Navigator
                             style={ styles.container }
-                            initialRoute={ {name : 'ongoingYeoga',passProps: {yeogaID: yeogaID}} }
+                            initialRoute={ {name : 'ongoingYeoga',passProps: {requestID: requestID}} }
                             renderScene={this.renderScene}
                             sceneStyle={styles.navigator}
                             navigationBar={

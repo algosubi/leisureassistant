@@ -27,7 +27,7 @@ Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 var OngoingYeoga = React.createClass({
     getInitialState: function () {
         console.log("OngoingYeoga 화면");
-        console.log(this.props.route.passProps.requestID);
+        console.log('requestID : ',this.props.route.passProps.requestID);
 
         return {
             dataSource: new ListView.DataSource({
@@ -41,9 +41,6 @@ var OngoingYeoga = React.createClass({
                 console.log(snapshot.val());
                 var items = [];
                 snapshot.forEach((child) => {
-                    console.log(child.val().location[0]);
-                    console.log(child.val().location[1]);
-
                     items.push(child.val());
                 });
                 this.setState({
@@ -66,7 +63,7 @@ var OngoingYeoga = React.createClass({
                         enableEmptySections={true}
                         renderRow={(data) =>
                         <View className="list" style={styles.list}>
-                        <TouchableHighlight style={styles.innerList} onPress={this.onPress(data.id)}>
+                        <TouchableHighlight style={styles.innerList} onPress={()=>this.onPress(data.id)}>
                         <View style={styles.innerList}>
                             <View className="top" style={styles.top}>
                                 <Image
@@ -76,7 +73,7 @@ var OngoingYeoga = React.createClass({
                             </View>
                             <View style={[styles.bottom, {marginTop: -wideRatio, height: wideRatio}]}>
                             <View className="left" style={styles.bottomTop}>
-                                <Text style={styles.activityHowMany}>{data.joiners}</Text>
+                                <Text style={styles.activityHowMany}>{data.joiners.length}</Text>
                                 <Text style={styles.activityHowManyText}>명</Text>
                             </View>
                             <View className="right" style={styles.bottomCenter}>

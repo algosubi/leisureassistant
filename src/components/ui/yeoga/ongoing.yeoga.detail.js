@@ -6,6 +6,9 @@ import ReactNative from 'react-native';
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var Icon = require('react-native-vector-icons/FontAwesome');
 var MapView = require('react-native-maps');
+var ChatContainer =
+    require('./chat/chat.container');
+
 var {
     StyleSheet,
     Text,
@@ -42,15 +45,14 @@ var OngoingYeogaDetail = React.createClass({
     },
     componentWillMount: function () {
         console.log('activityID', this.props.route.passProps.activityID);
-        firebase.database().ref("activity").orderByChild("requestID").equalTo(this.props.route.passProps.requestID)
+        firebase.database().ref("activity").child(this.props.route.passProps.activityID)
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];
-                snapshot.forEach((child) => {
-                    console.log(child.val().location[0]);
-                    console.log(child.val().location[1]);
-
-                    items.push(child.val());
+                snapshot.val().joiners.forEach((child) => {
+                    firebase.database().ref("users").child(child).on("value", (user)=> {
+                        items.push(user.val());
+                    });
                 });
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(items)
@@ -124,10 +126,10 @@ var OngoingYeogaDetail = React.createClass({
 
                                 <View className="listRight" style={styles.listRight}>
                                         <View style={styles.rightTop}>
-                                         <Text>나다형</Text>
+                                         <Text>{rowData.name}</Text>
                                         </View>
                                         <View style={styles.rightBottom}>
-                                        <Text>후하하하핫</Text>
+                                        <Text>{rowData.introduction}</Text>
                                         </View>
                                 </View>
                             </View>}

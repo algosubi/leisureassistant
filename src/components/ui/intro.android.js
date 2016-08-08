@@ -52,44 +52,47 @@ var Intro = React.createClass({
         };
     },
     componentWillMount: function () {
-        var userID = AsyncStorage.getItem('@LeisureStore:userID');
-        if (userID == null) {
-            this.setState({
-                needSignUp: true
-                , loaded: true
-                , existYeoga: false
-            });
-        } else {
-            firebase.database().ref("users").child("userID").once("value", (snapshot)=> {
-                if (snapshot.val() == null) {
-                    console.log("회원가입 필요");
-                    console.log(StatusBar, '스테이터스바');
-                    this.setState({
-                        needSignUp: true
-                        , loaded: true
-                        , existYeoga: false
-                    });
-                } else {
-                    console.log("이미 가입된 사용자");
-                    console.log(snapshot.val());
-                    var existYeoga = false;
+        AsyncStorage.getItem('@LeisureStore:userID', (err, result) => {
+            console.log('userID', result);
+            userUid = result;
+            if (result == null) {
+                this.setState({
+                    needSignUp: true
+                    , loaded: true
+                    , existYeoga: false
+                });
+            } else {
+                firebase.database().ref("users").child(result).once("value", (snapshot)=> {
+                    if (snapshot.val() == null) {
+                        console.log("회원가입 필요");
+                        console.log(StatusBar, '스테이터스바');
+                        this.setState({
+                            needSignUp: true
+                            , loaded: true
+                            , existYeoga: false
+                        });
+                    } else {
+                        console.log("이미 가입된 사용자");
+                        console.log(snapshot.val());
+                        var existYeoga = false;
 
-                    if (snapshot.val().yeogaID != null) {
-                        existYeoga = true;
-                        yeogaID = snapshot.val().yeogaID;
+                        if (snapshot.val().requestID != null) {
+                            existYeoga = true;
+                            requestID = snapshot.val().requestID;
+                        }
+                        this.setState({
+                            needSignUp: false
+                            , loaded: true
+                            , existYeoga: existYeoga
+                        });
+
                     }
-                    this.setState({
-                        needSignUp: false
-                        , loaded: true
-                        , existYeoga: existYeoga
-                    });
+                }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
 
-                }
-            }, function (errorObject) {
-                console.log("The read failed: " + errorObject.code);
-
-            });
-        }
+                });
+            }
+        });
 
 
     },
