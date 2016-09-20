@@ -6,7 +6,6 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "deco-ride-share-demo": "^1.1.0",
     "firebase": "^3.0.3",
     "firebase-token-generator": "^2.0.0",
     "react": "^15.1.0",
@@ -17,6 +16,7 @@
     "react-native-extra-dimensions-android": "^0.17.0",
     "react-native-fabric-digits": "github:jeanlebrument/react-native-fabric-digits",
     "react-native-geocoder": "^0.4.2",
+    "react-native-gifted-chat": "0.0.3",
     "react-native-gifted-messenger": "^0.1.4",
     "react-native-gifted-spinner": "0.0.4",
     "react-native-grid-view": "^0.4.1",

@@ -35,6 +35,8 @@ var OngoingYeogaDetail = React.createClass({
             notifCount: 0,
             presses: 0,
             dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+            joiners: [],
+            chatLoad: false,
             region: {
                 latitude: 37.78825,
                 longitude: -122.4324,
@@ -49,14 +51,25 @@ var OngoingYeogaDetail = React.createClass({
             .on("value", (snapshot)=> {
                 console.log(snapshot.val());
                 var items = [];
+                var i = 1;
                 snapshot.val().joiners.forEach((child) => {
                     firebase.database().ref("users").child(child).on("value", (user)=> {
-                        items.push(user.val());
+                        items.push({
+                            _id: user.key,
+                            name: user.val().name,
+                            avatar: user.val().avatarSource
+                        });
+                        if (i == snapshot.val().joiners.length) {
+                            this.setState({
+                                dataSource: this.state.dataSource.cloneWithRows(items),
+                                joiners: items,
+                                chatLoad: true,
+                            });
+                        }
+                        i++;
                     });
                 });
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(items)
-                });
+
 
             }, function (errorObject) {
                 console.log("The read failed: " + errorObject.code);
@@ -117,6 +130,7 @@ var OngoingYeogaDetail = React.createClass({
                             <View className="liststContent" style={styles.listsContent}>
                                 <ListView
                                     dataSource={this.state.dataSource}
+                                    enableEmptySections={true}
                                     renderRow={(rowData) =>
                             <View className="listContainer" style={styles.listContainer}>
 
@@ -147,7 +161,10 @@ var OngoingYeogaDetail = React.createClass({
                 </ScrollView>
                 <ScrollView tabLabel="채팅" contentContainerStyle={styles.container}>
                     <View style={styles.innerContainer}>
-                        <ChatContainer activityID={this.props.route.passProps.activityID}/>
+                        <ChatContainer {...this.props}
+                            joiners={this.state.joiners}
+                            userUid={this.props.userUid}
+                            chatLoad={this.state.chatLoad}/>
                     </View>
                 </ScrollView>
             </ScrollableTabView>
@@ -187,7 +204,6 @@ var styles = StyleSheet.create({
     innerContainer: {
         flex: 1,
         flexDirection: 'column',
-        alignSelf: 'stretch',
         alignItems: 'stretch',
     },
     detailTop: {

@@ -2,7 +2,6 @@
 import React from 'react';
 import ReactNative from 'react-native';
 
-import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 var DeviceInfo = require('react-native-device-info');
 var Icon = require('react-native-vector-icons/FontAwesome');
 import Geocoder from 'react-native-geocoder';

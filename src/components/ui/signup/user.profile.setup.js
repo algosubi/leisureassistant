@@ -4,7 +4,6 @@
 /**
  * Created by subi on 2016. 3. 17..
  */
-import { ToggleContainer, ToggleItem } from 'deco-ride-share-demo'
 import React from 'react';
 import ReactNative from 'react-native';
 var Icon = require('react-native-vector-icons/FontAwesome');

@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
 
     <!-- add following permissions -->
@@ -27,7 +27,7 @@
         <uses-library android:name="com.google.android.maps"/>
         <meta-data
                 android:name="io.fabric.ApiKey"
-                android:value="f39cf4db6e9f16cb28e6dc57f9b1c01650974b5d" />
+                android:value="f39cf4db6e9f16cb28e6dc57f9b1c01650974b5d"/>
 
         <meta-data
                 android:name="io.fabric.ApiSecret"
@@ -39,6 +39,7 @@
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name"
+                android:windowSoftInputMode="adjustResize"
                 android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         >
             <intent-filter>

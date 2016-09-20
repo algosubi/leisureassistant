@@ -14,86 +14,81 @@ import {
     Navigator,
 } from 'react-native';
 
-var GiftedMessenger = require('react-native-gifted-messenger');
-
-if (Platform.OS == 'ios') {
-    var STATUS_BAR_HEIGHT = 0;
-    var CONTAINER_MARGIN = 20;
-    var UserName = 'ios';
-    var AvatarUrl = 'https://source.unsplash.com/sseiVD2XsOk/100x100';
-} else {
-    var STATUS_BAR_HEIGHT = 27;
-    var CONTAINER_MARGIN = 0;
-    var UserName = 'android';
-    var AvatarUrl = 'https://source.unsplash.com/2Ts5HnA67k8/100x100';
-}
+import { GiftedChat } from 'react-native-gifted-chat';
 
 class ChatContainer extends Component {
-    propTypes:{
-        activityID:React.PropTypes.string
-        }
-
 
     constructor(props) {
         super(props);
-
         this._messagesRef = firebase.database().ref("chat");
         this._messages = [];
-
-        this.state = {
-            messages: this._messages,
-            typingMessage: ''
-        };
+        this.state = {messages: [], myUser: {}};
+        this.onSend = this.onSend.bind(this);
     }
 
-    componentDidMount() {
-        console.log('chat activityID', this.props.activityID);
-        this._messagesRef.child(this.props.activityID).on('child_added', (child) => {
-            this.handleReceive({
-                text: child.val().text,
-                name: child.val().name,
-                image: {uri: child.val().avatarUrl || 'https://facebook.github.io/react/img/logo_og.png'},
-                position: child.val().name == UserName && 'right' || 'left',
-                date: new Date(child.val().date),
-                uniqueId: child.key
+    componentWillMount() {
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.chatLoad) {
+            nextProps.joiners.forEach((joiner) => {
+                console.log("joinerID", joiner._id);
+                if (joiner._id == this.props.userUid) {
+                    console.log("myUsers", joiner);
+                    this.setState({
+                        myUser: joiner
+                    });
+                }
             });
-        });
+
+            this._messagesRef.child(this.props.route.passProps.activityID).on('child_added', (item) => {
+                console.log(item.val());
+                nextProps.joiners.forEach((joiner) => {
+                    if (joiner._id == item.val().userID) {
+                        this.handleReceive({
+                            user: joiner,
+                            createdAt: new Date(item.val().createdAt),
+                            _id: item.key,
+                            text: item.val().text,
+                        });
+                    }
+                });
+
+
+            });
+        }
     }
 
     setMessages(messages) {
-        this._messages = messages;
-
-        this.setState({
-            messages: messages,
+        this.setState((previousState) => {
+            return {
+                messages: GiftedChat.append(previousState.messages, messages),
+            };
         });
     }
 
-    handleSend(message = {}) {
-        this._messagesRef.child(this.props.activityID).push({
-            text: message.text,
-            name: UserName,
-            avatarUrl: AvatarUrl,
-            date: new Date().getTime()
-        })
-    }
 
     handleReceive(message = {}) {
-        this.setMessages(this._messages.concat(message));
+        this.setMessages(message);
+    }
+    onSend(messages = []) {
+        console.log("onSend messages", messages)
+        this._messagesRef.child(this.props.route.passProps.activityID).push({
+            userID: this.state.myUser._id,
+            text: messages[0].text,
+            createdAt: new Date().getTime()
+        });
+
     }
 
     render() {
         return (
             <View >
-                <GiftedMessenger
-                    styles={{
-                        bubbleRight: {
-                                        marginLeft: 70,
-                                        backgroundColor: '#007aff',
-                                     },
-                    }}
+                <GiftedChat
                     messages={this.state.messages}
-                    handleSend={this.handleSend.bind(this)}
-                    maxHeight={Dimensions.get('window').height - STATUS_BAR_HEIGHT - CONTAINER_MARGIN-100}
+                    onSend={this.onSend}
+                    user={this.state.myUser}
                 />
             </View>
         );
