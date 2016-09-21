@@ -2,7 +2,6 @@ var React = require('react');
 var ReactNative = require('react-native');
 var firebaseApp = require('firebase/app');
 var database = require('firebase/database');
-import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
 var {
     AppRegistry
@@ -18,9 +17,6 @@ firebaseApp.initializeApp(config);
 
 
 var Intro = require('./src/components/ui/intro')
-OneSignal.idsAvailable((idsAvailable) => {
-    console.log(idsAvailable.pushToken);
-    console.log(idsAvailable.playerId);
-});
+
 
 AppRegistry.registerComponent('LeisureAssistant', () => Intro);

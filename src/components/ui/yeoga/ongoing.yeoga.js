@@ -27,7 +27,7 @@ Geocoder.fallbackToGoogle('AIzaSyAKLZUsGPP0hH6Wpfbuk6-xUBQmJbPekZs');
 var OngoingYeoga = React.createClass({
     getInitialState: function () {
         console.log("OngoingYeoga 화면");
-        console.log('requestID : ',this.props.route.passProps.requestID);
+        console.log('requestID : ', this.props.route.passProps.requestID);
 
         return {
             dataSource: new ListView.DataSource({
@@ -36,16 +36,25 @@ var OngoingYeoga = React.createClass({
         };
     },
     componentWillMount: function () {
-        firebase.database().ref("activity").orderByChild("requestID").equalTo(this.props.route.passProps.requestID)
+        firebase.database().ref("request").child(this.props.route.passProps.requestID)
             .on("value", (snapshot)=> {
-                console.log(snapshot.val());
                 var items = [];
-                snapshot.forEach((child) => {
-                    items.push(child.val());
+                var i = 1;
+                snapshot.val().activities.forEach((activityID)=> {
+                    firebase.database().ref("activity").child(activityID).on("value", (activity)=> {
+                        items.push(activity.val());
+                        if (i == snapshot.val().activities.length) {
+                            console.log(items);
+                            this.setState({
+                                dataSource: this.state.dataSource.cloneWithRows(items)
+                            });
+
+                        } else {
+                            i++;
+                        }
+                    });
                 });
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(items)
-                });
+
 
             }, function (errorObject) {
                 console.log("The read failed: " + errorObject.code);
@@ -117,7 +126,8 @@ function timeConverter(UNIX_timestamp) {
     var date = a.getDate();
     var hour = a.getHours();
     var time = year + '년 ' + month + ' ' + date + '일 ' + hour + '시';
-    return time;w
+    return time;
+    w
 }
 
 var styles = StyleSheet.create({

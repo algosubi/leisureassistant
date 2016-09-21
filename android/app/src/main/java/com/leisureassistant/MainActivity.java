@@ -50,7 +50,6 @@ public class MainActivity extends ReactActivity {
                 new RNDeviceInfo(),
                 new MapsPackage(this),
                 new ReactDatePackage(this),
-                new ReactNativeOneSignalPackage(this),
                 new AirPackage(),
                 new ImagePickerPackage(),
                 new RNGeocoderPackage(),

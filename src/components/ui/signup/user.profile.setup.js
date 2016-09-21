@@ -51,8 +51,8 @@ var UserProfileSetup = React.createClass({
                     console.log(sessionDetails);
 
                     firebase.database().ref("users").orderByChild("phone").equalTo(sessionDetails.phoneNumber)
-                        .once("value", (snapshot)=> {
-                            if (snapshot.val() == null) {
+                        .once("child_added", (snapshot)=> {
+                            if (!snapshot.exists()) {
                                 console.log("회원가입 필요");
                                 if (!this.state.username) {
                                     Alert.alert(
@@ -107,12 +107,12 @@ var UserProfileSetup = React.createClass({
                                 );
                             } else {
                                 console.log("이미 가입된 사용자");
-                                console.log(snapshot.val());
                                 AsyncStorage.setItem('@LeisureStore:userID', snapshot.key, ()=> {
-                                    if (snapshot.val().yeogaID != null) {
+                                    console.log(snapshot.val().requestID);
+                                    if (snapshot.val().requestID != null) {
                                         this.props.navigator.push({
                                             name: 'ongoingYeoga',
-                                            passProps: {yeogaID: snapshot.val().yeogaID}
+                                            passProps: {requestID: snapshot.val().requestID}
                                         });
                                     } else {
                                         this.props.navigator.push({name: 'yeogaStandBy'});

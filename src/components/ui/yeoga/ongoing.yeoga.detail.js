@@ -53,7 +53,7 @@ var OngoingYeogaDetail = React.createClass({
                 var items = [];
                 var i = 1;
                 snapshot.val().joiners.forEach((child) => {
-                    firebase.database().ref("users").child(child).on("value", (user)=> {
+                    firebase.database().ref("users").child(child).once("value", (user)=> {
                         items.push({
                             _id: user.key,
                             name: user.val().name,
@@ -65,8 +65,10 @@ var OngoingYeogaDetail = React.createClass({
                                 joiners: items,
                                 chatLoad: true,
                             });
+                        } else {
+                            i++;
+
                         }
-                        i++;
                     });
                 });
 
