@@ -20,7 +20,7 @@
     "react-native-gifted-messenger": "^0.1.4",
     "react-native-gifted-spinner": "0.0.4",
     "react-native-grid-view": "^0.4.1",
-    "react-native-image-picker": "^0.18.17",
+    "react-native-image-picker": "^0.22.7",
     "react-native-maps": "^0.4.2",
     "react-native-onesignal": "^1.1.1",
     "react-native-popup": "^0.5.2",
