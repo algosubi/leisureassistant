@@ -78,7 +78,7 @@ var UserProfileSetup = React.createClass({
                                 if (!this.state.introduction) {
                                     Alert.alert(
                                         '입력오류',
-                                        '생년월일을 입력해야 합니다',
+                                        '자기소개를 입력해야 합니다',
                                         [
                                             {text: '확인', onPress: () => console.log('OK Pressed!')},
                                         ]
@@ -136,18 +136,22 @@ var UserProfileSetup = React.createClass({
         return (
             <View style={styles.container}>
                 <View style={styles.loginContainer}>
-                    <TouchableHighlight style={styles.first} onPress={this.getImage}>
-                        <Image style={styles.row}
+                    <View style={styles.first}>
+                    <TouchableHighlight style={styles.imgInput} onPress={this.getImage}>
+
+                        <Image style={styles.imgInput}
                                source={{uri: this.state.avatarSource}}
                         />
+
                     </TouchableHighlight>
+                    </View>
                     <View style={styles.second}>
                         <View style={styles.row}>
                             <Text style={styles.title}>
                                 닉네임을 입력해 주세요
                             </Text>
                         </View>
-                        <View style={styles.row}>
+                        <View style={styles.secondRow}>
                             <TextInput
                                 style={styles.input}
                                 value={this.state.username}
@@ -186,7 +190,7 @@ var UserProfileSetup = React.createClass({
                                 style={styles.input}
                                 value={this.state.birth}
                                 onChangeText={(text) => this.setState({birth: text})}
-                                placeholder={'생년월일'}
+                                placeholder={'19000101'}
                                 maxLength={12}
                                 multiline={false}
                             />
@@ -194,9 +198,15 @@ var UserProfileSetup = React.createClass({
                     </View>
                     <View style={styles.fifth}>
                         <View style={styles.row}>
+                            <Text style={styles.title}>
+                                성별을 선택해 주세요
+                            </Text>
+                        </View>
+                        <View style={styles.row}>
 
 
                         </View>
+
                     </View>
                 </View>
                 <DigitsLoginButton
@@ -231,60 +241,6 @@ var UserProfileSetup = React.createClass({
                     buttonStyle={styles.button}
                     textStyle={styles.DigitsAuthenticateButtonText}/>
             </View>)
-    },
-    onPress: function () {
-        if (!this.state.username) {
-            Alert.alert(
-                't',
-                '이름을 입력해야 합니다',
-                [
-                    {text: '확인', onPress: () => console.log('OK Pressed!')},
-                ]
-            );
-            return;
-        }
-
-        if (!this.state.birth) {
-            Alert.alert(
-                't',
-                '생년월일을 입력해야 합니다',
-                [
-                    {text: '확인', onPress: () => console.log('OK Pressed!')},
-                ]
-            );
-            return;
-        }
-        if (!this.state.introduction) {
-            Alert.alert(
-                't',
-                '생년월일을 입력해야 합니다',
-                [
-                    {text: '확인', onPress: () => console.log('OK Pressed!')},
-                ]
-            );
-            return;
-        }
-        var userID = generateUUID();
-
-        firebase.database().ref("users").child(userID).update({
-                "name": this.state.username,
-                "introduction": this.state.introduction,
-                "birth": this.state.birth,
-                "avatarSource": this.state.avatarSource,
-                "phone": this.props.route.passProps.phone
-            },
-            (error)=> {
-                if (error) {
-                    console.error(error);
-                } else {
-                    AsyncStorage.setItem('@LeisureStore:userID', userID, ()=> {
-                        this.props.navigator.push({name: 'userPersonalSetup'});
-
-                    });
-                }
-            }
-        )
-        ;
     },
     options: {
         title: 'Select Image', // specify null or empty string to remove the title
@@ -440,7 +396,14 @@ var styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        flex: 0.5,
+        flex: 1,
+        paddingRight: 16,
+        paddingLeft: 16,
+        alignSelf: 'stretch',
+    },
+    secondRow: {
+        flexDirection: 'row',
+        flex: 1,
         paddingRight: 16,
         paddingLeft: 16,
         alignSelf: 'stretch',
@@ -451,15 +414,22 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'left',
         color: '#545454',
-        fontSize: 20,
+        fontSize: 16,
     },
     input: {
         color: '#555555',
         flex: 1,
-        height: 50,
+        height: 30,
         borderBottomColor: '#979797',
         borderBottomWidth: 2,
         alignSelf: 'stretch',
+    },
+    firstBox: {
+        flex: 0.6,
+        flexDirection: 'row',
+    },
+    secondBox: {
+        flex: 0.4
     },
     button: {
         justifyContent: 'center',
