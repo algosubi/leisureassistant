@@ -6,7 +6,8 @@
  */
 import React from 'react';
 import ReactNative from 'react-native';
-var Icon = require('react-native-vector-icons/FontAwesome');
+import { SegmentedControls } from 'react-native-radio-buttons'
+
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 var generateUUID =
     require('@g/src/model/UUID');
@@ -133,6 +134,17 @@ var UserProfileSetup = React.createClass({
     },
 
     render: function () {
+        const options = [
+            "남자",
+            "여자"
+        ];
+
+        function setSelectedOption(selectedOption){
+            this.setState({
+                selectedOption
+            });
+        }
+
         return (
             <View style={styles.container}>
                 <View style={styles.loginContainer}>
@@ -203,8 +215,29 @@ var UserProfileSetup = React.createClass({
                             </Text>
                         </View>
                         <View style={styles.row}>
-
-
+                            <SegmentedControls
+                                tint= {'#FFBE40'}
+                                selectedTint= {'white'}
+                                backTint= {'white'}
+                                options={ options }
+                                optionStyle= {{
+                                    fontSize: 12,
+                                    fontWeight: 'bold',
+                                    paddingTop: 2,
+                                    paddingBottom: 0,
+                                    paddingLeft: 12,
+                                    paddingRight: 12,
+                                    textAlign: 'center',
+                                }}
+                                containerStyle= {{
+                                    marginLeft:  0,
+                                    marginRight: 0,
+                                    height: 30,
+                                }}
+                                allowFontScaling={ false } // default: true
+                                onSelection={ setSelectedOption.bind(this) }
+                                selectedOption={ this.state.selectedOption }
+                            />
                         </View>
 
                     </View>
@@ -245,8 +278,8 @@ var UserProfileSetup = React.createClass({
     options: {
         title: 'Select Image', // specify null or empty string to remove the title
         cancelButtonTitle: 'Cancel',
-        takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
-        chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+        takePhotoButtonTitle: '찍어서 올리기', // specify null or empty string to remove this button
+        chooseFromLibraryButtonTitle: '앨범에서 가져오기', // specify null or empty string to remove this button
         cameraType: 'back', // 'front' or 'back'
         mediaType: 'photo', // 'photo' or 'video'
         videoQuality: 'high', // 'low', 'medium', or 'high'
@@ -345,7 +378,7 @@ var styles = StyleSheet.create({
         padding: 16,
     },
     first: {
-        flex: 2,
+        flex: 1.4,
         flexDirection: 'row',
         marginBottom: 8,
         alignItems: 'center',

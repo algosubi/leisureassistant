@@ -24,6 +24,7 @@
     "react-native-maps": "^0.4.2",
     "react-native-onesignal": "^1.1.1",
     "react-native-popup": "^0.5.2",
+    "react-native-radio-buttons": "^0.12.2",
     "react-native-rest-kit": "0.0.6",
     "react-native-scrollable-tab-view": "^0.4.0",
     "react-native-status-bar-size": "^0.2.1",
